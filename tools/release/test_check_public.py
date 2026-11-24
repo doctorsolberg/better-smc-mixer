@@ -48,6 +48,10 @@ def main():
 
         write(root, "clean.md", "# Clean\n\nNothing to see: noreply" + "@example.com, 00:00:00:00:00:00.\n")
         write(root, "a/binary.dat", b"\0\1\2\3")
+        write(root, "site/img/photo.webp", b"RIFF\0\0\0\0WEBPVP8 ")       # a site image: allowed
+        write(root, "site/img/notes.bin", b"\0\1\2\3")                    # not an image: binary
+        write(root, "a/photo.webp", b"RIFF\0\0\0\0WEBPVP8 ")             # an image elsewhere: binary
+        write(root, "site/img/stock.png", b"\x89PNG" + stock[500:600])     # stock bytes are found anyway
         write(root, "a/stock.dat", b"\0\0" + stock[1000:1100] + b"\0")
         write(root, "a/stock-hex.c", "static const unsigned char t[] = {%s};\n"
               % ", ".join("0x%02x" % b for b in stock[2000:2064]))
@@ -69,7 +73,8 @@ def main():
                 ("a/stock-hex.c", "stock"), ("a/stock-str.json", "stock"), ("a/large.txt", "large"),
                 ("a/private.md", "private"), ("a/home.md", "home"), ("a/email.md", "email"),
                 ("a/mac.md", "mac"), ("a/language.md", "language"), ("a/names.md", "names"),
-                ("a/allowed-and-private.md", "private")}
+                ("a/allowed-and-private.md", "private"), ("site/img/notes.bin", "binary"), ("a/photo.webp", "binary"),
+                ("site/img/stock.png", "stock")}
         for w in sorted(want - found):
             check(False, "not found: %s %s" % w)
         for f in sorted(found - want):

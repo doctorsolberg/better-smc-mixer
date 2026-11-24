@@ -393,8 +393,10 @@ value. The dialog speaks the type's terms, because one start and one step do not
   kind cannot send is skipped and the toast counts it. Clear under Normal makes the Normal layer
   send nothing and keeps a Shift layer of its own; under Shift it makes the control do nothing
   with Shift.
-- **The bottom row** belongs to the whole preset, not to a page: "Clear page" leaves it (the toast
-  says so) and the preset menu's "Clear bottom row" clears it.
+- **The bottom row** belongs to the whole preset, not to a page (FR-MOD-01): the panel says so
+  above it ("Bottom row · the same on all pages of …"). "Clear page…" asks, and clears the row too
+  only when "Also clear the bottom row" is ticked; "Clear preset…" clears everything. A row of its
+  own on each page is in [ideas.md](ideas.md) for 0.2.0 (the owner, 2026-11-24).
 - **Pages and presets** (a second tap on the open tab, or a right click): rename, copy, paste,
   paste a page **with an offset** (numbers +k, fixed channels +k; note numbers only when asked,
   names dropped unless kept), save a copy, clear; a preset also opens its settings, is saved as a

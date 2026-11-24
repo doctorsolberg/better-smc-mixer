@@ -69,8 +69,9 @@ A control that does something else with Shift (**Own** under “With Shift held�
 own there: switch the Layer to Shift and type it in the name field. Otherwise Shift shows the
 control's name.
 
-The bottom row belongs to the whole preset: **Clear page** leaves it, and the preset menu's
-**Clear bottom row** clears it.
+The bottom row is shared by all pages of a preset, as the panel says above it: a change there
+applies to every page. **Clear page…** asks whether to clear the bottom row as well;
+**Clear preset…** clears everything.
 
 ## Mapping an instrument
 

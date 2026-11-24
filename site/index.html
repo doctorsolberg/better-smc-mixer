@@ -9,110 +9,136 @@
 </head>
 <body>
 <header class="hero">
-  <div class="wrap">
-    <h1>Better SMC-Mixer</h1>
-    <p class="lead">Turns the M-Vave SMC-Mixer into a configurable MIDI controller for hardware
-      synthesizers and music apps: presets and pages, a Shift layer, fader pickup, encoder
-      acceleration, USB and Bluetooth MIDI. Set it up in the browser, no app to install.</p>
-    <p class="actions">
-      <a class="button primary" href="editor/">Open the editor</a>
-      <a class="button" href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md">How to install</a>
-      <a class="button" href="https://github.com/doctorsolberg/better-smc-mixer">Source on GitHub</a>
-    </p>
-    <p class="note">Needs Google Chrome with Web MIDI on macOS, Windows or Android.</p>
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <p class="eyebrow">Alternative firmware · free and open source</p>
+      <h1>Better SMC-Mixer</h1>
+      <p class="lead">Turns the M-Vave SMC-Mixer into a configurable MIDI controller for hardware
+        synthesizers and music apps: presets and pages, a Shift layer, fader pickup, encoder
+        acceleration, USB and Bluetooth MIDI. Set it up in the browser, no app to install.</p>
+      <p class="actions">
+        <a class="button primary" href="editor/">Open the editor</a>
+        <a class="button" href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md">How to install</a>
+        <a class="button" href="https://github.com/doctorsolberg/better-smc-mixer">Source on GitHub</a>
+      </p>
+      <p class="note">Needs Google Chrome with Web MIDI on macOS, Windows or Android.</p>
+    </div>
+    <figure class="hero-photo">
+      <img src="img/smc-mixer.webp" width="908" height="431" alt="The M-Vave SMC-Mixer: eight faders, eight encoders above them and rows of lit buttons">
+    </figure>
   </div>
 </header>
 
-<main class="wrap">
-  <section>
-    <h2 class="section-title">What you get</h2>
+<main>
+  <section class="wrap intro">
     <p class="section-lead">The SMC-Mixer has eight faders, eight endless encoders, 45 lit buttons,
       a battery and Bluetooth in a box that fits in a backpack. Its stock firmware is built around a
       DAW: one table of CCs, a Shift button that changes nothing, faders that jump when you switch
-      banks. better-smc-mixer puts the same controls to work for synths and music apps.</p>
-    <div class="grid">
-      <article>
-        <h3>16 banks instead of one</h3>
-        <p>4 presets × 4 pages, eight strips each: 128 faders and 128 encoders in one small box.
-          Shift + arrow jumps straight to a page, Shift + double arrow to a preset, and the mixer
-          comes back where you left off when you turn it on.</p>
-      </article>
-      <article>
-        <h3>Every control on its own channel</h3>
-        <p>One preset can play several synths at once. Or give a preset one channel and let its
-          controls follow it: move the whole preset to another channel with one setting.</p>
-      </article>
-      <article>
-        <h3>Always in sync with your gear</h3>
-        <p>The mixer listens. Values that come back from your synths and apps — a patch change,
-          automation, a knob turned on the synth — update its picture of that parameter on every
-          page and preset, so the next move starts from the real value.</p>
-      </article>
-      <article>
-        <h3>Faders that don't jump</h3>
-        <p><strong>Pickup</strong> takes over when the fader passes the current value,
-          <strong>Scale</strong> glides towards it, <strong>Jump</strong> goes straight there.
-          Choose globally or per fader; until a fader catches up, its strip light blinks.</p>
-      </article>
-      <article>
-        <h3>A second layer on every control</h3>
-        <p>Every fader, encoder and button does something else of its own while Shift is held:
-          volume and, with Shift, cutoff. Hold Shift, latch it with a tap, or both. Encoders turn
-          into fine adjustment under Shift by default.</p>
-      </article>
-      <article>
-        <h3>Encoders that speak synth</h3>
-        <p>The encoder keeps the value itself and sends plain absolute CCs that any synth
-          understands. Four acceleration levels, dividers for small ranges, large steps, and
-          relative modes for DAWs and plugins.</p>
-      </article>
-      <article>
-        <h3>Any MIDI message</h3>
-        <p>7-bit and 14-bit CC, NRPN and RPN for real resolution, pitch bend, aftertouch, program
-          change and notes. Any range on any control, reversed too. Buttons are momentary, toggle
-          or trigger, and their lights follow what the synth reports.</p>
-      </article>
-      <article>
-        <h3>Wired or wireless</h3>
-        <p>Class-compliant USB MIDI with no drivers, and Bluetooth MIDI at the same time. With
-          M-Vave's wireless adapter it plays a hardware synth's 5-pin DIN input with no computer.
-          When Bluetooth gets busy, a moving control sends its newest value, not a backlog.</p>
-      </article>
-      <article>
-        <h3>Edit live in the browser</h3>
-        <p>A picture of the mixer: touch a control and it is selected. Changes play at once.
-          Map a synth's parameters from the <a href="https://midi.guide">MIDI Guide</a>, or move a
-          knob on the synth and Learn takes its message. The whole setup is one file to back up
-          and share.</p>
-      </article>
-      <article>
-        <h3>Fast and precise</h3>
-        <p>Controls are scanned 2 500 times a second; a button answers in about 5 ms. Faders have
-          1 024 physical positions, reach 0 and the maximum every time, and send nothing at rest.</p>
-      </article>
-      <article>
-        <h3>Install and go back</h3>
-        <p>The editor installs the firmware over USB or Bluetooth. It saves a full backup of the
-          mixer's memory first and checks the memory layout before writing.
-          <em>Go back to M-Vave's firmware</em> needs no file.</p>
-      </article>
-      <article>
-        <h3>Open and reproducible</h3>
-        <p>MIT-licensed source on GitHub. Every firmware image is built twice from source with
-          identical bytes, and the editor checks each file's SHA-256 before installing it.</p>
-      </article>
+      banks. Better SMC-Mixer puts the same controls to work for synths and music apps.</p>
+  </section>
+
+  <section class="wrap shot-section">
+    <figure class="shot">
+      <picture>
+        <source srcset="img/editor-dark.webp" media="(prefers-color-scheme: dark)">
+        <img src="img/editor-light.webp" width="1600" height="1153" loading="lazy" alt="The editor: a picture of the mixer with every control named and coloured by its message, and the settings of the selected fader">
+      </picture>
+      <figcaption>The editor is a picture of the mixer. Touch a control on the mixer or on the
+        screen and it is selected; a change plays at once. The colour says what it sends.</figcaption>
+    </figure>
+  </section>
+
+  <section class="wrap feature">
+    <div class="feature-text">
+      <h2>A second layer on every control</h2>
+      <p>Every fader, encoder and button can do something else of its own while Shift is held,
+        with its own name: cutoff, and with Shift the filter envelope. Hold Shift, latch it with a
+        tap, or both. Encoders turn into fine adjustment under Shift by default.</p>
+    </div>
+    <div class="feature-media pair">
+      <figure><picture><source srcset="img/strips-normal-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/strips-normal.webp" loading="lazy" alt="Four strips without Shift: Cutoff, Resonance, Env amount, Drive"></picture><figcaption>Without Shift</figcaption></figure>
+      <figure><picture><source srcset="img/strips-shift-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/strips-shift.webp" loading="lazy" alt="The same strips with Shift: Filter env, Key track, Noise, Sub level"></picture><figcaption>With Shift</figcaption></figure>
     </div>
   </section>
 
-  <section>
+  <section class="wrap feature flip">
+    <div class="feature-text">
+      <h2>Map a synth in a few taps</h2>
+      <p>Pick your instrument from the <a href="https://midi.guide">MIDI Guide</a>: hundreds of
+        synths with their parameters. Tap a parameter, then a control, and the next one is ready.
+        A whole section goes onto a page in one tap. Or move a knob on the synth and Learn takes
+        its message.</p>
+    </div>
+    <div class="feature-media mapping">
+      <picture><source srcset="img/mapping-dark.webp" media="(prefers-color-scheme: dark)"><img class="side" src="img/mapping.webp" loading="lazy" alt="Mapping an Elektron Digitone II: filter parameters with their CC and NRPN numbers, the next one waiting for a control"></picture>
+      <picture><source srcset="img/mapping-strips-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/mapping-strips.webp" loading="lazy" alt="The first faders now send the Digitone II's filter frequency and its next parameters, named after them"></picture>
+    </div>
+  </section>
+
+  <section class="wrap feature">
+    <div class="feature-text">
+      <h2>Faders that don't jump</h2>
+      <p>Switch a page and the faders no longer match the values. <strong>Pickup</strong> takes over
+        when the fader passes the current value, <strong>Scale</strong> glides towards it,
+        <strong>Jump</strong> goes straight there. Choose globally or per fader; until a fader
+        catches up, its strip light blinks.</p>
+    </div>
+    <div class="feature-media diagram">
+      <svg viewBox="0 0 440 230" role="img" aria-label="After a page change the fader is at 20 and the synth's value at 80. With Pickup the value stays until the fader reaches it, then follows the fader; stock firmware jumps to 20 at once.">
+        <text class="title" x="30" y="18">You move a fader after a page change</text>
+        <g class="axis"><line x1="30" y1="200" x2="420" y2="200"/><line x1="30" y1="36" x2="30" y2="200"/></g>
+        <text class="lbl" x="420" y="220" text-anchor="end">time →</text>
+        <path class="fader" d="M58 172 L 210 92 L 300 68 L 400 112"/>
+        <path class="jump" d="M58 92 V 172"/>
+        <path class="value" d="M58 92 H 210 L 300 68 L 400 112"/>
+        <circle class="catch" cx="210" cy="92" r="6"/>
+        <text class="lbl value-lbl" x="58" y="76">Pickup: the value stays</text>
+        <text class="lbl" x="150" y="170">your fader</text>
+        <text class="lbl jump-lbl" x="50" y="132" text-anchor="middle" transform="rotate(-90 50 132)">stock: jumps</text>
+        <text class="lbl catch-lbl" x="222" y="114">caught: follows</text>
+      </svg>
+    </div>
+  </section>
+
+  <section class="wrap feature flip">
+    <div class="feature-text">
+      <h2>16 banks instead of one</h2>
+      <p>4 presets × 4 pages, eight strips each: 128 faders and 128 encoders in one small box.
+        Shift + arrow jumps straight to a page, Shift + double arrow to a preset, and the mixer
+        comes back where you left off when you turn it on.</p>
+    </div>
+    <div class="feature-media banks" aria-hidden="true">
+      <div class="banks-head"><span>Presets</span><span>Pages · 8 strips each</span></div>
+      <div class="bank-row"><span class="bank-name">Prophet</span><i class="on"></i><i></i><i></i><i></i></div>
+      <div class="bank-row"><span class="bank-name">Drums</span><i></i><i></i><i></i><i></i></div>
+      <div class="bank-row"><span class="bank-name">AUM</span><i></i><i></i><i></i><i></i></div>
+      <div class="bank-row"><span class="bank-name">Delay</span><i></i><i></i><i></i><i></i></div>
+      <div class="bank-row foot"><span class="bank-name"></span><b>1</b><b>2</b><b>3</b><b>4</b></div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2 class="section-title">And more</h2>
+    <ul class="more">
+      <li><h3>Every control on its own channel</h3><p>One preset plays several synths at once, or moves to another channel with one setting.</p></li>
+      <li><h3>Always in sync with your gear</h3><p>Values coming back from synths and apps update the mixer, so the next move starts from the real value.</p></li>
+      <li><h3>Encoders that speak synth</h3><p>Plain absolute CCs any synth understands, four acceleration levels, and relative modes for DAWs.</p></li>
+      <li><h3>Any MIDI message</h3><p>7- and 14-bit CC, NRPN, RPN, pitch bend, aftertouch, program change and notes; any range, reversed too.</p></li>
+      <li><h3>Wired or wireless</h3><p>Class-compliant USB MIDI and Bluetooth MIDI at the same time; with <span class="nowrap">M-Vave's</span> adapter, a synth's DIN input with no computer.</p></li>
+      <li><h3>Fast and precise</h3><p>Controls scanned 2 500 times a second, buttons answer in about 5 ms, faders reach 0 and the maximum every time.</p></li>
+      <li><h3>Install and go back</h3><p>Installs over USB or Bluetooth after a full backup; going back to <span class="nowrap">M-Vave's</span> firmware needs no file.</p></li>
+      <li><h3>Open and reproducible</h3><p>MIT-licensed; every image builds twice with identical bytes, and the editor checks each file's SHA-256.</p></li>
+    </ul>
+  </section>
+
+  <section class="wrap">
     <h2 class="section-title">Get started</h2>
     <ol class="steps">
-      <li>Open <a href="editor/">the editor</a> in Chrome and connect the mixer with a USB cable.</li>
-      <li>Choose <strong>Install</strong>, save the backup file it offers, and follow the steps.</li>
-      <li>Switch the mixer off and on. Your controls now send what the editor shows; change
-        anything and it plays at once.</li>
+      <li><h3>Connect</h3><p>Open <a href="editor/">the editor</a> in Chrome and connect the mixer with a USB cable.</p></li>
+      <li><h3>Install</h3><p>Choose <strong>Install</strong>, save the backup file it offers, and follow the steps.</p></li>
+      <li><h3>Play</h3><p>Switch the mixer off and on. Your controls send what the editor shows; change anything and it plays at once.</p></li>
     </ol>
-    <p>Read the <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/README.md">user guide</a>:
+    <p class="guides">Read the <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/README.md">user guide</a>:
       <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md">installing</a>,
       <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/connecting.md">connecting</a>,
       <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/editor.md">the editor</a>,
@@ -120,21 +146,23 @@
       <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/first-preset.md">a first preset</a>.</p>
   </section>
 
-  <section>
+  <section class="wrap">
     <h2 class="section-title">Downloads</h2>
-    <p>Every release with its firmware images, checksums and notes is on
+    <p class="guides">Every release with its firmware images, checksums and notes is on
       <a href="https://github.com/doctorsolberg/better-smc-mixer/releases">GitHub Releases</a>.
       The editor on this site always installs the firmware of its own release
       (<a href="manifest.json">manifest</a>, <a href="SHA256SUMS">checksums</a>).</p>
   </section>
 
-  <section class="support">
-    <div>
-      <h2 class="section-title">Support the project</h2>
-      <p>better-smc-mixer is free and made in spare time. If it makes your mixer better, you can
-        buy the author a mango.</p>
+  <section class="wrap">
+    <div class="support">
+      <div>
+        <h2 class="section-title">Support the project</h2>
+        <p>Better SMC-Mixer is free and made in spare time. If it makes your mixer better, you can
+          buy the author a mango.</p>
+      </div>
+      <a class="button mango" href="https://buymeacoffee.com/igorzilberg" target="_blank" rel="noopener">🥭&nbsp; Buy me a mango</a>
     </div>
-    <a class="button mango" href="https://buymeacoffee.com/igorzilberg" target="_blank" rel="noopener">🥭&nbsp; Buy me a mango</a>
   </section>
 </main>
 
@@ -147,9 +175,10 @@
       the authors accept no liability for damage, data loss or a mixer that stops working.</li>
     <li>The software is provided “as is”, without warranty of any kind, as stated in the
       <a href="LICENSE">MIT licence</a>.</li>
-    <li>better-smc-mixer is an independent project, not affiliated with or endorsed by M-Vave.
-      The firmware includes third-party code listed in <a href="NOTICE">NOTICE</a>. Parameter
-      lists from the MIDI Guide are <span class="nowrap">CC BY-SA 4.0</span>.</li>
+    <li>Better SMC-Mixer is an independent project, not affiliated with or endorsed by M-Vave. The
+      product photo is M-Vave's. The firmware includes third-party code listed in
+      <a href="NOTICE">NOTICE</a>. Parameter lists from the MIDI Guide are
+      <span class="nowrap">CC BY-SA 4.0</span>.</li>
   </ul>
 </footer>
 </body>

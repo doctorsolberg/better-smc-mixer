@@ -581,7 +581,12 @@ function renderPanel() {
   panel.append(h('div', { class: 'side-col' },
     h('div', { class: 'fixed-btn', 'data-fixed': 'bt', title: 'Bluetooth: hold to turn on or off' }, h('b', {}, 'BT')),
     h('div', { class: `fixed-btn shift ${shiftOn ? 'shift-on' : ''}`, 'data-fixed': 'shift', title: `Shift (${cfg.presetSetting(st.preset, 'shiftMode')} in this preset)` }, h('b', {}, 'SHIFT'))));
-  panel.append(h('div', { class: 'row-btns' }, ...S.rowButtons.map((b) => ctlEl(`row.${b.json}`, 'btn'))));
+  // The bottom row belongs to the preset: one assignment for all its pages (FR-MOD-01). Said where
+  // it is, so a change or a clear here is not taken for this page's.
+  panel.append(h('div', { class: 'row-btns' },
+    h('div', { class: 'row-note', title: 'These 11 buttons do the same on every page of this preset. Changing one here changes it on all four pages.' },
+      icon('link', 12), h('span', {}, `Bottom row · the same on all pages of ${presetLabel(st.preset)}`)),
+    ...S.rowButtons.map((b) => ctlEl(`row.${b.json}`, 'btn'))));
 }
 
 function renderTable() {
@@ -2547,7 +2552,6 @@ function presetMenu(anchor, p) {
     { label: 'Paste preset here', icon: 'paste', disabled: st.clip?.kind !== 'preset', do: () => edit('paste preset', () => { cfg.file.presets[p] = structuredClone(st.clip.data); cfg.fill(cfg.file); }) },
     { label: 'Save a copy…', icon: 'download', do: () => showJson(cfg.canonical({ preset: p }), presetLabel(p)) },
     '-',
-    { label: 'Clear bottom row', icon: 'trash', danger: true, do: () => { edit('clear bottom row', () => { cfg.file.presets[p].row = {}; cfg.fill(cfg.file); }); toast('Bottom row cleared on every page of this preset. Undo brings it back.'); } },
     { label: 'Clear preset…', icon: 'trash', danger: true, do: () => askConfirm(`Clear ${presetLabel(p)}?`, 'All its pages and the bottom row will send nothing. Undo brings it back.', 'Clear', () => edit('clear preset', () => { cfg.file.presets[p] = {}; cfg.fill(cfg.file); })) },
   ]);
 }
@@ -2563,7 +2567,7 @@ function pageMenu(anchor, g) {
     { label: 'Paste with numbers moved on…', disabled: st.clip?.kind !== 'page', do: () => offsetDialog(g) },
     { label: 'Save a copy…', icon: 'download', do: () => showJson(cfg.canonical({ preset: p, page: g }), pageLabel(p, g)) },
     '-',
-    { label: 'Clear page', icon: 'trash', danger: true, do: () => { edit('clear page', () => { cfg.file.presets[p].pages[g] = {}; cfg.fill(cfg.file); }); toast('Page cleared. The bottom row belongs to the whole preset and stays: “Clear bottom row” in the preset’s menu clears it. Undo brings it back.'); } },
+    { label: 'Clear page…', icon: 'trash', danger: true, do: () => clearPageDialog(p, g) },
   ]);
 }
 
@@ -2799,6 +2803,20 @@ function askName(title, value, placeholder, done) {
     h('div', { class: 'dlg-foot' }, h('button', { onclick: closeDialog }, 'Cancel'), h('button', { class: 'primary', onclick: ok }, 'Rename'))));
   inp.focus(); inp.select();
 }
+// Clearing a page: its strips, and on request the bottom row, which is the preset's (every page).
+function clearPageDialog(p, g) {
+  const row = h('input', { type: 'checkbox', id: 'clear-row' });
+  dialog(h('div', {}, h('h2', {}, `Clear ${pageLabel(p, g)}?`),
+    h('p', {}, 'Its faders, encoders and strip buttons will send nothing. Undo brings them back.'),
+    h('label', { class: 'check', for: 'clear-row' }, row, h('span', {}, `Also clear the bottom row. It is shared by all four pages of ${presetLabel(p)}, so it is cleared on every page.`)),
+    h('div', { class: 'dlg-foot' }, h('button', { onclick: closeDialog }, 'Cancel'), h('button', { class: 'primary danger-fill', onclick: () => {
+      const withRow = row.checked;
+      closeDialog();
+      edit(withRow ? 'clear page and bottom row' : 'clear page', () => { cfg.file.presets[p].pages[g] = {}; if (withRow) cfg.file.presets[p].row = {}; cfg.fill(cfg.file); });
+      toast(`${withRow ? 'Page and bottom row cleared' : 'Page cleared; the bottom row is as it was'}. Undo brings it back.`);
+    } }, 'Clear'))));
+}
+
 function askConfirm(title, text, action, done) {
   dialog(h('div', {}, h('h2', {}, title), h('p', {}, text),
     h('div', { class: 'dlg-foot' }, h('button', { onclick: closeDialog }, 'Cancel'), h('button', { class: 'primary danger-fill', onclick: () => { closeDialog(); done(); } }, action))));

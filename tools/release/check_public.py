@@ -3,7 +3,9 @@
 The published files are everything under the repository root that .gitignore does not exclude
 (build/, deps/, logs/ and materials/ are excluded there). In each, it looks for:
 
-  binary       a file that is not UTF-8 text, or holds NUL bytes (dumps, images, .DS_Store)
+  binary       a file that is not UTF-8 text, or holds NUL bytes (dumps, images, .DS_Store); the
+               home page's images (site/img/*.webp, *.png, *.jpg) are allowed, still checked for
+               stock firmware bytes and size
   large        a file over 512 KB
   stock        a run of 40 bytes or more from the stock firmware: in binary files, and in hex byte
                lists and strings in text; needs the local stock files in materials/ (the update file
@@ -30,6 +32,7 @@ import re
 import sys
 
 LARGE = 512 * 1024
+SITE_IMAGES = re.compile(r"^site/img/[\w.-]+\.(?:webp|png|jpg)$")  # the home page's pictures
 SELF = "tools/release/check_public.py"  # holds the patterns it looks for
 STOCK_DUMPS = ("stock", "smc-mixer_")
 WINDOW = 32
@@ -181,7 +184,8 @@ def check_file(rel, data, stock, private):
     except UnicodeDecodeError:
         text, binary = None, True
     if binary:
-        found.append(("binary", 0, "not plain UTF-8 text"))
+        if not SITE_IMAGES.match(rel):
+            found.append(("binary", 0, "not plain UTF-8 text"))
         if stock is not None:
             for off in stock_runs(data, stock):
                 found.append(("stock", 0, "stock firmware bytes at offset %d" % off))
