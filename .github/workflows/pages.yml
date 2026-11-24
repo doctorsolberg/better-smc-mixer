@@ -2,6 +2,8 @@ name: Pages
 
 # Publishing a release deploys the site: the home page (site/), that release's package at the root
 # (editor/, manifest.json, firmware/), and every older release's package under /vX.Y.Z/.
+# The release event runs on the tag, which the github-pages environment does not allow to deploy;
+# it therefore starts this workflow on the default branch, and that run deploys the tag's site.
 
 on:
   release:
@@ -20,10 +22,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  dispatch:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+    steps:
+      - name: Deploy from the default branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.event.release.tag_name }}
+          BRANCH: ${{ github.event.repository.default_branch }}
+        run: gh workflow run pages.yml --ref "$BRANCH" -f tag="$TAG"
+
   build:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     env:
-      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      TAG: ${{ inputs.tag }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

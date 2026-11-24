@@ -447,7 +447,14 @@ Three GitHub Actions workflows in `.github/workflows/`, with `tools/release/publ
   pre-release while the version is 0.x.
 - **`pages.yml`** (a release published by the owner): `publish.py site` lays out the Pages site,
   the home page (`site/`) with that release's package at the root (`editor/`, `manifest.json`,
-  `firmware/`) and every older published release's package under `/vX.Y.Z/`.
+  `firmware/`) and every older published release's package under `/vX.Y.Z/`. The release event
+  only starts the workflow again on the default branch (the `github-pages` environment deploys
+  from it); running `pages.yml` by hand with a tag redeploys that release.
+
+Releasing a version: set `VERSION` and the documents' version lines (`check_versions.py`),
+install the candidate on the mixer and run its checks, `publish.py record build/release
+release/expected.json`, commit, tag `vX.Y.Z` and push the tag. Review the draft release and
+publish it; the site follows.
 
 `tools/release/test_release.py` also checks image routing with local fake build scripts and runs
 the actual launcher against a fake Docker executable with each hash utility alone on PATH.
