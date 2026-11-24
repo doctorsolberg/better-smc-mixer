@@ -1,0 +1,11 @@
+# A live edit of an on note toggle releases its target; the next press turns it on again.
+{"tap": "m1"}
+{"expect_midi": ["90 18 7F"]}
+{"expect_led": "m1", "state": "on"}
+{"edit": {"preset": 1, "page": 1, "control": "m1", "to": {"type": "note", "channel": 1, "number": 24, "mode": "toggle", "hi": 100}}}
+{"expect_midi": ["90 18 00"]}
+{"expect_led": "m1", "state": "off"}
+{"tap": "m1"}
+{"expect_midi": ["90 18 64"]}
+{"tap": "m1"}
+{"expect_midi": ["90 18 00"]}

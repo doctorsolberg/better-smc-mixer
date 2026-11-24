@@ -1,0 +1,229 @@
+{
+  "doc": "The SMC-Mixer configuration schema (SPEC D-4, docs/config.md): the one description of the configuration. tools/smcconf/gen.py generates from it the C structures (firmware/core/core_config.h), the device codec's tables (firmware/config/cfg_schema.h), the JSON Schema of configuration files (config/smc-config.schema.json) and the field reference in docs/config.md; tools/smcconf reads it to convert files. Field order is the binary order.",
+  "schemaVersion": 1,
+  "binaryVersion": 1,
+  "device": {
+    "doc": "This firmware's counts (SPEC FR-MOD-02): the file and binary formats do not depend on them; a configuration for more presets or pages is refused by a device with fewer.",
+    "presets": 4,
+    "pages": 4,
+    "strips": 8
+  },
+
+  "enums": [
+    {
+      "name": "msg", "c": "core_msg", "doc": "message type (SPEC FR-CTL-01)",
+      "values": [
+        {"json": "none", "c": "CORE_MSG_NONE", "doc": "nothing"},
+        {"json": "cc7", "c": "CORE_MSG_CC", "doc": "CC 7-bit", "max": 127, "numberMax": 127},
+        {"json": "cc14", "c": "CORE_MSG_CC14", "doc": "CC 14-bit: MSB on number (0-31), LSB on number + 32", "max": 16383, "numberMax": 31},
+        {"json": "pitchbend", "c": "CORE_MSG_PB", "doc": "Pitch Bend, 14-bit", "max": 16383},
+        {"json": "note", "c": "CORE_MSG_NOTE", "doc": "value = velocity; 0 releases the note, in the preset's form (noteOff)", "max": 127, "numberMax": 127},
+        {"json": "program", "c": "CORE_MSG_PROGRAM", "doc": "Program Change", "max": 127},
+        {"json": "aftertouch", "c": "CORE_MSG_ATOUCH", "doc": "Channel Aftertouch", "max": 127},
+        {"json": "relative2c", "c": "CORE_MSG_REL_2C", "doc": "encoders: CC relative, 2's complement (1 / 127)", "numberMax": 127},
+        {"json": "relativeBinOffset", "c": "CORE_MSG_REL_BIN", "doc": "CC relative, offset 64 (65 / 63)", "numberMax": 127},
+        {"json": "relativeSignedBit", "c": "CORE_MSG_REL_SM", "doc": "CC relative, sign-magnitude (1 / 65)", "numberMax": 127},
+        {"json": "nrpn", "c": "CORE_MSG_NRPN", "doc": "NRPN, 14-bit: parameter number = MSB x 128 + LSB (CC 99/98), value on CC 6 and 38", "max": 16383, "numberMax": 16383},
+        {"json": "rpn", "c": "CORE_MSG_RPN", "doc": "RPN, 14-bit: parameter number = MSB x 128 + LSB (CC 101/100), value on CC 6 and 38", "max": 16383, "numberMax": 16383}
+      ]
+    },
+    {
+      "name": "pickup", "c": "core_pickup", "doc": "fader mode (FR-CTL-03)",
+      "values": [
+        {"json": "global", "c": "CORE_PICKUP_GLOBAL", "doc": "the global default (global.pickup)"},
+        {"json": "jump", "c": "CORE_JUMP", "doc": "every move sends"},
+        {"json": "pickup", "c": "CORE_PICKUP", "doc": "sends once it meets the target's value"},
+        {"json": "scale", "c": "CORE_SCALE", "doc": "the output converges on the fader"}
+      ]
+    },
+    {
+      "name": "encMode", "c": "core_enc_mode", "doc": "encoder mode (FR-CTL-04); div and step take n",
+      "values": [
+        {"json": "acc0", "c": "CORE_ACC0", "doc": "no acceleration: the fine step per click (1 for 7-bit targets, the range / 2048 for 14-bit ones, global.fine14)"},
+        {"json": "acc1", "c": "CORE_ACC1", "doc": "acceleration, mild"},
+        {"json": "acc2", "c": "CORE_ACC2", "doc": "acceleration, medium"},
+        {"json": "acc3", "c": "CORE_ACC3", "doc": "acceleration, strong"},
+        {"json": "div", "c": "CORE_DIV", "doc": "one step per n clicks"},
+        {"json": "step", "c": "CORE_STEP", "doc": "n per click"},
+        {"json": "fine", "c": "CORE_FINE", "doc": "fine adjustment, the default Shift layer: the fine step, without acceleration"}
+      ]
+    },
+    {
+      "name": "press", "c": "core_press", "doc": "button mode (FR-CTL-06)",
+      "values": [
+        {"json": "momentary", "c": "CORE_MOMENTARY", "doc": "press sends hi, release sends lo"},
+        {"json": "toggle", "c": "CORE_TOGGLE", "doc": "each press switches between hi and lo"},
+        {"json": "trigger", "c": "CORE_TRIGGER", "doc": "press sends hi, release nothing"}
+      ]
+    },
+    {
+      "name": "shiftKind", "c": "core_shift_kind", "doc": "a control's Shift layer (FR-SH-02)",
+      "values": [
+        {"json": "inherit", "c": "CORE_SHIFT_INHERIT", "doc": "the Normal layer"},
+        {"json": "override", "c": "CORE_SHIFT_OVERRIDE", "doc": "its own assignment"},
+        {"json": "block", "c": "CORE_SHIFT_BLOCK", "doc": "nothing"}
+      ]
+    },
+    {
+      "name": "shiftMode", "c": "core_shift_mode", "doc": "Shift modes (FR-SH-01), per preset",
+      "values": [
+        {"json": "hold", "c": "CORE_SHIFT_HOLD", "doc": "active while the button is down"},
+        {"json": "latch", "c": "CORE_SHIFT_LATCH", "doc": "each press toggles it"},
+        {"json": "hybrid", "c": "CORE_SHIFT_HYBRID", "doc": "a short press latches, a hold is temporary"}
+      ]
+    },
+    {
+      "name": "noteOff", "c": "core_note_off", "doc": "how a note is released (FR-CTL-10), per preset",
+      "values": [
+        {"json": "9n", "c": "CORE_NOTE_OFF_9N", "doc": "Note On with velocity 0, as the stock firmware"},
+        {"json": "8n", "c": "CORE_NOTE_OFF_8N", "doc": "Note Off"}
+      ]
+    },
+    {
+      "name": "paramNull", "c": "core_param_null", "doc": "the null parameter after an NRPN or RPN gesture (FR-CTL-01, SPEC Q-21 c), per preset",
+      "values": [
+        {"json": "off", "c": "CORE_PARAM_NULL_OFF", "doc": "nothing: the parameter stays selected"},
+        {"json": "gesture", "c": "CORE_PARAM_NULL_GESTURE", "doc": "RPN 127/127 (CC 101, 100) when a gesture that sent NRPN or RPN ends"}
+      ]
+    },
+    {
+      "name": "layerMode", "c": "core_layer_mode", "doc": "when Shift changes a moving control's layer (FR-SH-05)",
+      "values": [
+        {"json": "gesture", "c": "CORE_LAYER_GESTURE", "doc": "at the start of a gesture"},
+        {"json": "immediate", "c": "CORE_LAYER_IMMEDIATE", "doc": "at once"}
+      ]
+    },
+    {
+      "name": "fine14", "c": "core_fine14", "doc": "the fine step of an encoder on a 14-bit target (FR-CTL-04)",
+      "values": [
+        {"json": "range", "c": "CORE_FINE14_RANGE", "doc": "the range / 2048, at least 1 (7 on 0-16383)"},
+        {"json": "lsb", "c": "CORE_FINE14_LSB", "doc": "1: the finest step a 14-bit target has"}
+      ]
+    },
+    {
+      "name": "save", "c": "core_save", "doc": "how the mixer saves its configuration to flash (SPEC Q-26, FR-APP-11)",
+      "values": [
+        {"json": "manual", "c": "CORE_SAVE_MANUAL", "doc": "when the editor says Save (CFG_SAVE)"},
+        {"json": "auto", "c": "CORE_SAVE_AUTO", "doc": "by itself, 3 s after the last change and touch"}
+      ]
+    }
+  ],
+
+  "kinds": [
+    {
+      "name": "fader", "modeEnum": "pickup", "modeDefault": "global", "shiftDefault": "inherit",
+      "types": ["none", "cc7", "cc14", "pitchbend", "note", "program", "aftertouch", "nrpn", "rpn"]
+    },
+    {
+      "name": "encoder", "modeEnum": "encMode", "modeDefault": "acc2", "shiftDefault": "fine",
+      "types": ["none", "cc7", "cc14", "pitchbend", "program", "aftertouch", "relative2c", "relativeBinOffset", "relativeSignedBit", "nrpn", "rpn"]
+    },
+    {
+      "name": "button", "modeEnum": "press", "modeDefault": "momentary", "shiftDefault": "inherit",
+      "types": ["none", "cc7", "pitchbend", "note", "program", "aftertouch", "nrpn"]
+    }
+  ],
+
+  "assignment": {
+    "c": "core_assign",
+    "doc": "One layer of a control: what it sends. Fields that do not apply to the type, kind or mode must be absent (zero on the device); a required one must be given where it applies.",
+    "fields": [
+      {"c": "msg", "json": "type", "size": 1, "enum": "msg", "default": "none", "doc": "message type"},
+      {"c": "channel", "json": "channel", "size": 1, "min": 1, "max": 16, "offset": 1, "named": [{"json": "preset", "value": 16, "c": "CORE_CHANNEL_PRESET", "doc": "the preset's channel: changes with it"}], "default": "preset", "applies": {"types": "notNone"}, "doc": "MIDI channel: 1-16, fixed, or preset"},
+      {"c": "number", "json": "number", "size": 2, "min": 0, "max": "numberMax", "default": 0, "applies": {"types": "withNumber"}, "doc": "CC, note or parameter number (cc14: 0-31; nrpn, rpn: 0-16383, MSB x 128 + LSB)"},
+      {"c": "mode", "json": "mode", "size": 1, "enum": "kindMode", "default": "kindMode", "applies": {"types": "notNone"}, "doc": "by kind: fader pickup, encoder mode, button mode"},
+      {"c": "param", "json": "n", "size": 1, "min": 1, "max": 127, "required": true, "applies": {"kinds": ["encoder"], "modes": ["div", "step"]}, "doc": "encoders, div and step: N"},
+      {"c": "flags", "json": null, "size": 1, "default": 0, "applies": {"kinds": ["button"], "types": "notNone"}, "doc": "button flags",
+       "members": [
+         {"json": "noRelease", "c": "CORE_F_NO_RELEASE", "mask": 1, "values": {"false": 0, "true": 1}, "default": false, "doc": "send nothing on release"},
+         {"json": "led", "c": ["CORE_F_LED_OFF", "CORE_F_LED_ON"], "mask": 6, "values": {"value": 0, "off": 2, "on": 4}, "default": "value", "doc": "the button's LED: value (lit while the value is not lo), off, on",
+          "valueDoc": {"value": "lit while the value is not lo", "off": "always off", "on": "always on"}}
+       ]},
+      {"c": "lo", "json": "lo", "size": 2, "min": 0, "max": "typeMax", "default": 0, "applies": {"types": "withValue"}, "doc": "the value at rest / off; lo > hi inverts"},
+      {"c": "hi", "json": "hi", "size": 2, "min": 0, "max": "typeMax", "default": "typeMax", "applies": {"types": "withValue"}, "doc": "the value at the top / on"},
+      {"c": "start", "json": "start", "size": 2, "min": 0, "max": "typeMax", "default": "middle", "applies": {"kinds": ["encoder"], "types": "withValue"}, "doc": "encoders: the value of a target that has none yet (no MIDI from the instrument yet)"}
+    ]
+  },
+
+  "control": {
+    "c": "core_control",
+    "doc": "A control: its Normal layer, its Shift layer and how the Shift layer is made (FR-MOD-03, FR-SH-02).",
+    "fields": [
+      {"c": "normal", "ctype": "struct core_assign"},
+      {"c": "shift", "ctype": "struct core_assign", "doc": "CORE_SHIFT_OVERRIDE"},
+      {"c": "shift_kind", "ctype": "uint8_t", "enum": "shiftKind"}
+    ],
+    "shift": {
+      "doc": "In a file: \"inherit\" (the Normal layer), \"block\" (nothing), or a layer of its own, written in full as the Normal layer is (its type at least). Absent: the kind's default; for an encoder with a type, fine: the Normal layer in mode fine.",
+      "fine": {"mode": "fine"}
+    }
+  },
+
+  "strip": {
+    "c": "core_strip",
+    "doc": "A strip of a page: a fader, an encoder and the buttons M, S, R and SELECT.",
+    "controls": [
+      {"json": "fader", "c": "fader", "kind": "fader", "id": 0},
+      {"json": "encoder", "c": "encoder", "kind": "encoder", "id": 8},
+      {"json": "m", "c": "button[0]", "kind": "button", "id": 16},
+      {"json": "s", "c": "button[1]", "kind": "button", "id": 24},
+      {"json": "r", "c": "button[2]", "kind": "button", "id": 32},
+      {"json": "select", "c": "button[3]", "kind": "button", "id": 40}
+    ]
+  },
+
+  "row": {
+    "doc": "The bottom row (global controls, FR-MOD-01): the same on every page. The Shift layer of the eight navigation buttons is the firmware's (FR-SH-02).",
+    "buttons": [
+      {"json": "play"}, {"json": "stop"}, {"json": "rec"},
+      {"json": "rew", "nav": true}, {"json": "ff", "nav": true},
+      {"json": "bankLeft", "nav": true}, {"json": "bankRight", "nav": true},
+      {"json": "up", "nav": true}, {"json": "down", "nav": true},
+      {"json": "left", "nav": true}, {"json": "right", "nav": true}
+    ]
+  },
+
+  "preset": {
+    "c": "core_preset",
+    "doc": "A preset: its pages of strips, the bottom row, and its own settings.",
+    "fields": [
+      {"c": "channel", "json": "channel", "size": 1, "min": 1, "max": 16, "offset": 1, "default": 1, "doc": "MIDI channel of the assignments whose channel is preset"},
+      {"c": "shift_mode", "json": "shiftMode", "size": 1, "enum": "shiftMode", "default": "hold", "doc": "Shift mode"},
+      {"c": "note_off", "json": "noteOff", "size": 1, "enum": "noteOff", "default": "9n", "doc": "note release form"},
+      {"c": "param_null", "json": "paramNull", "size": 1, "enum": "paramNull", "default": "off", "doc": "the null parameter after an NRPN or RPN gesture"}
+    ]
+  },
+
+  "global": {
+    "c": "core_global",
+    "doc": "Global settings (SPEC §5.7).",
+    "fields": [
+      {"c": "layer_mode", "json": "layerMode", "size": 1, "enum": "layerMode", "default": "gesture", "doc": "FR-SH-05"},
+      {"c": "pickup", "json": "pickup", "size": 1, "enum": "pickup", "exclude": ["global"], "default": "pickup", "doc": "the default fader pickup"},
+      {"c": "gesture_ms", "json": "gestureMs", "size": 2, "min": 1, "max": 60000, "default": 300, "doc": "a pause this long ends a gesture"},
+      {"c": "hybrid_ms", "json": "hybridMs", "size": 2, "min": 1, "max": 60000, "default": 300, "doc": "hybrid Shift: a shorter press latches"},
+      {"c": "enc_accel", "json": "encAccel", "size": 1, "min": 50, "max": 200, "default": 100, "doc": "encoder acceleration: the speed scale in percent (more accelerates sooner)"},
+      {"c": "fine14", "json": "fine14", "size": 1, "enum": "fine14", "default": "range", "doc": "the fine step of encoders on 14-bit targets"},
+      {"c": "save", "json": "save", "size": 1, "enum": "save", "default": "manual", "doc": "how the mixer saves its configuration (Q-26); the core does not read it"}
+    ]
+  },
+
+  "file": {
+    "doc": "A configuration file (SPEC FR-APP-21): JSON, UTF-8. Names live only here (D-8).",
+    "nameMax": 64
+  },
+
+  "binary": {
+    "doc": "The device's form (docs/config.md, \"Binary form\"): a header, then records.",
+    "magic": "SMCF",
+    "headerSize": 36,
+    "records": [
+      {"name": "global", "tag": 1, "doc": "mask u8, then the global fields that differ from their defaults"},
+      {"name": "preset", "tag": 2, "doc": "preset u8, mask u8, then the preset fields that differ from their defaults"},
+      {"name": "assign", "tag": 3, "doc": "page u8 (255: the bottom row), control u8, mask u16, then the Normal layer's fields that differ from their defaults (a required one always)"},
+      {"name": "shift", "tag": 4, "doc": "page u8, control u8, kind u8; override: mask u16, then the fields that differ from the Normal layer"}
+    ],
+    "rowPage": 255,
+    "optionalTagBit": 128
+  }
+}

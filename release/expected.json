@@ -1,0 +1,25 @@
+{
+ "images": {
+  "boot": {
+   "build_id": "081bb3e558780e58b0c66db65875b9446be7f019",
+   "sha256": "ff6dc15b7df7160be4ac24d9d1c7528ec1034ac68f78e173ca34f5ede7952532",
+   "size": 6312
+  },
+  "controller": {
+   "build_id": "b54e5c66a9d57beaf7bafab3458a1d0cd7bf8c44",
+   "sha256": "385b138b46c78aa7682ba4a333e523c3e24a0d7adca32d05c4cca6c8aa4cdf7e",
+   "size": 104112
+  },
+  "controller-ble": {
+   "build_id": "8e2ee8c4dd832b65654ca70c0acc3ce65c341a24",
+   "sha256": "594ffcd9d5b96e2296c90d5855fa5e77bc08c1912e864f8cc655f91fab46c123",
+   "size": 172872
+  },
+  "hwtest": {
+   "build_id": "0f0a759e968410bab060c8bfa3e90ab2bd68354e",
+   "sha256": "f0471f57c19a803b69b79de0693ad752efeb515f61727a2567ca311e29953b88",
+   "size": 73264
+  }
+ },
+ "version": "0.1.0"
+}

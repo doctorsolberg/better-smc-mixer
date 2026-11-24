@@ -1,0 +1,2454 @@
+{
+  "schemaVersion": 1,
+  "revision": 101,
+  "name": "generated 2",
+  "global": {"layerMode": "immediate", "pickup": "jump", "fine14": "lsb"},
+  "presets": [
+    {
+      "row": {
+        "play": {
+          "type": "nrpn",
+          "channel": 6,
+          "number": 4660,
+          "mode": "toggle",
+          "lo": 16383,
+          "hi": 0,
+          "shift": {"type": "note", "channel": 7, "number": 36, "noRelease": true, "hi": 0}
+        },
+        "stop": {"type": "nrpn", "channel": 6, "number": 16383, "mode": "toggle", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+        "rec": {"type": "nrpn", "number": 99, "mode": "trigger", "led": "off", "lo": 3},
+        "rew": {"type": "nrpn", "mode": "trigger", "noRelease": true},
+        "ff": {"type": "nrpn", "channel": 5, "number": 1, "mode": "trigger", "led": "on", "lo": 16383, "hi": 0},
+        "bankLeft": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106},
+        "bankRight": {"type": "cc7", "lo": 127, "hi": 0},
+        "up": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 13, "hi": 102},
+        "down": {"type": "cc7", "channel": 3, "number": 98, "led": "off", "lo": 3},
+        "left": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true},
+        "right": {"type": "cc7", "number": 100, "mode": "toggle", "led": "on", "lo": 127, "hi": 0}
+      },
+      "pages": [
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "cc7",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 5, "number": 99, "mode": "jump", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "rpn",
+                "number": 16383,
+                "mode": "acc1",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 6, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {
+                "type": "note",
+                "mode": "toggle",
+                "led": "on",
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 3}
+              },
+              "s": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "hi": 102, "shift": "block"},
+              "r": {"type": "note", "channel": 6, "number": 127, "mode": "toggle", "lo": 20},
+              "select": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on"}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 3, "number": 7, "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "rpn", "channel": 6, "number": 5, "mode": "acc1", "lo": 1638, "hi": 13106, "shift": "block"},
+              "m": {
+                "type": "note",
+                "mode": "trigger",
+                "led": "off",
+                "hi": 0,
+                "shift": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "lo": 20}
+              },
+              "s": {"type": "note", "number": 60, "mode": "trigger", "noRelease": true, "hi": 102, "shift": "block"},
+              "r": {"type": "note", "channel": 5, "number": 127, "mode": "trigger", "led": "on", "lo": 20},
+              "select": {"type": "note", "channel": 5, "number": 36, "mode": "trigger", "noRelease": true, "led": "off"}
+            },
+            {
+              "fader": {"type": "cc7", "number": 98, "mode": "jump", "lo": 3},
+              "encoder": {"type": "rpn", "lo": 3, "start": 16383, "shift": "inherit"},
+              "m": {
+                "type": "program",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 3}
+              },
+              "s": {"type": "program", "channel": 4, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "program", "mode": "toggle", "led": "off", "lo": 3},
+              "select": {"type": "program", "channel": 6, "mode": "toggle"}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 5, "number": 99, "mode": "jump"},
+              "encoder": {"type": "rpn", "channel": 3, "number": 1},
+              "m": {
+                "type": "program",
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "s": {"type": "program", "channel": 3, "mode": "trigger", "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "aftertouch", "lo": 3},
+              "select": {"type": "aftertouch", "noRelease": true, "led": "on"}
+            },
+            {
+              "fader": {
+                "type": "cc7",
+                "number": 100,
+                "mode": "pickup",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 3, "number": 36, "mode": "scale", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "rpn",
+                "number": 2,
+                "mode": "acc3",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "relativeBinOffset", "channel": 4, "number": 101, "mode": "acc1"}
+              },
+              "m": {
+                "type": "aftertouch",
+                "channel": 5,
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "s": {"type": "aftertouch", "channel": 5, "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "aftertouch", "mode": "toggle", "led": "on", "lo": 3},
+              "select": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off"}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 7, "number": 101, "mode": "pickup", "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "rpn", "channel": 5, "number": 16383, "mode": "acc3", "lo": 1638, "hi": 13106, "start": 16383, "shift": "block"},
+              "m": {
+                "type": "aftertouch",
+                "channel": 4,
+                "mode": "toggle",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "s": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "aftertouch", "mode": "trigger", "led": "off", "lo": 3},
+              "select": {"type": "aftertouch", "mode": "trigger", "noRelease": true}
+            },
+            {
+              "fader": {"type": "cc7", "number": 127, "mode": "scale", "lo": 3},
+              "encoder": {"type": "rpn", "number": 5, "mode": "div", "n": 7, "lo": 3, "shift": "inherit"},
+              "m": {
+                "type": "aftertouch",
+                "channel": 3,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 4, "led": "on", "lo": 3}
+              },
+              "s": {"type": "aftertouch", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "nrpn", "number": 16383, "lo": 3},
+              "select": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on"}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 4, "number": 74, "mode": "scale"},
+              "encoder": {"type": "rpn", "channel": 7, "mode": "div", "n": 127},
+              "m": {
+                "type": "nrpn",
+                "channel": 7,
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 3}
+              },
+              "s": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "r": {"type": "nrpn", "number": 127, "mode": "toggle", "led": "on", "lo": 3},
+              "select": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off"}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "cc14",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "rpn", "channel": 6, "number": 5, "mode": "jump", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "rpn",
+                "number": 1,
+                "mode": "step",
+                "n": 2,
+                "lo": 16383,
+                "hi": 0,
+                "start": 16383,
+                "shift": {"type": "nrpn", "channel": 7, "number": 128, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {"type": "cc7", "number": 101, "mode": "toggle", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "cc7", "channel": 7, "number": 127, "mode": "toggle", "lo": 3},
+              "r": {"type": "cc7", "channel": 7, "number": 74, "mode": "toggle", "noRelease": true, "led": "on"},
+              "select": {
+                "type": "cc7",
+                "number": 6,
+                "mode": "trigger",
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off", "lo": 16383, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "cc14", "channel": 6, "number": 1, "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "rpn", "channel": 4, "number": 2, "mode": "step", "n": 3, "lo": 1638, "hi": 13106, "shift": "block"},
+              "m": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "cc7", "channel": 6, "mode": "trigger", "led": "on", "lo": 3},
+              "r": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off"},
+              "select": {
+                "type": "pitchbend",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 3}
+              }
+            },
+            {
+              "fader": {"type": "cc14", "number": 31, "mode": "jump", "lo": 3},
+              "encoder": {"type": "rpn", "number": 16383, "mode": "fine", "lo": 3, "shift": "inherit"},
+              "m": {"type": "pitchbend", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {"type": "pitchbend", "channel": 5, "led": "off", "lo": 3},
+              "r": {"type": "pitchbend", "channel": 5, "noRelease": true},
+              "select": {
+                "type": "pitchbend",
+                "mode": "toggle",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 3}
+              }
+            },
+            {
+              "fader": {"type": "cc14", "channel": 3, "number": 7, "mode": "jump"},
+              "encoder": {"type": "rpn", "channel": 6, "number": 5, "mode": "fine", "start": 16383},
+              "m": {"type": "pitchbend", "mode": "toggle", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {"type": "pitchbend", "channel": 4, "mode": "toggle", "lo": 3},
+              "r": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on"},
+              "select": {
+                "type": "pitchbend",
+                "mode": "trigger",
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              }
+            },
+            {
+              "fader": {
+                "type": "cc14",
+                "mode": "pickup",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 5, "mode": "scale", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "cc7",
+                "mode": "acc0",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 5, "number": 99, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {"type": "pitchbend", "channel": 3, "mode": "trigger", "led": "on", "lo": 3},
+              "r": {"type": "pitchbend", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off"},
+              "select": {
+                "type": "note",
+                "hi": 0,
+                "shift": {"type": "program", "channel": 6, "mode": "toggle", "lo": 127, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "cc14", "channel": 5, "number": 1, "mode": "pickup", "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "cc7", "channel": 3, "number": 7, "mode": "acc0", "lo": 13, "hi": 102, "start": 127, "shift": "block"},
+              "m": {"type": "note", "number": 60, "noRelease": true, "led": "on", "hi": 102, "shift": "block"},
+              "s": {"type": "note", "channel": 7, "number": 127, "led": "off", "lo": 20},
+              "r": {"type": "note", "channel": 7, "number": 36, "noRelease": true},
+              "select": {
+                "type": "note",
+                "mode": "toggle",
+                "led": "on",
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 3}
+              }
+            },
+            {
+              "fader": {"type": "cc14", "number": 31, "mode": "scale", "lo": 3},
+              "encoder": {"type": "cc7", "number": 98, "mode": "acc1", "lo": 3, "shift": "inherit"},
+              "m": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "hi": 102, "shift": "block"},
+              "s": {"type": "note", "channel": 6, "number": 127, "mode": "toggle", "lo": 20},
+              "r": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on"},
+              "select": {
+                "type": "note",
+                "mode": "trigger",
+                "led": "off",
+                "hi": 0,
+                "shift": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "lo": 20}
+              }
+            },
+            {
+              "fader": {"type": "cc14", "channel": 7, "number": 7, "mode": "scale"},
+              "encoder": {"type": "cc7", "channel": 5, "number": 99, "mode": "acc1"},
+              "m": {"type": "note", "number": 60, "mode": "trigger", "noRelease": true, "hi": 102, "shift": "block"},
+              "s": {"type": "note", "channel": 5, "number": 127, "mode": "trigger", "led": "on", "lo": 20},
+              "r": {"type": "note", "channel": 5, "number": 36, "mode": "trigger", "noRelease": true, "led": "off"},
+              "select": {
+                "type": "program",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 3}
+              }
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "pitchbend",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 3, "number": 127, "mode": "jump", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "cc7",
+                "number": 100,
+                "lo": 127,
+                "hi": 0,
+                "start": 127,
+                "shift": {"type": "pitchbend", "channel": 3, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {"type": "program", "channel": 4, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "program", "mode": "toggle", "led": "off", "lo": 3},
+              "r": {"type": "program", "channel": 6, "mode": "toggle"},
+              "select": {
+                "type": "program",
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "pitchbend", "channel": 4, "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "cc7", "channel": 7, "number": 101, "lo": 13, "hi": 102, "shift": "block"},
+              "m": {"type": "program", "channel": 3, "mode": "trigger", "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "aftertouch", "lo": 3},
+              "r": {"type": "aftertouch", "noRelease": true, "led": "on"},
+              "select": {
+                "type": "aftertouch",
+                "channel": 5,
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "pitchbend", "mode": "jump", "lo": 3},
+              "encoder": {"type": "cc7", "number": 127, "mode": "acc3", "lo": 3, "shift": "inherit"},
+              "m": {"type": "aftertouch", "channel": 5, "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "aftertouch", "mode": "toggle", "led": "on", "lo": 3},
+              "r": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off"},
+              "select": {
+                "type": "aftertouch",
+                "channel": 4,
+                "mode": "toggle",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 3}
+              }
+            },
+            {
+              "fader": {"type": "pitchbend", "channel": 6, "mode": "jump"},
+              "encoder": {"type": "cc7", "channel": 4, "number": 74, "mode": "acc3", "start": 127},
+              "m": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "aftertouch", "mode": "trigger", "led": "off", "lo": 3},
+              "r": {"type": "aftertouch", "mode": "trigger", "noRelease": true},
+              "select": {
+                "type": "aftertouch",
+                "channel": 3,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 4, "led": "on", "lo": 3}
+              }
+            },
+            {
+              "fader": {
+                "type": "pitchbend",
+                "mode": "pickup",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc14", "channel": 7, "number": 7, "mode": "scale", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "cc7",
+                "number": 6,
+                "mode": "div",
+                "n": 2,
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 6, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {"type": "aftertouch", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "nrpn", "number": 16383, "lo": 3},
+              "r": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on"},
+              "select": {
+                "type": "nrpn",
+                "channel": 7,
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 3}
+              }
+            },
+            {
+              "fader": {"type": "pitchbend", "channel": 3, "mode": "pickup", "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "cc7", "channel": 6, "number": 38, "mode": "div", "n": 3, "lo": 13, "hi": 102, "shift": "block"},
+              "m": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {"type": "nrpn", "number": 127, "mode": "toggle", "led": "on", "lo": 3},
+              "r": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off"},
+              "select": {
+                "type": "nrpn",
+                "channel": 6,
+                "number": 4660,
+                "mode": "toggle",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 7, "number": 36, "noRelease": true, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "pitchbend", "mode": "scale", "lo": 3},
+              "encoder": {"type": "cc7", "mode": "step", "n": 7, "lo": 3, "start": 127, "shift": "inherit"},
+              "m": {"type": "nrpn", "channel": 6, "number": 16383, "mode": "toggle", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {"type": "nrpn", "number": 99, "mode": "trigger", "led": "off", "lo": 3},
+              "r": {"type": "nrpn", "mode": "trigger", "noRelease": true},
+              "select": {
+                "type": "nrpn",
+                "channel": 5,
+                "number": 1,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "pitchbend", "channel": 5, "mode": "scale"},
+              "encoder": {"type": "cc7", "channel": 3, "number": 7, "mode": "step", "n": 127},
+              "m": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {
+                "type": "cc7",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true, "lo": 127, "hi": 0}
+              },
+              "r": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "cc7", "channel": 3, "number": 98, "led": "off", "lo": 3}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "note",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 5, "mode": "jump", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "cc7",
+                "number": 98,
+                "mode": "fine",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "relativeBinOffset", "channel": 4, "number": 101, "mode": "acc1"}
+              },
+              "m": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true},
+              "s": {
+                "type": "cc7",
+                "number": 100,
+                "mode": "toggle",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on", "hi": 0}
+              },
+              "r": {"type": "cc7", "number": 101, "mode": "toggle", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "cc7", "channel": 7, "number": 127, "mode": "toggle", "lo": 3}
+            },
+            {
+              "fader": {"type": "note", "channel": 7, "number": 60, "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "cc7", "channel": 5, "number": 99, "mode": "fine", "lo": 13, "hi": 102, "start": 127, "shift": "block"},
+              "m": {"type": "cc7", "channel": 7, "number": 74, "mode": "toggle", "noRelease": true, "led": "on"},
+              "s": {
+                "type": "cc7",
+                "number": 6,
+                "mode": "trigger",
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off", "lo": 16383, "hi": 0}
+              },
+              "r": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "cc7", "channel": 6, "mode": "trigger", "led": "on", "lo": 3}
+            },
+            {
+              "fader": {"type": "note", "number": 127, "mode": "jump", "lo": 3},
+              "encoder": {"type": "cc14", "number": 31, "mode": "acc0", "lo": 3, "shift": "inherit"},
+              "m": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off"},
+              "s": {
+                "type": "pitchbend",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "r": {"type": "pitchbend", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+              "select": {"type": "pitchbend", "channel": 5, "led": "off", "lo": 3}
+            },
+            {
+              "fader": {"type": "note", "channel": 4, "number": 36, "mode": "jump"},
+              "encoder": {"type": "cc14", "channel": 7, "number": 7, "mode": "acc0"},
+              "m": {"type": "pitchbend", "channel": 5, "noRelease": true},
+              "s": {
+                "type": "pitchbend",
+                "mode": "toggle",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 3}
+              },
+              "r": {"type": "pitchbend", "mode": "toggle", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"},
+              "select": {"type": "pitchbend", "channel": 4, "mode": "toggle", "lo": 3}
+            },
+            {
+              "fader": {
+                "type": "note",
+                "mode": "pickup",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 4, "number": 74, "mode": "scale", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "cc14",
+                "mode": "acc1",
+                "lo": 16383,
+                "hi": 0,
+                "start": 16383,
+                "shift": {"type": "nrpn", "channel": 7, "number": 128, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on"},
+              "s": {
+                "type": "pitchbend",
+                "mode": "trigger",
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "r": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "select": {"type": "pitchbend", "channel": 3, "mode": "trigger", "led": "on", "lo": 3}
+            },
+            {
+              "fader": {"type": "note", "channel": 6, "number": 60, "mode": "pickup", "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "cc14", "channel": 4, "number": 1, "mode": "acc1", "lo": 1638, "hi": 13106, "shift": "block"},
+              "m": {"type": "pitchbend", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off"},
+              "s": {
+                "type": "note",
+                "hi": 0,
+                "shift": {"type": "program", "channel": 6, "mode": "toggle", "lo": 127, "hi": 0}
+              },
+              "r": {"type": "note", "number": 60, "noRelease": true, "led": "on", "hi": 102, "shift": "block"},
+              "select": {"type": "note", "channel": 7, "number": 127, "led": "off", "lo": 20}
+            },
+            {
+              "fader": {"type": "note", "number": 127, "mode": "scale", "lo": 3},
+              "encoder": {"type": "cc14", "number": 31, "lo": 3, "shift": "inherit"},
+              "m": {"type": "note", "channel": 7, "number": 36, "noRelease": true},
+              "s": {
+                "type": "note",
+                "mode": "toggle",
+                "led": "on",
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 3}
+              },
+              "r": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "hi": 102, "shift": "block"},
+              "select": {"type": "note", "channel": 6, "number": 127, "mode": "toggle", "lo": 20}
+            },
+            {
+              "fader": {"type": "note", "channel": 3, "number": 36, "mode": "scale"},
+              "encoder": {"type": "cc14", "channel": 6, "number": 7, "start": 16383},
+              "m": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on"},
+              "s": {
+                "type": "note",
+                "mode": "trigger",
+                "led": "off",
+                "hi": 0,
+                "shift": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "lo": 20}
+              },
+              "r": {"type": "note", "number": 60, "mode": "trigger", "noRelease": true, "hi": 102, "shift": "block"},
+              "select": {"type": "note", "channel": 5, "number": 127, "mode": "trigger", "led": "on", "lo": 20}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "channel": 5,
+      "shiftMode": "latch",
+      "noteOff": "8n",
+      "paramNull": "gesture",
+      "row": {
+        "play": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+        "stop": {"type": "cc7", "channel": 3, "number": 98, "led": "off", "lo": 3},
+        "rec": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true},
+        "rew": {"type": "cc7", "number": 100, "mode": "toggle", "led": "on", "lo": 127, "hi": 0},
+        "ff": {"type": "cc7", "number": 101, "mode": "toggle", "noRelease": true, "led": "off", "lo": 13, "hi": 102},
+        "bankLeft": {"type": "cc7", "channel": 7, "number": 127, "mode": "toggle", "lo": 3},
+        "bankRight": {"type": "cc7", "channel": 7, "number": 74, "mode": "toggle", "noRelease": true, "led": "on"},
+        "up": {"type": "cc7", "number": 6, "mode": "trigger", "led": "off", "lo": 127, "hi": 0},
+        "down": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 13, "hi": 102},
+        "left": {"type": "cc7", "channel": 6, "mode": "trigger", "led": "on", "lo": 3},
+        "right": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off"}
+      },
+      "pages": [
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "program",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 7, "mode": "jump", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "cc14",
+                "mode": "acc3",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 5, "number": 99, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {"type": "note", "channel": 5, "number": 36, "mode": "trigger", "noRelease": true, "led": "off"},
+              "s": {
+                "type": "program",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 3}
+              },
+              "r": {"type": "program", "channel": 4, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "program", "mode": "toggle", "led": "off", "lo": 3}
+            },
+            {
+              "fader": {"type": "program", "channel": 5, "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "cc14", "channel": 3, "number": 1, "mode": "acc3", "lo": 1638, "hi": 13106, "shift": "block"},
+              "m": {"type": "program", "channel": 6, "mode": "toggle"},
+              "s": {
+                "type": "program",
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "r": {"type": "program", "channel": 3, "mode": "trigger", "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "aftertouch", "lo": 3}
+            },
+            {
+              "fader": {"type": "program", "mode": "jump", "lo": 3},
+              "encoder": {"type": "cc14", "number": 31, "mode": "div", "n": 7, "lo": 3, "start": 16383, "shift": "inherit"},
+              "m": {"type": "aftertouch", "noRelease": true, "led": "on"},
+              "s": {
+                "type": "aftertouch",
+                "channel": 5,
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "r": {"type": "aftertouch", "channel": 5, "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "aftertouch", "mode": "toggle", "led": "on", "lo": 3}
+            },
+            {
+              "fader": {"type": "program", "channel": 7, "mode": "jump"},
+              "encoder": {"type": "cc14", "channel": 5, "number": 7, "mode": "div", "n": 127},
+              "m": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off"},
+              "s": {
+                "type": "aftertouch",
+                "channel": 4,
+                "mode": "toggle",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "r": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "aftertouch", "mode": "trigger", "led": "off", "lo": 3}
+            },
+            {
+              "fader": {
+                "type": "program",
+                "mode": "pickup",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "rpn", "channel": 5, "number": 16383, "mode": "scale", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "cc14",
+                "mode": "step",
+                "n": 2,
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 3, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {"type": "aftertouch", "mode": "trigger", "noRelease": true},
+              "s": {
+                "type": "aftertouch",
+                "channel": 3,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 4, "led": "on", "lo": 3}
+              },
+              "r": {"type": "aftertouch", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "nrpn", "number": 16383, "lo": 3}
+            },
+            {
+              "fader": {"type": "program", "channel": 4, "mode": "pickup", "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "cc14", "channel": 7, "number": 1, "mode": "step", "n": 3, "lo": 1638, "hi": 13106, "start": 16383, "shift": "block"},
+              "m": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on"},
+              "s": {
+                "type": "nrpn",
+                "channel": 7,
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 3}
+              },
+              "r": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "select": {"type": "nrpn", "number": 127, "mode": "toggle", "led": "on", "lo": 3}
+            },
+            {
+              "fader": {"type": "program", "mode": "scale", "lo": 3},
+              "encoder": {"type": "cc14", "number": 31, "mode": "fine", "lo": 3, "shift": "inherit"},
+              "m": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off"},
+              "s": {
+                "type": "nrpn",
+                "channel": 6,
+                "number": 4660,
+                "mode": "toggle",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 7, "number": 36, "noRelease": true, "hi": 0}
+              },
+              "r": {"type": "nrpn", "channel": 6, "number": 16383, "mode": "toggle", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+              "select": {"type": "nrpn", "number": 99, "mode": "trigger", "led": "off", "lo": 3}
+            },
+            {
+              "fader": {"type": "program", "channel": 6, "mode": "scale"},
+              "encoder": {"type": "cc14", "channel": 4, "number": 7, "mode": "fine"},
+              "m": {"type": "nrpn", "mode": "trigger", "noRelease": true},
+              "s": {
+                "type": "nrpn",
+                "channel": 5,
+                "number": 1,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "r": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"},
+              "select": {
+                "type": "cc7",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true, "lo": 127, "hi": 0}
+              }
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "aftertouch",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 4, "number": 36, "mode": "jump", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "pitchbend",
+                "mode": "acc0",
+                "lo": 16383,
+                "hi": 0,
+                "start": 16383,
+                "shift": {"type": "aftertouch", "channel": 6, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {
+                "type": "pitchbend",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "s": {"type": "pitchbend", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+              "r": {"type": "pitchbend", "channel": 5, "led": "off", "lo": 3},
+              "select": {"type": "pitchbend", "channel": 5, "noRelease": true}
+            },
+            {
+              "fader": {"type": "aftertouch", "channel": 3, "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "pitchbend", "channel": 6, "mode": "acc0", "lo": 1638, "hi": 13106, "shift": "block"},
+              "m": {
+                "type": "pitchbend",
+                "mode": "toggle",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 3}
+              },
+              "s": {"type": "pitchbend", "mode": "toggle", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"},
+              "r": {"type": "pitchbend", "channel": 4, "mode": "toggle", "lo": 3},
+              "select": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on"}
+            },
+            {
+              "fader": {"type": "aftertouch", "mode": "jump", "lo": 3},
+              "encoder": {"type": "pitchbend", "mode": "acc1", "lo": 3, "shift": "inherit"},
+              "m": {
+                "type": "pitchbend",
+                "mode": "trigger",
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "s": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "r": {"type": "pitchbend", "channel": 3, "mode": "trigger", "led": "on", "lo": 3},
+              "select": {"type": "pitchbend", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off"}
+            },
+            {
+              "fader": {"type": "aftertouch", "channel": 5, "mode": "jump"},
+              "encoder": {"type": "pitchbend", "channel": 3, "mode": "acc1", "start": 16383},
+              "m": {
+                "type": "note",
+                "hi": 0,
+                "shift": {"type": "program", "channel": 6, "mode": "toggle", "lo": 127, "hi": 0}
+              },
+              "s": {"type": "note", "number": 60, "noRelease": true, "led": "on", "hi": 102, "shift": "block"},
+              "r": {"type": "note", "channel": 7, "number": 127, "led": "off", "lo": 20},
+              "select": {"type": "note", "channel": 7, "number": 36, "noRelease": true}
+            },
+            {
+              "fader": {
+                "type": "aftertouch",
+                "mode": "pickup",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 99, "mode": "scale", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "pitchbend",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "relativeBinOffset", "channel": 4, "number": 101, "mode": "acc1"}
+              },
+              "m": {
+                "type": "note",
+                "mode": "toggle",
+                "led": "on",
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 3}
+              },
+              "s": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "hi": 102, "shift": "block"},
+              "r": {"type": "note", "channel": 6, "number": 127, "mode": "toggle", "lo": 20},
+              "select": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on"}
+            },
+            {
+              "fader": {"type": "aftertouch", "channel": 7, "mode": "pickup", "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "pitchbend", "channel": 5, "lo": 1638, "hi": 13106, "shift": "block"},
+              "m": {
+                "type": "note",
+                "mode": "trigger",
+                "led": "off",
+                "hi": 0,
+                "shift": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "lo": 20}
+              },
+              "s": {"type": "note", "number": 60, "mode": "trigger", "noRelease": true, "hi": 102, "shift": "block"},
+              "r": {"type": "note", "channel": 5, "number": 127, "mode": "trigger", "led": "on", "lo": 20},
+              "select": {"type": "note", "channel": 5, "number": 36, "mode": "trigger", "noRelease": true, "led": "off"}
+            },
+            {
+              "fader": {"type": "aftertouch", "mode": "scale", "lo": 3},
+              "encoder": {"type": "pitchbend", "mode": "acc3", "lo": 3, "start": 16383, "shift": "inherit"},
+              "m": {
+                "type": "program",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 3}
+              },
+              "s": {"type": "program", "channel": 4, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "program", "mode": "toggle", "led": "off", "lo": 3},
+              "select": {"type": "program", "channel": 6, "mode": "toggle"}
+            },
+            {
+              "fader": {"type": "aftertouch", "channel": 4, "mode": "scale"},
+              "encoder": {"type": "pitchbend", "channel": 7, "mode": "acc3"},
+              "m": {
+                "type": "program",
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "s": {"type": "program", "channel": 3, "mode": "trigger", "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "aftertouch", "lo": 3},
+              "select": {"type": "aftertouch", "noRelease": true, "led": "on"}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "nrpn",
+                "number": 99,
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 6, "mode": "jump", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "pitchbend",
+                "mode": "div",
+                "n": 2,
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 128, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {
+                "type": "aftertouch",
+                "channel": 5,
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "s": {"type": "aftertouch", "channel": 5, "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "aftertouch", "mode": "toggle", "led": "on", "lo": 3},
+              "select": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off"}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 6, "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "pitchbend", "channel": 4, "mode": "div", "n": 3, "lo": 1638, "hi": 13106, "start": 16383, "shift": "block"},
+              "m": {
+                "type": "aftertouch",
+                "channel": 4,
+                "mode": "toggle",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "s": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "aftertouch", "mode": "trigger", "led": "off", "lo": 3},
+              "select": {"type": "aftertouch", "mode": "trigger", "noRelease": true}
+            },
+            {
+              "fader": {"type": "nrpn", "number": 1, "mode": "jump", "lo": 3},
+              "encoder": {"type": "pitchbend", "mode": "step", "n": 7, "lo": 3, "shift": "inherit"},
+              "m": {
+                "type": "aftertouch",
+                "channel": 3,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 4, "led": "on", "lo": 3}
+              },
+              "s": {"type": "aftertouch", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "nrpn", "number": 16383, "lo": 3},
+              "select": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on"}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 3, "number": 127, "mode": "jump"},
+              "encoder": {"type": "pitchbend", "channel": 6, "mode": "step", "n": 127},
+              "m": {
+                "type": "nrpn",
+                "channel": 7,
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 3}
+              },
+              "s": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "r": {"type": "nrpn", "number": 127, "mode": "toggle", "led": "on", "lo": 3},
+              "select": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off"}
+            },
+            {
+              "fader": {
+                "type": "nrpn",
+                "number": 128,
+                "mode": "pickup",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 4, "mode": "scale", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "pitchbend",
+                "mode": "fine",
+                "lo": 16383,
+                "hi": 0,
+                "start": 16383,
+                "shift": {"type": "cc7", "channel": 5, "number": 99, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {
+                "type": "nrpn",
+                "channel": 6,
+                "number": 4660,
+                "mode": "toggle",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 7, "number": 36, "noRelease": true, "hi": 0}
+              },
+              "s": {"type": "nrpn", "channel": 6, "number": 16383, "mode": "toggle", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+              "r": {"type": "nrpn", "number": 99, "mode": "trigger", "led": "off", "lo": 3},
+              "select": {"type": "nrpn", "mode": "trigger", "noRelease": true}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 5, "number": 4660, "mode": "pickup", "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "pitchbend", "channel": 3, "mode": "fine", "lo": 1638, "hi": 13106, "shift": "block"},
+              "m": {
+                "type": "nrpn",
+                "channel": 5,
+                "number": 1,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "s": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"},
+              "r": {
+                "type": "cc7",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true, "lo": 127, "hi": 0}
+              },
+              "select": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "nrpn", "number": 16383, "mode": "scale", "lo": 3},
+              "encoder": {"type": "program", "mode": "acc0", "lo": 3, "shift": "inherit"},
+              "m": {"type": "cc7", "channel": 3, "number": 98, "led": "off", "lo": 3},
+              "s": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true},
+              "r": {
+                "type": "cc7",
+                "number": 100,
+                "mode": "toggle",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on", "hi": 0}
+              },
+              "select": {"type": "cc7", "number": 101, "mode": "toggle", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 7, "number": 99, "mode": "scale"},
+              "encoder": {"type": "program", "channel": 5, "mode": "acc0", "start": 127},
+              "m": {"type": "cc7", "channel": 7, "number": 127, "mode": "toggle", "lo": 3},
+              "s": {"type": "cc7", "channel": 7, "number": 74, "mode": "toggle", "noRelease": true, "led": "on"},
+              "r": {
+                "type": "cc7",
+                "number": 6,
+                "mode": "trigger",
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off", "lo": 16383, "hi": 0}
+              },
+              "select": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 13, "hi": 102, "shift": "block"}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "rpn",
+                "number": 1,
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc14", "channel": 3, "number": 7, "mode": "jump", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "program",
+                "mode": "acc1",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 3, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {"type": "cc7", "channel": 6, "mode": "trigger", "led": "on", "lo": 3},
+              "s": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off"},
+              "r": {
+                "type": "pitchbend",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "select": {"type": "pitchbend", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"}
+            },
+            {
+              "fader": {"type": "rpn", "channel": 4, "number": 2, "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "program", "channel": 7, "mode": "acc1", "lo": 13, "hi": 102, "shift": "block"},
+              "m": {"type": "pitchbend", "channel": 5, "led": "off", "lo": 3},
+              "s": {"type": "pitchbend", "channel": 5, "noRelease": true},
+              "r": {
+                "type": "pitchbend",
+                "mode": "toggle",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 3}
+              },
+              "select": {"type": "pitchbend", "mode": "toggle", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"}
+            },
+            {
+              "fader": {"type": "rpn", "number": 16383, "mode": "jump", "lo": 3},
+              "encoder": {"type": "program", "lo": 3, "start": 127, "shift": "inherit"},
+              "m": {"type": "pitchbend", "channel": 4, "mode": "toggle", "lo": 3},
+              "s": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on"},
+              "r": {
+                "type": "pitchbend",
+                "mode": "trigger",
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "select": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"}
+            },
+            {
+              "fader": {"type": "rpn", "channel": 6, "number": 5, "mode": "jump"},
+              "encoder": {"type": "program", "channel": 4},
+              "m": {"type": "pitchbend", "channel": 3, "mode": "trigger", "led": "on", "lo": 3},
+              "s": {"type": "pitchbend", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off"},
+              "r": {
+                "type": "note",
+                "hi": 0,
+                "shift": {"type": "program", "channel": 6, "mode": "toggle", "lo": 127, "hi": 0}
+              },
+              "select": {"type": "note", "number": 60, "noRelease": true, "led": "on", "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {
+                "type": "rpn",
+                "mode": "pickup",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 6, "mode": "scale", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "program",
+                "mode": "acc3",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 6, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {"type": "note", "channel": 7, "number": 127, "led": "off", "lo": 20},
+              "s": {"type": "note", "channel": 7, "number": 36, "noRelease": true},
+              "r": {
+                "type": "note",
+                "mode": "toggle",
+                "led": "on",
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 3}
+              },
+              "select": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "rpn", "channel": 3, "number": 1, "mode": "pickup", "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "program", "channel": 6, "mode": "acc3", "lo": 13, "hi": 102, "start": 127, "shift": "block"},
+              "m": {"type": "note", "channel": 6, "number": 127, "mode": "toggle", "lo": 20},
+              "s": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on"},
+              "r": {
+                "type": "note",
+                "mode": "trigger",
+                "led": "off",
+                "hi": 0,
+                "shift": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "lo": 20}
+              },
+              "select": {"type": "note", "number": 60, "mode": "trigger", "noRelease": true, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "rpn", "number": 2, "mode": "scale", "lo": 3},
+              "encoder": {"type": "program", "mode": "div", "n": 7, "lo": 3, "shift": "inherit"},
+              "m": {"type": "note", "channel": 5, "number": 127, "mode": "trigger", "led": "on", "lo": 20},
+              "s": {"type": "note", "channel": 5, "number": 36, "mode": "trigger", "noRelease": true, "led": "off"},
+              "r": {
+                "type": "program",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 3}
+              },
+              "select": {"type": "program", "channel": 4, "led": "on", "lo": 13, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "rpn", "channel": 5, "number": 16383, "mode": "scale"},
+              "encoder": {"type": "program", "channel": 3, "mode": "div", "n": 127},
+              "m": {"type": "program", "mode": "toggle", "led": "off", "lo": 3},
+              "s": {"type": "program", "channel": 6, "mode": "toggle"},
+              "r": {
+                "type": "program",
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "select": {"type": "program", "channel": 3, "mode": "trigger", "led": "off", "lo": 13, "hi": 102, "shift": "block"}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "channel": 16,
+      "shiftMode": "hybrid",
+      "paramNull": "gesture",
+      "row": {
+        "play": {
+          "type": "cc7",
+          "number": 6,
+          "mode": "trigger",
+          "led": "off",
+          "lo": 127,
+          "hi": 0,
+          "shift": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off", "lo": 16383, "hi": 0}
+        },
+        "stop": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+        "rec": {"type": "cc7", "channel": 6, "mode": "trigger", "led": "on", "lo": 3},
+        "rew": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off"},
+        "ff": {"type": "pitchbend", "lo": 16383, "hi": 0},
+        "bankLeft": {"type": "pitchbend", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106},
+        "bankRight": {"type": "pitchbend", "channel": 5, "led": "off", "lo": 3},
+        "up": {"type": "pitchbend", "channel": 5, "noRelease": true},
+        "down": {"type": "pitchbend", "mode": "toggle", "led": "on", "lo": 16383, "hi": 0},
+        "left": {"type": "pitchbend", "mode": "toggle", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106},
+        "right": {"type": "pitchbend", "channel": 4, "mode": "toggle", "lo": 3}
+      },
+      "pages": [
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "cc7",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 5, "number": 99, "mode": "jump", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "program",
+                "mode": "step",
+                "n": 2,
+                "lo": 127,
+                "hi": 0,
+                "start": 127,
+                "shift": {"type": "relativeBinOffset", "channel": 4, "number": 101, "mode": "acc1"}
+              },
+              "m": {"type": "aftertouch", "lo": 3},
+              "s": {"type": "aftertouch", "noRelease": true, "led": "on"},
+              "r": {
+                "type": "aftertouch",
+                "channel": 5,
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "select": {"type": "aftertouch", "channel": 5, "noRelease": true, "lo": 13, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 3, "number": 7, "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "program", "channel": 5, "mode": "step", "n": 3, "lo": 13, "hi": 102, "shift": "block"},
+              "m": {"type": "aftertouch", "mode": "toggle", "led": "on", "lo": 3},
+              "s": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off"},
+              "r": {
+                "type": "aftertouch",
+                "channel": 4,
+                "mode": "toggle",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "select": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "cc7", "number": 98, "mode": "jump", "lo": 3},
+              "encoder": {"type": "program", "mode": "fine", "lo": 3, "shift": "inherit"},
+              "m": {"type": "aftertouch", "mode": "trigger", "led": "off", "lo": 3},
+              "s": {"type": "aftertouch", "mode": "trigger", "noRelease": true},
+              "r": {
+                "type": "aftertouch",
+                "channel": 3,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 4, "led": "on", "lo": 3}
+              },
+              "select": {"type": "aftertouch", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 5, "number": 99, "mode": "jump"},
+              "encoder": {"type": "program", "channel": 7, "mode": "fine", "start": 127},
+              "m": {"type": "nrpn", "number": 16383, "lo": 3},
+              "s": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on"},
+              "r": {
+                "type": "nrpn",
+                "channel": 7,
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 3}
+              },
+              "select": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"}
+            },
+            {
+              "fader": {
+                "type": "cc7",
+                "number": 100,
+                "mode": "pickup",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 3, "number": 36, "mode": "scale", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "aftertouch",
+                "mode": "acc0",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 128, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {"type": "nrpn", "number": 127, "mode": "toggle", "led": "on", "lo": 3},
+              "s": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off"},
+              "r": {
+                "type": "nrpn",
+                "channel": 6,
+                "number": 4660,
+                "mode": "toggle",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 7, "number": 36, "noRelease": true, "hi": 0}
+              },
+              "select": {"type": "nrpn", "channel": 6, "number": 16383, "mode": "toggle", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 7, "number": 101, "mode": "pickup", "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "aftertouch", "channel": 4, "mode": "acc0", "lo": 13, "hi": 102, "shift": "block"},
+              "m": {"type": "nrpn", "number": 99, "mode": "trigger", "led": "off", "lo": 3},
+              "s": {"type": "nrpn", "mode": "trigger", "noRelease": true},
+              "r": {
+                "type": "nrpn",
+                "channel": 5,
+                "number": 1,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "select": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"}
+            },
+            {
+              "fader": {"type": "cc7", "number": 127, "mode": "scale", "lo": 3},
+              "encoder": {"type": "aftertouch", "mode": "acc1", "lo": 3, "start": 127, "shift": "inherit"},
+              "m": {
+                "type": "cc7",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true, "lo": 127, "hi": 0}
+              },
+              "s": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "cc7", "channel": 3, "number": 98, "led": "off", "lo": 3},
+              "select": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 4, "number": 74, "mode": "scale"},
+              "encoder": {"type": "aftertouch", "channel": 6, "mode": "acc1"},
+              "m": {
+                "type": "cc7",
+                "number": 100,
+                "mode": "toggle",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on", "hi": 0}
+              },
+              "s": {"type": "cc7", "number": 101, "mode": "toggle", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "cc7", "channel": 7, "number": 127, "mode": "toggle", "lo": 3},
+              "select": {"type": "cc7", "channel": 7, "number": 74, "mode": "toggle", "noRelease": true, "led": "on"}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "cc14",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "rpn", "channel": 6, "number": 5, "mode": "jump", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "aftertouch",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 5, "number": 99, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on"},
+              "s": {
+                "type": "pitchbend",
+                "mode": "trigger",
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "r": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "select": {"type": "pitchbend", "channel": 3, "mode": "trigger", "led": "on", "lo": 3}
+            },
+            {
+              "fader": {"type": "cc14", "channel": 6, "number": 1, "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "aftertouch", "channel": 3, "lo": 13, "hi": 102, "start": 127, "shift": "block"},
+              "m": {"type": "pitchbend", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off"},
+              "s": {
+                "type": "note",
+                "hi": 0,
+                "shift": {"type": "program", "channel": 6, "mode": "toggle", "lo": 127, "hi": 0}
+              },
+              "r": {"type": "note", "number": 60, "noRelease": true, "led": "on", "hi": 102, "shift": "block"},
+              "select": {"type": "note", "channel": 7, "number": 127, "led": "off", "lo": 20}
+            },
+            {
+              "fader": {"type": "cc14", "number": 31, "mode": "jump", "lo": 3},
+              "encoder": {"type": "aftertouch", "mode": "acc3", "lo": 3, "shift": "inherit"},
+              "m": {"type": "note", "channel": 7, "number": 36, "noRelease": true},
+              "s": {
+                "type": "note",
+                "mode": "toggle",
+                "led": "on",
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 3}
+              },
+              "r": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "hi": 102, "shift": "block"},
+              "select": {"type": "note", "channel": 6, "number": 127, "mode": "toggle", "lo": 20}
+            },
+            {
+              "fader": {"type": "cc14", "channel": 3, "number": 7, "mode": "jump"},
+              "encoder": {"type": "aftertouch", "channel": 5, "mode": "acc3"},
+              "m": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on"},
+              "s": {
+                "type": "note",
+                "mode": "trigger",
+                "led": "off",
+                "hi": 0,
+                "shift": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "lo": 20}
+              },
+              "r": {"type": "note", "number": 60, "mode": "trigger", "noRelease": true, "hi": 102, "shift": "block"},
+              "select": {"type": "note", "channel": 5, "number": 127, "mode": "trigger", "led": "on", "lo": 20}
+            },
+            {
+              "fader": {
+                "type": "cc14",
+                "mode": "pickup",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 5, "mode": "scale", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "aftertouch",
+                "mode": "div",
+                "n": 2,
+                "lo": 127,
+                "hi": 0,
+                "start": 127,
+                "shift": {"type": "pitchbend", "channel": 3, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {"type": "note", "channel": 5, "number": 36, "mode": "trigger", "noRelease": true, "led": "off"},
+              "s": {
+                "type": "program",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 3}
+              },
+              "r": {"type": "program", "channel": 4, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "program", "mode": "toggle", "led": "off", "lo": 3}
+            },
+            {
+              "fader": {"type": "cc14", "channel": 5, "number": 1, "mode": "pickup", "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "aftertouch", "channel": 7, "mode": "div", "n": 3, "lo": 13, "hi": 102, "shift": "block"},
+              "m": {"type": "program", "channel": 6, "mode": "toggle"},
+              "s": {
+                "type": "program",
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "r": {"type": "program", "channel": 3, "mode": "trigger", "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "aftertouch", "lo": 3}
+            },
+            {
+              "fader": {"type": "cc14", "number": 31, "mode": "scale", "lo": 3},
+              "encoder": {"type": "aftertouch", "mode": "step", "n": 7, "lo": 3, "shift": "inherit"},
+              "m": {"type": "aftertouch", "noRelease": true, "led": "on"},
+              "s": {
+                "type": "aftertouch",
+                "channel": 5,
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "r": {"type": "aftertouch", "channel": 5, "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "aftertouch", "mode": "toggle", "led": "on", "lo": 3}
+            },
+            {
+              "fader": {"type": "cc14", "channel": 7, "number": 7, "mode": "scale"},
+              "encoder": {"type": "aftertouch", "channel": 4, "mode": "step", "n": 127, "start": 127},
+              "m": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off"},
+              "s": {
+                "type": "aftertouch",
+                "channel": 4,
+                "mode": "toggle",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "r": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "aftertouch", "mode": "trigger", "led": "off", "lo": 3}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "pitchbend",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 3, "number": 127, "mode": "jump", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "aftertouch",
+                "mode": "fine",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 6, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {"type": "aftertouch", "mode": "trigger", "noRelease": true},
+              "s": {
+                "type": "aftertouch",
+                "channel": 3,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 4, "led": "on", "lo": 3}
+              },
+              "r": {"type": "aftertouch", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "nrpn", "number": 16383, "lo": 3}
+            },
+            {
+              "fader": {"type": "pitchbend", "channel": 4, "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "aftertouch", "channel": 6, "mode": "fine", "lo": 13, "hi": 102, "shift": "block"},
+              "m": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on"},
+              "s": {
+                "type": "nrpn",
+                "channel": 7,
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 3}
+              },
+              "r": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "select": {"type": "nrpn", "number": 127, "mode": "toggle", "led": "on", "lo": 3}
+            },
+            {
+              "fader": {"type": "pitchbend", "mode": "jump", "lo": 3},
+              "encoder": {"type": "relative2c", "number": 10, "mode": "acc0", "shift": "inherit"},
+              "m": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off"},
+              "s": {
+                "type": "nrpn",
+                "channel": 6,
+                "number": 4660,
+                "mode": "toggle",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 7, "number": 36, "noRelease": true, "hi": 0}
+              },
+              "r": {"type": "nrpn", "channel": 6, "number": 16383, "mode": "toggle", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+              "select": {"type": "nrpn", "number": 99, "mode": "trigger", "led": "off", "lo": 3}
+            },
+            {
+              "fader": {"type": "pitchbend", "channel": 6, "mode": "jump"},
+              "encoder": {"type": "relative2c", "channel": 3, "number": 99, "mode": "acc0"},
+              "m": {"type": "nrpn", "mode": "trigger", "noRelease": true},
+              "s": {
+                "type": "nrpn",
+                "channel": 5,
+                "number": 1,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "r": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"},
+              "select": {
+                "type": "cc7",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true, "lo": 127, "hi": 0}
+              }
+            },
+            {
+              "fader": {
+                "type": "pitchbend",
+                "mode": "pickup",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc14", "channel": 7, "number": 7, "mode": "scale", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "relative2c",
+                "number": 10,
+                "mode": "acc1",
+                "shift": {"type": "relativeBinOffset", "channel": 4, "number": 101, "mode": "acc1"}
+              },
+              "m": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "cc7", "channel": 3, "number": 98, "led": "off", "lo": 3},
+              "r": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true},
+              "select": {
+                "type": "cc7",
+                "number": 100,
+                "mode": "toggle",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on", "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "pitchbend", "channel": 3, "mode": "pickup", "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "relative2c", "channel": 5, "number": 99, "mode": "acc1", "shift": "block"},
+              "m": {"type": "cc7", "number": 101, "mode": "toggle", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "cc7", "channel": 7, "number": 127, "mode": "toggle", "lo": 3},
+              "r": {"type": "cc7", "channel": 7, "number": 74, "mode": "toggle", "noRelease": true, "led": "on"},
+              "select": {
+                "type": "cc7",
+                "number": 6,
+                "mode": "trigger",
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off", "lo": 16383, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "pitchbend", "mode": "scale", "lo": 3},
+              "encoder": {"type": "relative2c", "number": 10, "shift": "inherit"},
+              "m": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "cc7", "channel": 6, "mode": "trigger", "led": "on", "lo": 3},
+              "r": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off"},
+              "select": {
+                "type": "pitchbend",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 3}
+              }
+            },
+            {
+              "fader": {"type": "pitchbend", "channel": 5, "mode": "scale"},
+              "encoder": {"type": "relative2c", "channel": 7, "number": 99},
+              "m": {"type": "pitchbend", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {"type": "pitchbend", "channel": 5, "led": "off", "lo": 3},
+              "r": {"type": "pitchbend", "channel": 5, "noRelease": true},
+              "select": {
+                "type": "pitchbend",
+                "mode": "toggle",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 3}
+              }
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "note",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 5, "mode": "jump", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "relative2c",
+                "number": 10,
+                "mode": "acc3",
+                "shift": {"type": "nrpn", "channel": 7, "number": 128, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {"type": "pitchbend", "mode": "toggle", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {"type": "pitchbend", "channel": 4, "mode": "toggle", "lo": 3},
+              "r": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on"},
+              "select": {
+                "type": "pitchbend",
+                "mode": "trigger",
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "note", "channel": 7, "number": 60, "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "relative2c", "channel": 4, "number": 99, "mode": "acc3", "shift": "block"},
+              "m": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {"type": "pitchbend", "channel": 3, "mode": "trigger", "led": "on", "lo": 3},
+              "r": {"type": "pitchbend", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off"},
+              "select": {
+                "type": "note",
+                "hi": 0,
+                "shift": {"type": "program", "channel": 6, "mode": "toggle", "lo": 127, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "note", "number": 127, "mode": "jump", "lo": 3},
+              "encoder": {"type": "relative2c", "number": 10, "mode": "div", "n": 7, "shift": "inherit"},
+              "m": {"type": "note", "number": 60, "noRelease": true, "led": "on", "hi": 102, "shift": "block"},
+              "s": {"type": "note", "channel": 7, "number": 127, "led": "off", "lo": 20},
+              "r": {"type": "note", "channel": 7, "number": 36, "noRelease": true},
+              "select": {
+                "type": "note",
+                "mode": "toggle",
+                "led": "on",
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 3}
+              }
+            },
+            {
+              "fader": {"type": "note", "channel": 4, "number": 36, "mode": "jump"},
+              "encoder": {"type": "relative2c", "channel": 6, "number": 99, "mode": "div", "n": 127},
+              "m": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "hi": 102, "shift": "block"},
+              "s": {"type": "note", "channel": 6, "number": 127, "mode": "toggle", "lo": 20},
+              "r": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on"},
+              "select": {
+                "type": "note",
+                "mode": "trigger",
+                "led": "off",
+                "hi": 0,
+                "shift": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "lo": 20}
+              }
+            },
+            {
+              "fader": {
+                "type": "note",
+                "mode": "pickup",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 4, "number": 74, "mode": "scale", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "relative2c",
+                "number": 10,
+                "mode": "step",
+                "n": 2,
+                "shift": {"type": "cc7", "channel": 5, "number": 99, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {"type": "note", "number": 60, "mode": "trigger", "noRelease": true, "hi": 102, "shift": "block"},
+              "s": {"type": "note", "channel": 5, "number": 127, "mode": "trigger", "led": "on", "lo": 20},
+              "r": {"type": "note", "channel": 5, "number": 36, "mode": "trigger", "noRelease": true, "led": "off"},
+              "select": {
+                "type": "program",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 3}
+              }
+            },
+            {
+              "fader": {"type": "note", "channel": 6, "number": 60, "mode": "pickup", "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "relative2c", "channel": 3, "number": 99, "mode": "step", "n": 3, "shift": "block"},
+              "m": {"type": "program", "channel": 4, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "program", "mode": "toggle", "led": "off", "lo": 3},
+              "r": {"type": "program", "channel": 6, "mode": "toggle"},
+              "select": {
+                "type": "program",
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "note", "number": 127, "mode": "scale", "lo": 3},
+              "encoder": {"type": "relative2c", "number": 10, "mode": "fine", "shift": "inherit"},
+              "m": {"type": "program", "channel": 3, "mode": "trigger", "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "aftertouch", "lo": 3},
+              "r": {"type": "aftertouch", "noRelease": true, "led": "on"},
+              "select": {
+                "type": "aftertouch",
+                "channel": 5,
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "note", "channel": 3, "number": 36, "mode": "scale"},
+              "encoder": {"type": "relative2c", "channel": 5, "number": 99, "mode": "fine"},
+              "m": {"type": "aftertouch", "channel": 5, "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "aftertouch", "mode": "toggle", "led": "on", "lo": 3},
+              "r": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off"},
+              "select": {
+                "type": "aftertouch",
+                "channel": 4,
+                "mode": "toggle",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 3}
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "channel": 2,
+      "row": {
+        "play": {"type": "pitchbend", "channel": 5, "noRelease": true},
+        "stop": {
+          "type": "pitchbend",
+          "mode": "toggle",
+          "led": "on",
+          "lo": 16383,
+          "hi": 0,
+          "shift": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 3}
+        },
+        "rec": {"type": "pitchbend", "mode": "toggle", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"},
+        "rew": {"type": "pitchbend", "channel": 4, "mode": "toggle", "lo": 3},
+        "ff": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on"},
+        "bankLeft": {"type": "pitchbend", "mode": "trigger", "led": "off", "lo": 16383, "hi": 0},
+        "bankRight": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 1638, "hi": 13106},
+        "up": {"type": "pitchbend", "channel": 3, "mode": "trigger", "led": "on", "lo": 3},
+        "down": {"type": "pitchbend", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off"},
+        "left": {"type": "note", "hi": 0},
+        "right": {"type": "note", "number": 60, "noRelease": true, "led": "on", "hi": 102}
+      },
+      "pages": [
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "program",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 7, "mode": "jump", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "relativeBinOffset",
+                "number": 11,
+                "mode": "acc0",
+                "shift": {"type": "pitchbend", "channel": 3, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "aftertouch", "mode": "trigger", "led": "off", "lo": 3},
+              "r": {"type": "aftertouch", "mode": "trigger", "noRelease": true},
+              "select": {
+                "type": "aftertouch",
+                "channel": 3,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 4, "led": "on", "lo": 3}
+              }
+            },
+            {
+              "fader": {"type": "program", "channel": 5, "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "relativeBinOffset", "channel": 7, "number": 101, "mode": "acc0", "shift": "block"},
+              "m": {"type": "aftertouch", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "s": {"type": "nrpn", "number": 16383, "lo": 3},
+              "r": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on"},
+              "select": {
+                "type": "nrpn",
+                "channel": 7,
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 3}
+              }
+            },
+            {
+              "fader": {"type": "program", "mode": "jump", "lo": 3},
+              "encoder": {"type": "relativeBinOffset", "number": 11, "mode": "acc1", "shift": "inherit"},
+              "m": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {"type": "nrpn", "number": 127, "mode": "toggle", "led": "on", "lo": 3},
+              "r": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off"},
+              "select": {
+                "type": "nrpn",
+                "channel": 6,
+                "number": 4660,
+                "mode": "toggle",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 7, "number": 36, "noRelease": true, "hi": 0}
+              }
+            },
+            {
+              "fader": {"type": "program", "channel": 7, "mode": "jump"},
+              "encoder": {"type": "relativeBinOffset", "channel": 4, "number": 101, "mode": "acc1"},
+              "m": {"type": "nrpn", "channel": 6, "number": 16383, "mode": "toggle", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {"type": "nrpn", "number": 99, "mode": "trigger", "led": "off", "lo": 3},
+              "r": {"type": "nrpn", "mode": "trigger", "noRelease": true},
+              "select": {
+                "type": "nrpn",
+                "channel": 5,
+                "number": 1,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              }
+            },
+            {
+              "fader": {
+                "type": "program",
+                "mode": "pickup",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "rpn", "channel": 5, "number": 16383, "mode": "scale", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "relativeBinOffset",
+                "number": 11,
+                "shift": {"type": "aftertouch", "channel": 6, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"},
+              "s": {
+                "type": "cc7",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true, "lo": 127, "hi": 0}
+              },
+              "r": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "cc7", "channel": 3, "number": 98, "led": "off", "lo": 3}
+            },
+            {
+              "fader": {"type": "program", "channel": 4, "mode": "pickup", "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "relativeBinOffset", "channel": 6, "number": 101, "shift": "block"},
+              "m": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true},
+              "s": {
+                "type": "cc7",
+                "number": 100,
+                "mode": "toggle",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on", "hi": 0}
+              },
+              "r": {"type": "cc7", "number": 101, "mode": "toggle", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "cc7", "channel": 7, "number": 127, "mode": "toggle", "lo": 3}
+            },
+            {
+              "fader": {"type": "program", "mode": "scale", "lo": 3},
+              "encoder": {"type": "relativeBinOffset", "number": 11, "mode": "acc3", "shift": "inherit"},
+              "m": {"type": "cc7", "channel": 7, "number": 74, "mode": "toggle", "noRelease": true, "led": "on"},
+              "s": {
+                "type": "cc7",
+                "number": 6,
+                "mode": "trigger",
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off", "lo": 16383, "hi": 0}
+              },
+              "r": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "select": {"type": "cc7", "channel": 6, "mode": "trigger", "led": "on", "lo": 3}
+            },
+            {
+              "fader": {"type": "program", "channel": 6, "mode": "scale"},
+              "encoder": {"type": "relativeBinOffset", "channel": 3, "number": 101, "mode": "acc3"},
+              "m": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off"},
+              "s": {
+                "type": "pitchbend",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "r": {"type": "pitchbend", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+              "select": {"type": "pitchbend", "channel": 5, "led": "off", "lo": 3}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "aftertouch",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 4, "number": 36, "mode": "jump", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "relativeBinOffset",
+                "number": 11,
+                "mode": "div",
+                "n": 2,
+                "shift": {"type": "relativeBinOffset", "channel": 4, "number": 101, "mode": "acc1"}
+              },
+              "m": {"type": "note", "channel": 7, "number": 127, "led": "off", "lo": 20},
+              "s": {"type": "note", "channel": 7, "number": 36, "noRelease": true},
+              "r": {
+                "type": "note",
+                "mode": "toggle",
+                "led": "on",
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 3}
+              },
+              "select": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "aftertouch", "channel": 3, "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "relativeBinOffset", "channel": 5, "number": 101, "mode": "div", "n": 3, "shift": "block"},
+              "m": {"type": "note", "channel": 6, "number": 127, "mode": "toggle", "lo": 20},
+              "s": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on"},
+              "r": {
+                "type": "note",
+                "mode": "trigger",
+                "led": "off",
+                "hi": 0,
+                "shift": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "lo": 20}
+              },
+              "select": {"type": "note", "number": 60, "mode": "trigger", "noRelease": true, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "aftertouch", "mode": "jump", "lo": 3},
+              "encoder": {"type": "relativeBinOffset", "number": 11, "mode": "step", "n": 7, "shift": "inherit"},
+              "m": {"type": "note", "channel": 5, "number": 127, "mode": "trigger", "led": "on", "lo": 20},
+              "s": {"type": "note", "channel": 5, "number": 36, "mode": "trigger", "noRelease": true, "led": "off"},
+              "r": {
+                "type": "program",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 3}
+              },
+              "select": {"type": "program", "channel": 4, "led": "on", "lo": 13, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "aftertouch", "channel": 5, "mode": "jump"},
+              "encoder": {"type": "relativeBinOffset", "channel": 7, "number": 101, "mode": "step", "n": 127},
+              "m": {"type": "program", "mode": "toggle", "led": "off", "lo": 3},
+              "s": {"type": "program", "channel": 6, "mode": "toggle"},
+              "r": {
+                "type": "program",
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "select": {"type": "program", "channel": 3, "mode": "trigger", "led": "off", "lo": 13, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {
+                "type": "aftertouch",
+                "mode": "pickup",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 99, "mode": "scale", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "relativeBinOffset",
+                "number": 11,
+                "mode": "fine",
+                "shift": {"type": "nrpn", "channel": 7, "number": 128, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {"type": "aftertouch", "lo": 3},
+              "s": {"type": "aftertouch", "noRelease": true, "led": "on"},
+              "r": {
+                "type": "aftertouch",
+                "channel": 5,
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "select": {"type": "aftertouch", "channel": 5, "noRelease": true, "lo": 13, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "aftertouch", "channel": 7, "mode": "pickup", "lo": 13, "hi": 102, "shift": "block"},
+              "encoder": {"type": "relativeBinOffset", "channel": 4, "number": 101, "mode": "fine", "shift": "block"},
+              "m": {"type": "aftertouch", "mode": "toggle", "led": "on", "lo": 3},
+              "s": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off"},
+              "r": {
+                "type": "aftertouch",
+                "channel": 4,
+                "mode": "toggle",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "select": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "aftertouch", "mode": "scale", "lo": 3},
+              "encoder": {"type": "relativeSignedBit", "number": 12, "mode": "acc0", "shift": "inherit"},
+              "m": {"type": "aftertouch", "mode": "trigger", "led": "off", "lo": 3},
+              "s": {"type": "aftertouch", "mode": "trigger", "noRelease": true},
+              "r": {
+                "type": "aftertouch",
+                "channel": 3,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 4, "led": "on", "lo": 3}
+              },
+              "select": {"type": "aftertouch", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"}
+            },
+            {
+              "fader": {"type": "aftertouch", "channel": 4, "mode": "scale"},
+              "encoder": {"type": "relativeSignedBit", "channel": 6, "mode": "acc0"},
+              "m": {"type": "nrpn", "number": 16383, "lo": 3},
+              "s": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on"},
+              "r": {
+                "type": "nrpn",
+                "channel": 7,
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 3}
+              },
+              "select": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "nrpn",
+                "number": 99,
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 6, "mode": "jump", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "relativeSignedBit",
+                "number": 12,
+                "mode": "acc1",
+                "shift": {"type": "cc7", "channel": 5, "number": 99, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {"type": "nrpn", "number": 127, "mode": "toggle", "led": "on", "lo": 3},
+              "s": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off"},
+              "r": {
+                "type": "nrpn",
+                "channel": 6,
+                "number": 4660,
+                "mode": "toggle",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 7, "number": 36, "noRelease": true, "hi": 0}
+              },
+              "select": {"type": "nrpn", "channel": 6, "number": 16383, "mode": "toggle", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 6, "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "relativeSignedBit", "channel": 3, "mode": "acc1", "shift": "block"},
+              "m": {"type": "nrpn", "number": 99, "mode": "trigger", "led": "off", "lo": 3},
+              "s": {"type": "nrpn", "mode": "trigger", "noRelease": true},
+              "r": {
+                "type": "nrpn",
+                "channel": 5,
+                "number": 1,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "select": {"type": "nrpn", "channel": 5, "number": 127, "mode": "trigger", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"}
+            },
+            {
+              "fader": {"type": "nrpn", "number": 1, "mode": "jump", "lo": 3},
+              "encoder": {"type": "relativeSignedBit", "number": 12, "shift": "inherit"},
+              "m": {
+                "type": "cc7",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true, "lo": 127, "hi": 0}
+              },
+              "s": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "cc7", "channel": 3, "number": 98, "led": "off", "lo": 3},
+              "select": {"type": "cc7", "channel": 3, "number": 99, "noRelease": true}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 3, "number": 127, "mode": "jump"},
+              "encoder": {"type": "relativeSignedBit", "channel": 5},
+              "m": {
+                "type": "cc7",
+                "number": 100,
+                "mode": "toggle",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on", "hi": 0}
+              },
+              "s": {"type": "cc7", "number": 101, "mode": "toggle", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "cc7", "channel": 7, "number": 127, "mode": "toggle", "lo": 3},
+              "select": {"type": "cc7", "channel": 7, "number": 74, "mode": "toggle", "noRelease": true, "led": "on"}
+            },
+            {
+              "fader": {
+                "type": "nrpn",
+                "number": 128,
+                "mode": "pickup",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 4, "mode": "scale", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "relativeSignedBit",
+                "number": 12,
+                "mode": "acc3",
+                "shift": {"type": "pitchbend", "channel": 3, "mode": "acc1", "lo": 16383, "hi": 0, "start": 16383}
+              },
+              "m": {
+                "type": "cc7",
+                "number": 6,
+                "mode": "trigger",
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "number": 128, "mode": "toggle", "noRelease": true, "led": "off", "lo": 16383, "hi": 0}
+              },
+              "s": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "cc7", "channel": 6, "mode": "trigger", "led": "on", "lo": 3},
+              "select": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off"}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 5, "number": 4660, "mode": "pickup", "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "relativeSignedBit", "channel": 7, "mode": "acc3", "shift": "block"},
+              "m": {
+                "type": "pitchbend",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "s": {"type": "pitchbend", "noRelease": true, "led": "on", "lo": 1638, "hi": 13106, "shift": "block"},
+              "r": {"type": "pitchbend", "channel": 5, "led": "off", "lo": 3},
+              "select": {"type": "pitchbend", "channel": 5, "noRelease": true}
+            },
+            {
+              "fader": {"type": "nrpn", "number": 16383, "mode": "scale", "lo": 3},
+              "encoder": {"type": "relativeSignedBit", "number": 12, "mode": "div", "n": 7, "shift": "inherit"},
+              "m": {
+                "type": "pitchbend",
+                "mode": "toggle",
+                "led": "on",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 3}
+              },
+              "s": {"type": "pitchbend", "mode": "toggle", "noRelease": true, "led": "off", "lo": 1638, "hi": 13106, "shift": "block"},
+              "r": {"type": "pitchbend", "channel": 4, "mode": "toggle", "lo": 3},
+              "select": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on"}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 7, "number": 99, "mode": "scale"},
+              "encoder": {"type": "relativeSignedBit", "channel": 4, "mode": "div", "n": 127},
+              "m": {
+                "type": "pitchbend",
+                "mode": "trigger",
+                "led": "off",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc7", "channel": 6, "number": 7, "mode": "trigger", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "s": {"type": "pitchbend", "mode": "trigger", "noRelease": true, "lo": 1638, "hi": 13106, "shift": "block"},
+              "r": {"type": "pitchbend", "channel": 3, "mode": "trigger", "led": "on", "lo": 3},
+              "select": {"type": "pitchbend", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off"}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {
+                "type": "rpn",
+                "number": 1,
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "cc14", "channel": 3, "number": 7, "mode": "jump", "lo": 16383, "hi": 0}
+              },
+              "encoder": {
+                "type": "relativeSignedBit",
+                "number": 12,
+                "mode": "step",
+                "n": 2,
+                "shift": {"type": "aftertouch", "channel": 6, "mode": "acc1", "lo": 127, "hi": 0}
+              },
+              "m": {
+                "type": "note",
+                "hi": 0,
+                "shift": {"type": "program", "channel": 6, "mode": "toggle", "lo": 127, "hi": 0}
+              },
+              "s": {"type": "note", "number": 60, "noRelease": true, "led": "on", "hi": 102, "shift": "block"},
+              "r": {"type": "note", "channel": 7, "number": 127, "led": "off", "lo": 20},
+              "select": {"type": "note", "channel": 7, "number": 36, "noRelease": true}
+            },
+            {
+              "fader": {"type": "rpn", "channel": 4, "number": 2, "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "relativeSignedBit", "channel": 6, "mode": "step", "n": 3, "shift": "block"},
+              "m": {
+                "type": "note",
+                "mode": "toggle",
+                "led": "on",
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 7, "noRelease": true, "led": "on", "lo": 3}
+              },
+              "s": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "hi": 102, "shift": "block"},
+              "r": {"type": "note", "channel": 6, "number": 127, "mode": "toggle", "lo": 20},
+              "select": {"type": "note", "channel": 6, "number": 36, "mode": "toggle", "noRelease": true, "led": "on"}
+            },
+            {
+              "fader": {"type": "rpn", "number": 16383, "mode": "jump", "lo": 3},
+              "encoder": {"type": "relativeSignedBit", "number": 12, "mode": "fine", "shift": "inherit"},
+              "m": {
+                "type": "note",
+                "mode": "trigger",
+                "led": "off",
+                "hi": 0,
+                "shift": {"type": "note", "number": 60, "mode": "toggle", "noRelease": true, "led": "off", "lo": 20}
+              },
+              "s": {"type": "note", "number": 60, "mode": "trigger", "noRelease": true, "hi": 102, "shift": "block"},
+              "r": {"type": "note", "channel": 5, "number": 127, "mode": "trigger", "led": "on", "lo": 20},
+              "select": {"type": "note", "channel": 5, "number": 36, "mode": "trigger", "noRelease": true, "led": "off"}
+            },
+            {
+              "fader": {"type": "rpn", "channel": 6, "number": 5, "mode": "jump"},
+              "encoder": {"type": "relativeSignedBit", "channel": 3, "mode": "fine"},
+              "m": {
+                "type": "program",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "nrpn", "channel": 7, "number": 1, "noRelease": true, "lo": 3}
+              },
+              "s": {"type": "program", "channel": 4, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "program", "mode": "toggle", "led": "off", "lo": 3},
+              "select": {"type": "program", "channel": 6, "mode": "toggle"}
+            },
+            {
+              "fader": {
+                "type": "rpn",
+                "mode": "pickup",
+                "lo": 16383,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 6, "mode": "scale", "lo": 127, "hi": 0}
+              },
+              "encoder": {
+                "type": "nrpn",
+                "mode": "acc0",
+                "lo": 16383,
+                "hi": 0,
+                "start": 16383,
+                "shift": {"type": "relativeBinOffset", "channel": 4, "number": 101, "mode": "acc1"}
+              },
+              "m": {
+                "type": "program",
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "pitchbend", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 16383, "hi": 0}
+              },
+              "s": {"type": "program", "channel": 3, "mode": "trigger", "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "aftertouch", "lo": 3},
+              "select": {"type": "aftertouch", "noRelease": true, "led": "on"}
+            },
+            {
+              "fader": {"type": "rpn", "channel": 3, "number": 1, "mode": "pickup", "lo": 1638, "hi": 13106, "shift": "block"},
+              "encoder": {"type": "nrpn", "channel": 5, "number": 1, "mode": "acc0", "lo": 1638, "hi": 13106, "shift": "block"},
+              "m": {
+                "type": "aftertouch",
+                "channel": 5,
+                "led": "off",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off", "lo": 127, "hi": 0}
+              },
+              "s": {"type": "aftertouch", "channel": 5, "noRelease": true, "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "aftertouch", "mode": "toggle", "led": "on", "lo": 3},
+              "select": {"type": "aftertouch", "mode": "toggle", "noRelease": true, "led": "off"}
+            },
+            {
+              "fader": {"type": "rpn", "number": 2, "mode": "scale", "lo": 3},
+              "encoder": {"type": "nrpn", "number": 127, "mode": "acc1", "lo": 3, "shift": "inherit"},
+              "m": {
+                "type": "aftertouch",
+                "channel": 4,
+                "mode": "toggle",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "cc7", "number": 38, "mode": "trigger", "noRelease": true, "lo": 3}
+              },
+              "s": {"type": "aftertouch", "channel": 4, "mode": "toggle", "noRelease": true, "led": "on", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "aftertouch", "mode": "trigger", "led": "off", "lo": 3},
+              "select": {"type": "aftertouch", "mode": "trigger", "noRelease": true}
+            },
+            {
+              "fader": {"type": "rpn", "channel": 5, "number": 16383, "mode": "scale"},
+              "encoder": {"type": "nrpn", "channel": 7, "number": 128, "mode": "acc1", "start": 16383},
+              "m": {
+                "type": "aftertouch",
+                "channel": 3,
+                "mode": "trigger",
+                "led": "on",
+                "lo": 127,
+                "hi": 0,
+                "shift": {"type": "program", "channel": 4, "led": "on", "lo": 3}
+              },
+              "s": {"type": "aftertouch", "channel": 3, "mode": "trigger", "noRelease": true, "led": "off", "lo": 13, "hi": 102, "shift": "block"},
+              "r": {"type": "nrpn", "number": 16383, "lo": 3},
+              "select": {"type": "nrpn", "number": 99, "noRelease": true, "led": "on"}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

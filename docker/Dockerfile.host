@@ -1,0 +1,13 @@
+# The host test image: Linux with the host C compiler, Python and Node.js, on the machine's own
+# platform (arm64 on Apple silicon, amd64 elsewhere), so the host tests run without emulation
+# (docs/build.md, "The host test image"; the owner, 2026-11-14). It builds nothing for the
+# device: the JieLi toolchain is x86_64 only and stays in Dockerfile.build (amd64).
+# The same base and the same package versions as Dockerfile.build (bookworm; one manifest list,
+# so the digest serves both platforms). Nothing from JieLi, nothing from npm.
+FROM debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        make bash coreutils file xxd python3 ca-certificates \
+        nodejs=18.20.4+dfsg-1~deb12u3 libnode108=18.20.4+dfsg-1~deb12u3 \
+        gcc=4:12.2.0-3 gcc-12=12.2.0-14+deb12u1 libc6-dev=2.36-9+deb12u14 \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /work

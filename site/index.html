@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>better-smc-mixer: alternative firmware for the M-Vave SMC-Mixer</title>
+<meta name="description" content="Open-source firmware and a browser editor that turn the M-Vave SMC-Mixer into a configurable MIDI controller for hardware synths and music apps.">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Open-source firmware · version <span data-version>0.1.0</span></p>
+    <h1>better-smc-mixer</h1>
+    <p class="lead">Turns the M-Vave SMC-Mixer into a configurable MIDI controller for hardware
+      synthesizers and music apps: presets and pages, a Shift layer, fader pickup, encoder
+      acceleration, USB and Bluetooth MIDI. Set it up in the browser, no app to install.</p>
+    <p class="actions">
+      <a class="button primary" href="editor/">Open the editor</a>
+      <a class="button" href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md">How to install</a>
+      <a class="button" href="https://github.com/doctorsolberg/better-smc-mixer">Source on GitHub</a>
+    </p>
+    <p class="note">Needs Google Chrome with Web MIDI on macOS, Windows or Android.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="grid">
+    <article>
+      <h2>Made for synths, not a DAW</h2>
+      <p>Four presets of four pages, eight strips each: every fader, encoder and button sends what
+        you choose — CC, 14-bit CC, NRPN, RPN, notes, program change, pitch bend — on its own
+        channel. Shift gives every control a second assignment.</p>
+    </article>
+    <article>
+      <h2>No jumps</h2>
+      <p>Faders pick up the value the mixer knows for a parameter — what it sent or what the
+        instrument sent back — or scale towards it, instead of jumping. Encoders accelerate when
+        you turn fast and step finely when you turn slowly or hold Shift.</p>
+    </article>
+    <article>
+      <h2>Edit live in the browser</h2>
+      <p>Connect over USB or Bluetooth MIDI and every change plays on the mixer at once. Touch a
+        control to select it, learn assignments from your instrument, or load a parameter list
+        from the <a href="https://midi.guide">MIDI Guide</a>.</p>
+    </article>
+    <article>
+      <h2>Install and go back safely</h2>
+      <p>The editor installs the firmware over USB or Bluetooth. It saves a full backup of the
+        mixer's memory first and checks it before writing. <em>Go back to M-Vave's firmware</em>
+        returns the mixer to its original firmware at any time.</p>
+    </article>
+  </section>
+
+  <section>
+    <h2>Get started</h2>
+    <ol class="steps">
+      <li>Open <a href="editor/">the editor</a> in Chrome and connect the mixer with a USB cable.</li>
+      <li>Choose <strong>Install</strong>, save the backup file it offers, and follow the steps.</li>
+      <li>Switch the mixer off and on. Your controls now send what the editor shows; change
+        anything and it plays at once.</li>
+    </ol>
+    <p>Read the <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/README.md">user guide</a>: <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md">installing</a>,
+      <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/connecting.md">connecting</a>, <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/editor.md">the editor</a>,
+      <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/panel.md">the panel</a> and <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/first-preset.md">a first preset</a>.</p>
+  </section>
+
+  <section>
+    <h2>Downloads</h2>
+    <p>Every release with its firmware images, checksums and notes is on
+      <a href="https://github.com/doctorsolberg/better-smc-mixer/releases">GitHub Releases</a>.
+      The editor on this site always installs the firmware of its own release
+      (<a href="manifest.json">manifest</a>, <a href="SHA256SUMS">checksums</a>).</p>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>better-smc-mixer is an independent project, not affiliated with M-Vave. Our code is
+    <a href="LICENSE">MIT licensed</a>; the firmware includes third-party code listed in
+    <a href="NOTICE">NOTICE</a>. Parameter lists from the MIDI Guide are CC BY-SA 4.0.</p>
+</footer>
+<script type="module">
+  // The version of this site's release, from its manifest.
+  fetch('manifest.json').then((r) => r.ok ? r.json() : null).then((m) => {
+    if (m?.version) for (const e of document.querySelectorAll('[data-version]')) e.textContent = m.version;
+  }).catch(() => {});
+</script>
+</body>
+</html>

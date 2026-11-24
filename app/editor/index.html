@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SMC-Mixer Editor</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header id="topbar">
+  <div class="bar bar-1">
+    <input id="cfg-name" class="title-input" placeholder="Untitled configuration" maxlength="64" aria-label="Configuration name">
+    <button id="problems" class="badge" hidden></button>
+    <div class="spacer"></div>
+    <div class="tb-group">
+      <button id="undo" class="tb icon-only" title="Undo"></button>
+      <button id="redo" class="tb icon-only" title="Redo"></button>
+    </div>
+    <button id="btn-file" class="tb"></button>
+    <button id="btn-map" class="tb" title="Map an instrument’s parameters onto the controls"></button>
+    <button id="btn-settings" class="tb"></button>
+    <button id="btn-theme" class="tb icon-only" title="Appearance"></button>
+    <div id="link-seg" class="seg link-seg" role="radiogroup" aria-label="Editor and mixer"></div>
+    <div id="mixer" class="mixer" role="group" aria-label="Mixer">
+      <button id="device-pill" class="pill" title="Mixer"></button>
+      <button id="pill-act" class="pill-act" hidden></button>
+      <button id="pill-bt" class="pill-act pill-bt" hidden></button>
+    </div>
+  </div>
+  <div class="bar bar-2">
+    <div class="navgroup lvl-preset"><span class="lbl">Preset</span><nav id="presets" class="tabs" aria-label="Presets"></nav></div>
+  </div>
+</header>
+
+<main id="main">
+  <section id="work">
+    <div id="notice" class="notice" hidden></div>
+    <div id="page-bar" class="page-bar">
+      <div id="lvl-page" class="navgroup lvl-page"><span class="lbl">Page</span><nav id="pages" class="tabs" aria-label="Pages"></nav></div>
+      <div id="lvl-layer" class="navgroup lvl-layer"><span class="lbl">Layer</span>
+        <div class="seg layer-seg" id="layer-seg" role="tablist" aria-label="Layer">
+          <button data-layer="normal" role="tab">Normal</button><button data-layer="shift" role="tab">Shift</button>
+        </div>
+      </div>
+    </div>
+    <div id="selbar"></div>
+    <div id="panel-wrap"><div id="panel"></div><div id="lasso" hidden></div></div>
+    <div id="table-wrap" hidden></div>
+    <div id="legend"></div>
+  </section>
+  <aside id="side">
+    <div class="side-head">
+      <div id="side-title" class="side-title"></div>
+      <button id="sheet-toggle" class="tb icon-only" title="Hide the panel below" aria-expanded="true"></button>
+    </div>
+    <div id="inspector" class="side-body"></div>
+    <div id="params" class="side-body" hidden></div>
+  </aside>
+</main>
+
+<footer id="monitor">
+  <div id="monitor-bar"></div>
+  <div id="monitor-list" hidden></div>
+</footer>
+
+<dialog id="dlg"><div id="dlg-body"></div></dialog>
+<div id="menu" class="menu" hidden></div>
+<div id="toast" role="status" popover="manual"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

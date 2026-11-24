@@ -1,0 +1,18 @@
+# Third-party dependencies fetched by tools/env/fetch_deps.sh (the JieLi tools are not redistributable)
+/deps/
+# Build output
+/build/
+# Device and tool logs: may hold flash contents, the serial number or Bluetooth keys (SPEC C-7)
+/logs/
+# Vendor firmware files and flash dumps (SPEC C-7)
+/materials/
+.DS_Store
+__pycache__/
+# Local credentials and agent/editor state (never publish)
+.env
+.env.local
+/.claude/
+/.hermes/
+/.agents/
+/.vscode/
+/.idea/

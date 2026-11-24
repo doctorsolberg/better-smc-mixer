@@ -1,0 +1,184 @@
+{
+  "name": "stock-behaviour",
+  "description": "Stage 0: what the stock firmware sends in each mode. Read-only: nothing is sent to the mixer. Keep away from BT and from power-on key combinations (they are tested separately).",
+  "steps": [
+    {
+      "id": "idle",
+      "text": "Do not touch the mixer (idle traffic and fader noise).",
+      "seconds": 10
+    },
+    {
+      "id": "shift-hold",
+      "text": "Press Shift, hold it for 2 s, release.",
+      "ask": "Which LEDs were lit while Shift was held (for example ◀ or ▶)?"
+    },
+    {
+      "id": "mode-left",
+      "text": "Hold Shift, press ◀ (10th bottom-row button), release both.",
+      "ask": "Which LEDs changed, if any?"
+    },
+    {
+      "id": "left-m1-twice",
+      "text": "[after Shift+◀] Press and release M1 (strip 1) twice, about one second apart."
+    },
+    {
+      "id": "left-m1-hold",
+      "text": "[after Shift+◀] Press M1, hold it for 2 s, release."
+    },
+    {
+      "id": "left-s1-twice",
+      "text": "[after Shift+◀] Press and release S1 twice."
+    },
+    {
+      "id": "left-r1-twice",
+      "text": "[after Shift+◀] Press and release R1 twice."
+    },
+    {
+      "id": "left-sel1-twice",
+      "text": "[after Shift+◀] Press and release SELECT (□) 1 twice."
+    },
+    {
+      "id": "left-strip8",
+      "text": "[after Shift+◀] Press M8, S8, R8 and SELECT 8 once each, in that order."
+    },
+    {
+      "id": "left-fader1-slow",
+      "text": "[after Shift+◀] Move fader 1 slowly from the bottom to the top (about 3 s), then slowly back to the bottom."
+    },
+    {
+      "id": "left-fader1-fast",
+      "text": "[after Shift+◀] Move fader 1 quickly to the top and back to the bottom, twice."
+    },
+    {
+      "id": "left-fader1-mid",
+      "text": "[after Shift+◀] Put fader 1 roughly in the middle and let go of it."
+    },
+    {
+      "id": "left-fader1-rest",
+      "text": "[after Shift+◀] Do not touch anything (fader noise at rest).",
+      "seconds": 5
+    },
+    {
+      "id": "left-enc1-right",
+      "text": "[after Shift+◀] Turn encoder 1 slowly 10 clicks to the right (clockwise), counting the clicks."
+    },
+    {
+      "id": "left-enc1-left",
+      "text": "[after Shift+◀] Turn encoder 1 slowly 10 clicks to the left."
+    },
+    {
+      "id": "left-enc1-fast",
+      "text": "[after Shift+◀] Turn encoder 1 quickly one full turn to the right, then one full turn to the left."
+    },
+    {
+      "id": "left-enc1-push",
+      "text": "[after Shift+◀] Push encoder 1 twice."
+    },
+    {
+      "id": "left-bottom-row",
+      "text": "[after Shift+◀] Without Shift, press each bottom-row button once, left to right: Play, Stop, Rec, Rew, FF, «, », ▲, ▼, ◀, ▶."
+    },
+    {
+      "id": "left-shift-fader1",
+      "text": "[after Shift+◀] Hold Shift, move fader 1 to the top and back to the bottom, release Shift."
+    },
+    {
+      "id": "left-shift-enc1",
+      "text": "[after Shift+◀] Hold Shift, turn encoder 1 five clicks to the right, release Shift."
+    },
+    {
+      "id": "left-shift-m1",
+      "text": "[after Shift+◀] Hold Shift, press and release M1, release Shift.",
+      "ask": "Did any LED change? (Enter if nothing)"
+    },
+    {
+      "id": "mode-right",
+      "text": "Hold Shift, press ▶ (11th bottom-row button), release both.",
+      "ask": "Which LEDs changed, if any?"
+    },
+    {
+      "id": "right-m1-twice",
+      "text": "[after Shift+▶] Press and release M1 (strip 1) twice, about one second apart."
+    },
+    {
+      "id": "right-m1-hold",
+      "text": "[after Shift+▶] Press M1, hold it for 2 s, release."
+    },
+    {
+      "id": "right-s1-twice",
+      "text": "[after Shift+▶] Press and release S1 twice."
+    },
+    {
+      "id": "right-r1-twice",
+      "text": "[after Shift+▶] Press and release R1 twice."
+    },
+    {
+      "id": "right-sel1-twice",
+      "text": "[after Shift+▶] Press and release SELECT (□) 1 twice."
+    },
+    {
+      "id": "right-strip8",
+      "text": "[after Shift+▶] Press M8, S8, R8 and SELECT 8 once each, in that order."
+    },
+    {
+      "id": "right-fader1-slow",
+      "text": "[after Shift+▶] Move fader 1 slowly from the bottom to the top (about 3 s), then slowly back to the bottom."
+    },
+    {
+      "id": "right-fader1-fast",
+      "text": "[after Shift+▶] Move fader 1 quickly to the top and back to the bottom, twice."
+    },
+    {
+      "id": "right-fader1-mid",
+      "text": "[after Shift+▶] Put fader 1 roughly in the middle and let go of it."
+    },
+    {
+      "id": "right-fader1-rest",
+      "text": "[after Shift+▶] Do not touch anything (fader noise at rest).",
+      "seconds": 5
+    },
+    {
+      "id": "right-enc1-right",
+      "text": "[after Shift+▶] Turn encoder 1 slowly 10 clicks to the right (clockwise), counting the clicks."
+    },
+    {
+      "id": "right-enc1-left",
+      "text": "[after Shift+▶] Turn encoder 1 slowly 10 clicks to the left."
+    },
+    {
+      "id": "right-enc1-fast",
+      "text": "[after Shift+▶] Turn encoder 1 quickly one full turn to the right, then one full turn to the left."
+    },
+    {
+      "id": "right-enc1-push",
+      "text": "[after Shift+▶] Push encoder 1 twice."
+    },
+    {
+      "id": "right-bottom-row",
+      "text": "[after Shift+▶] Without Shift, press each bottom-row button once, left to right: Play, Stop, Rec, Rew, FF, «, », ▲, ▼, ◀, ▶."
+    },
+    {
+      "id": "right-shift-fader1",
+      "text": "[after Shift+▶] Hold Shift, move fader 1 to the top and back to the bottom, release Shift."
+    },
+    {
+      "id": "right-shift-enc1",
+      "text": "[after Shift+▶] Hold Shift, turn encoder 1 five clicks to the right, release Shift."
+    },
+    {
+      "id": "right-shift-m1",
+      "text": "[after Shift+▶] Hold Shift, press and release M1, release Shift.",
+      "ask": "Did any LED change? (Enter if nothing)"
+    },
+    {
+      "id": "mode-restore",
+      "text": "Switch back to the mode you normally use (Shift+◀ or Shift+▶).",
+      "ask": "Which one did you press?"
+    },
+    {
+      "id": "idle-end",
+      "text": "Do not touch the mixer.",
+      "seconds": 5
+    }
+  ]
+}

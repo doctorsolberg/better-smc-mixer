@@ -1,0 +1,22 @@
+# The null parameter after an NRPN gesture (paramNull, SPEC Q-21 c; docs/core.md, "NRPN and
+# RPN"): with "gesture" in a preset, a gesture that sent NRPN or RPN ends with RPN 127/127
+# (CC 101, 100), so data entry from elsewhere changes nothing; the next gesture selects its
+# parameter again. Bank 16 of the test configuration (preset 4, page 4, channel 16): fader 1 is
+# NRPN 256 (MSB 2, LSB 0).
+{"set": {"param_null_p4": "gesture"}}
+{"say": "Hold Shift, tap Bank right (preset 4) and the right arrow (page 4), release Shift"}
+{"press": "shift"}
+{"tap": "bank_right"}
+{"tap": "right"}
+{"release": "shift"}
+{"expect_state": {"preset": 4, "page": 4}}
+{"say": "Move fader 1 in two steps, then let it rest"}
+{"fader": "fader1", "from_pos": 1000, "to_pos": 1001, "steps": 1}
+{"expect_midi": ["BF 63 02", "BF 62 00", "BF 06 07", "BF 26 68", "BF 06 07", "BF 26 69"]}
+{"wait_ms": 400}
+{"expect_midi": ["BF 65 7F", "BF 64 7F"]}
+{"say": "Touch it again: the parameter is selected again"}
+{"fader": "fader1", "to_pos": 1002}
+{"expect_midi": ["BF 63 02", "BF 62 00", "BF 06 07", "BF 26 6A"]}
+{"wait_ms": 400}
+{"expect_midi": ["BF 65 7F", "BF 64 7F"]}

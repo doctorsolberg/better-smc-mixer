@@ -1,0 +1,57 @@
+# The factory configuration (FR-MOD-06, layout C): preset k is MIDI channel k with a different CC
+# block on each page; the buttons are keys on the same channel, the same on every page.
+{"set": {"config": "factory"}}
+{"say": "Preset 1, page 1: move fader 1 to the middle, turn encoder 1 one click right"}
+{"fader": "fader1", "to": 64}
+{"expect_log": "core start: 428 targets", "module": "engine"}
+{"turn": "enc1", "clicks": 1}
+{"expect_midi": ["B0 14 40", "B0 66 41"]}
+{"say": "Tap M1: a key on channel 1, Note On on press, Note On velocity 0 on release"}
+{"tap": "m1"}
+{"expect_midi": ["90 48 7F", "90 48 00"]}
+{"say": "Hold R1: its LED is on while it is held"}
+{"press": "r1"}
+{"expect_midi": ["90 38 7F"]}
+{"expect_led": "r1", "state": "on"}
+{"release": "r1"}
+{"expect_midi": ["90 38 00"]}
+{"expect_led": "r1", "state": "off"}
+{"say": "Tap Play: the bottom row goes on with the keys, note 80"}
+{"tap": "play"}
+{"expect_midi": ["90 50 7F", "90 50 00"]}
+{"say": "Hold Shift, tap the down arrow (page 2), release; move fader 1 and encoder 1 again"}
+{"press": "shift"}
+{"tap": "down"}
+{"release": "shift"}
+{"wait_ms": 400}
+{"fader": "fader1", "to": 10}
+{"turn": "enc1", "clicks": 1}
+{"expect_midi": ["B0 0C 0A", "B0 6E 41"]}
+{"say": "Page 3, then page 4: fader 1 sends CC 70, then CC 87"}
+{"press": "shift"}
+{"tap": "left"}
+{"release": "shift"}
+{"wait_ms": 400}
+{"fader": "fader1", "to": 20}
+{"press": "shift"}
+{"tap": "right"}
+{"release": "shift"}
+{"wait_ms": 400}
+{"fader": "fader1", "to": 30}
+{"expect_midi": ["B0 46 14", "B0 57 1E"]}
+{"say": "The keys stay the same on page 4: SELECT 1 is note 48"}
+{"tap": "sel1"}
+{"expect_midi": ["90 30 7F", "90 30 00"]}
+{"say": "Hold Shift, tap the double right arrow (preset 2), release: channel 2"}
+{"press": "shift"}
+{"tap": "ff"}
+{"release": "shift"}
+{"expect_state": {"preset": 2, "page": 1}}
+{"wait_ms": 400}
+{"fader": "fader8", "to": 127}
+{"tap": "sel8"}
+{"expect_midi": ["B1 1B 7F", "91 37 7F", "91 37 00"]}
+{"say": "(a synth on channel 2 sends CC 103 = 100; encoder 2 continues from there)"}
+{"midi_in": "B1 67 64"}
+{"turn": "enc2", "clicks": 1}
+{"expect_midi": ["B1 67 65"]}

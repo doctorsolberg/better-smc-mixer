@@ -1,0 +1,21 @@
+# Selection by a client (P-3, CFG_SELECT; docs/link.md, "The panel's state"): the preset and the
+# page switch as the panel's own buttons switch them, Shift aside; a preset alone goes back to its
+# last page. On the device the runner sends CFG_SELECT for each "select" step.
+{"say": "The editor selects preset 1 page 2"}
+{"select": {"preset": 1, "page": 2}}
+{"expect_state": {"preset": 1, "page": 2, "shift": false}}
+{"expect_log": "preset 1 page 2", "module": "engine"}
+{"expect_led": "down", "state": "off"}
+{"say": "Move fader 1: page 2 of preset 1 is channel 2"}
+{"fader": "fader1", "to": 64}
+{"expect_midi": ["B1 14 40"]}
+{"say": "Preset 4 page 4, then preset 1 alone: back on its page 2"}
+{"select": {"preset": 4, "page": 4}}
+{"expect_state": {"preset": 4, "page": 4}}
+{"select": {"preset": 1}}
+{"expect_state": {"preset": 1, "page": 2}}
+{"say": "The page alone keeps the preset"}
+{"select": {"page": 1}}
+{"expect_state": {"preset": 1, "page": 1}}
+{"fader": "fader1", "to": 32}
+{"expect_midi": ["B0 14 20"]}

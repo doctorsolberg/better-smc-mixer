@@ -1,0 +1,25 @@
+# Shift mode per preset (FR-SH-01): hold by default, latch where the preset asks for it. A hold
+# preset never keeps Shift latched.
+{"set": {"shift_mode_p2": "latch", "shift_mode_p3": "latch"}}
+{"say": "Preset 1 holds: tap Shift, it does not stay on"}
+{"tap": "shift", "hold_ms": 100}
+{"expect_state": {"preset": 1, "shift": false}}
+{"expect_led": "shift", "state": "off"}
+{"say": "Hold Shift, tap the double right arrow (preset 2, latch), release: off"}
+{"press": "shift"}
+{"tap": "ff"}
+{"release": "shift"}
+{"expect_state": {"preset": 2, "shift": false}}
+{"say": "Preset 2 latches: tap Shift, it stays on"}
+{"tap": "shift", "hold_ms": 100}
+{"expect_state": {"preset": 2, "shift": true}}
+{"expect_led": "shift", "state": "on"}
+{"say": "Tap the left bank button: preset 3 also latches, Shift stays on"}
+{"tap": "bank_left"}
+{"expect_state": {"preset": 3, "shift": true}}
+{"expect_log": "preset 3 page 1", "module": "engine"}
+{"say": "Tap the right bank button: preset 4 holds, Shift goes off"}
+{"tap": "bank_right"}
+{"expect_state": {"preset": 4, "shift": false}}
+{"expect_log": "shift latch dropped: preset 4 holds", "module": "engine"}
+{"expect_led": "shift", "state": "off"}

@@ -1,0 +1,20 @@
+# Incoming MIDI (FR-IO-06): it updates values, LEDs and fader pickup; nothing is echoed.
+{"midi_in": "90 18 64"}
+{"expect_led": "m1", "state": "on"}
+{"midi_in": "80 18 00"}
+{"expect_led": "m1", "state": "off"}
+{"fader": "fader2", "to": 50}
+{"expect_midi": ["B0 15 32"]}
+{"say": "An echo of our own value keeps the fader synchronized"}
+{"midi_in": "B0 15 32"}
+{"fader": "fader2", "to": 52}
+{"expect_midi": ["B0 15 34"]}
+{"say": "Someone else changes it (over BLE): the fader waits"}
+{"midi_in": "B0 15 5A", "transport": "ble"}
+{"fader": "fader2", "to": 55}
+{"expect_midi": []}
+{"expect_log": "fader 2 waits"}
+{"fader": "fader2", "to": 95}
+{"expect_midi": ["B0 15 5F"]}
+{"midi_in": "F8"}
+{"expect_midi": []}

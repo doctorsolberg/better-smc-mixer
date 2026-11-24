@@ -1,0 +1,18 @@
+# Shift during a movement (FR-SH-05, gesture mode, the default): the layer is fixed when a gesture
+# starts and kept until a 300 ms pause.
+# enc_accel 200: fast clicks (5 ms) reach acc1's top step with the device's timing too
+{"set": {"enc_accel": 200}}
+{"turn": "enc1", "clicks": 2, "every_ms": 100}
+{"expect_midi": ["B0 66 41", "B0 66 42"]}
+{"say": "Press Shift while still turning: the gesture stays on the Normal layer (acc1)"}
+{"press": "shift", "after_ms": 50}
+{"turn": "enc1", "clicks": 2, "every_ms": 5}
+{"expect_midi": ["B0 66 43", "B0 66 45"]}
+{"release": "shift"}
+{"wait_ms": 400}
+{"say": "A new gesture with Shift held: fine mode"}
+{"press": "shift"}
+{"turn": "enc1", "clicks": 2, "every_ms": 10}
+{"expect_midi": ["B0 66 46", "B0 66 47"]}
+{"release": "shift"}
+{"expect_log": "encoder 1 gesture, layer 1"}

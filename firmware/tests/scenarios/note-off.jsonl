@@ -1,0 +1,21 @@
+# How notes are released (FR-CTL-10): Note On with velocity 0 by default, as the stock firmware;
+# a preset can ask for Note Off (8n) instead. A release keeps the form of its press's preset.
+{"set": {"note_off_p2": "8n"}}
+{"say": "Preset 1: tap R1 (momentary, note 40 on channel 1)"}
+{"tap": "r1"}
+{"expect_log": "note off forms 0 1 0 0", "module": "engine"}
+{"expect_midi": ["90 28 7F", "90 28 00"]}
+{"say": "Hold Shift, tap the double right arrow (preset 2), release; tap R1 (channel 5)"}
+{"press": "shift"}
+{"tap": "ff"}
+{"release": "shift"}
+{"tap": "r1"}
+{"expect_midi": ["94 28 7F", "84 28 00"]}
+{"say": "Hold R1, switch to preset 1 with Shift and the double left arrow, release R1"}
+{"press": "r1"}
+{"press": "shift"}
+{"tap": "rew"}
+{"release": "shift"}
+{"release": "r1"}
+{"expect_state": {"preset": 1}}
+{"expect_midi": ["94 28 7F", "84 28 00"]}

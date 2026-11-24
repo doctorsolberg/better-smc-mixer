@@ -1,0 +1,30 @@
+# Encoders (FR-CTL-04, FR-SH-02): absolute values from the target store, acceleration, fine mode
+# with Shift, no jumps across pages, feedback from incoming MIDI.
+# enc_accel 200: fast clicks (5 ms) reach acc1's top step with the device's timing too
+{"set": {"enc_accel": 200}}
+{"say": "Turn encoder 1 slowly 3 clicks right (starts from its start value, 64)"}
+{"turn": "enc1", "clicks": 3, "every_ms": 100}
+{"expect_midi": ["B0 66 41", "B0 66 42", "B0 66 43"]}
+{"wait_ms": 400}
+{"say": "Turn it fast 4 clicks right (5 ms a click): acc1 at its top speed adds 1.5 per click (level 2), so 2, 3, 2"}
+{"turn": "enc1", "clicks": 4, "every_ms": 5}
+{"expect_midi": ["B0 66 44", "B0 66 46", "B0 66 49", "B0 66 4B"]}
+{"wait_ms": 400}
+{"say": "Hold Shift and turn fast: fine steps"}
+{"press": "shift"}
+{"turn": "enc1", "clicks": 3, "every_ms": 5}
+{"release": "shift"}
+{"expect_midi": ["B0 66 4C", "B0 66 4D", "B0 66 4E"]}
+{"say": "Page 2 and back: the encoder continues from its value"}
+{"press": "shift"}
+{"tap": "down"}
+{"tap": "up"}
+{"release": "shift"}
+{"wait_ms": 400}
+{"turn": "enc1", "clicks": -1}
+{"expect_midi": ["B0 66 4D"]}
+{"say": "(a synth sets the parameter to 10; the encoder continues from there)"}
+{"midi_in": "B0 66 0A"}
+{"wait_ms": 400}
+{"turn": "enc1", "clicks": 1}
+{"expect_midi": ["B0 66 0B"]}

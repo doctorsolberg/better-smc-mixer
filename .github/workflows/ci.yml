@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  host:
+    name: Host tests (Linux, Docker)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Publication checks
+        run: |
+          python3 -I tools/release/check_public.py
+          python3 -I tools/release/check_docs.py
+          python3 -I tools/release/check_versions.py
+      - name: Release tool tests
+        run: python3 -I tools/release/test_release.py
+      - name: Firmware-cycle tool tests (host only)
+        run: python3 -I -m unittest discover -s tools/fwcycle -p 'test_*.py'
+      - name: Every host test in the Linux test image
+        run: tools/env/test_linux.sh
+      - name: The editor's contract tests
+        env:
+          SMC_EDITOR_TESTS: required
+        run: tools/env/test_editor.sh
+
+  device:
+    name: Device images (reproducible)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: deps
+          key: deps-${{ hashFiles('tools/env/fetch_deps.sh') }}
+      - name: Fetch the pinned JieLi toolchain and SDK (hash-checked, not redistributed)
+        run: tools/env/fetch_deps.sh
+      - name: Build every image twice and compare
+        run: python3 -I tools/release/release.py --twice
+      - name: Image hashes
+        run: python3 -I -c "import json;m=json.load(open('build/release/manifest.json'));[print(k,v['build_id'],v['sha256']) for k,v in sorted(m['images'].items())]"

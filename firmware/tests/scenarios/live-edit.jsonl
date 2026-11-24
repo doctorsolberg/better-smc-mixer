@@ -1,0 +1,58 @@
+# Live edits (P-1, CFG_SET; docs/core.md, "Live edits"): the editor changes a control, a preset's
+# settings or the global ones between two events, without a restart: the page and Shift stay, the
+# targets the configuration still addresses keep their values, a changed control's notes end
+# (a held button of it releases nothing), and the new assignment sends from the next touch.
+{"fader": "fader2", "to": 100}
+{"expect_midi": ["B0 15 64"]}
+{"say": "(a synth reports fader 2's parameter at 30)"}
+{"midi_in": "B0 15 1E"}
+{"say": "Shift + down arrow: page 2, then back to page 1 with Shift + up arrow"}
+{"press": "shift"}
+{"tap": "down"}
+{"release": "shift"}
+{"expect_state": {"preset": 1, "page": 2}}
+{"say": "(the editor sends page 2's fader 1 to CC 30 on channel 1)"}
+{"edit": {"preset": 1, "page": 2, "control": "fader1", "to": {"type": "cc7", "channel": 1, "number": 30}}}
+{"expect_midi": []}
+{"expect_log": "configuration edited", "module": "engine"}
+{"expect_state": {"preset": 1, "page": 2, "shift": false}}
+{"say": "Move fader 1: it sends CC 30 (a new target: no value to pick up)"}
+{"fader": "fader1", "to": 50}
+{"expect_midi": ["B0 1E 32"]}
+{"press": "shift"}
+{"tap": "up"}
+{"release": "shift"}
+{"expect_state": {"preset": 1, "page": 1}}
+{"say": "Fader 2 still waits for the synth's 30: the edit kept its target's value"}
+{"fader": "fader2", "from": 100, "to": 90, "steps": 2}
+{"expect_midi": []}
+{"expect_log": "fader 2 waits", "module": "engine"}
+{"say": "Turn M1 on (a toggled note)"}
+{"tap": "m1"}
+{"expect_midi": ["90 18 7F"]}
+{"say": "Hold R1 (a momentary note)"}
+{"press": "r1"}
+{"expect_midi": ["90 28 7F"]}
+{"say": "(the editor makes M1 and R1 CCs: their notes end now)"}
+{"edit": {"preset": 1, "page": 1, "control": "m1", "to": {"type": "cc7", "channel": 1, "number": 60, "mode": "toggle"}}}
+{"expect_midi": ["90 18 00"]}
+{"expect_log": "notes off before a control changes: 1", "module": "engine"}
+{"edit": {"preset": 1, "page": 1, "control": "r1", "to": {"type": "cc7", "channel": 1, "number": 61}}}
+{"expect_midi": ["90 28 00"]}
+{"say": "Release R1: nothing (its note ended at the edit)"}
+{"release": "r1"}
+{"expect_midi": []}
+{"say": "M1 and R1 send their CCs"}
+{"tap": "m1"}
+{"tap": "r1"}
+{"expect_midi": ["B0 3C 7F", "B0 3D 7F", "B0 3D 00"]}
+{"say": "(the editor clears R1: it sends nothing)"}
+{"edit": {"preset": 1, "page": 1, "control": "r1", "to": {}}}
+{"tap": "r1"}
+{"expect_midi": []}
+{"say": "(the editor sets the global pickup to jump: fader 2 now jumps to its position)"}
+{"edit": {"global": {"pickup": "jump"}}}
+{"fader": "fader2", "to": 80}
+{"expect_midi": ["B0 15 50"]}
+{"tap": "m1"}
+{"expect_midi": ["B0 3C 00"]}

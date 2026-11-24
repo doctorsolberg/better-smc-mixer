@@ -1,0 +1,1161 @@
+{
+  "schemaVersion": 1,
+  "presets": [
+    {
+      "row": {
+        "play": {"type": "note", "channel": 1, "number": 84},
+        "stop": {"type": "note", "channel": 1, "number": 85},
+        "rec": {"type": "note", "channel": 1, "number": 86},
+        "rew": {"type": "note", "channel": 1, "number": 87},
+        "ff": {"type": "note", "channel": 1, "number": 88},
+        "bankLeft": {"type": "note", "channel": 1, "number": 89},
+        "bankRight": {"type": "note", "channel": 1, "number": 90},
+        "up": {"type": "note", "channel": 1, "number": 91},
+        "down": {"type": "note", "channel": 1, "number": 92},
+        "left": {"type": "note", "channel": 1, "number": 93},
+        "right": {"type": "note", "channel": 1, "number": 94}
+      },
+      "pages": [
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 1, "number": 20},
+              "encoder": {"type": "cc7", "channel": 1, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 1, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 1, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 1, "number": 40},
+              "select": {"type": "note", "channel": 1, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 1, "number": 21},
+              "encoder": {"type": "cc7", "channel": 1, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 1, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 1, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 1, "number": 41},
+              "select": {"type": "note", "channel": 1, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 1, "number": 22},
+              "encoder": {"type": "cc7", "channel": 1, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 1, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 1, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 1, "number": 42},
+              "select": {"type": "note", "channel": 1, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 1, "number": 23},
+              "encoder": {"type": "cc7", "channel": 1, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 1, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 1, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 1, "number": 43},
+              "select": {"type": "note", "channel": 1, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 1, "number": 24},
+              "encoder": {"type": "cc7", "channel": 1, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 1, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 1, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 1, "number": 44},
+              "select": {"type": "note", "channel": 1, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 1, "number": 25},
+              "encoder": {"type": "cc7", "channel": 1, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 1, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 1, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 1, "number": 45},
+              "select": {"type": "note", "channel": 1, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 1, "number": 26},
+              "encoder": {"type": "cc7", "channel": 1, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 1, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 1, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 1, "number": 46},
+              "select": {"type": "note", "channel": 1, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 1, "number": 27},
+              "encoder": {"type": "cc7", "channel": 1, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 1, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 1, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 1, "number": 47},
+              "select": {"type": "note", "channel": 1, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 2, "number": 20},
+              "encoder": {"type": "cc7", "channel": 2, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 2, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 2, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 2, "number": 40},
+              "select": {"type": "note", "channel": 2, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 2, "number": 21},
+              "encoder": {"type": "cc7", "channel": 2, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 2, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 2, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 2, "number": 41},
+              "select": {"type": "note", "channel": 2, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 2, "number": 22},
+              "encoder": {"type": "cc7", "channel": 2, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 2, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 2, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 2, "number": 42},
+              "select": {"type": "note", "channel": 2, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 2, "number": 23},
+              "encoder": {"type": "cc7", "channel": 2, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 2, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 2, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 2, "number": 43},
+              "select": {"type": "note", "channel": 2, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 2, "number": 24},
+              "encoder": {"type": "cc7", "channel": 2, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 2, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 2, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 2, "number": 44},
+              "select": {"type": "note", "channel": 2, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 2, "number": 25},
+              "encoder": {"type": "cc7", "channel": 2, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 2, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 2, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 2, "number": 45},
+              "select": {"type": "note", "channel": 2, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 2, "number": 26},
+              "encoder": {"type": "cc7", "channel": 2, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 2, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 2, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 2, "number": 46},
+              "select": {"type": "note", "channel": 2, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 2, "number": 27},
+              "encoder": {"type": "cc7", "channel": 2, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 2, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 2, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 2, "number": 47},
+              "select": {"type": "note", "channel": 2, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 3, "number": 20},
+              "encoder": {"type": "cc7", "channel": 3, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 3, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 3, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 3, "number": 40},
+              "select": {"type": "note", "channel": 3, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 3, "number": 21},
+              "encoder": {"type": "cc7", "channel": 3, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 3, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 3, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 3, "number": 41},
+              "select": {"type": "note", "channel": 3, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 3, "number": 22},
+              "encoder": {"type": "cc7", "channel": 3, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 3, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 3, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 3, "number": 42},
+              "select": {"type": "note", "channel": 3, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 3, "number": 23},
+              "encoder": {"type": "cc7", "channel": 3, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 3, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 3, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 3, "number": 43},
+              "select": {"type": "note", "channel": 3, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 3, "number": 24},
+              "encoder": {"type": "cc7", "channel": 3, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 3, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 3, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 3, "number": 44},
+              "select": {"type": "note", "channel": 3, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 3, "number": 25},
+              "encoder": {"type": "cc7", "channel": 3, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 3, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 3, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 3, "number": 45},
+              "select": {"type": "note", "channel": 3, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 3, "number": 26},
+              "encoder": {"type": "cc7", "channel": 3, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 3, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 3, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 3, "number": 46},
+              "select": {"type": "note", "channel": 3, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 3, "number": 27},
+              "encoder": {"type": "cc7", "channel": 3, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 3, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 3, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 3, "number": 47},
+              "select": {"type": "note", "channel": 3, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 4, "number": 20},
+              "encoder": {"type": "cc7", "channel": 4, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 4, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 4, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 4, "number": 40},
+              "select": {"type": "note", "channel": 4, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 4, "number": 21},
+              "encoder": {"type": "cc7", "channel": 4, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 4, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 4, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 4, "number": 41},
+              "select": {"type": "note", "channel": 4, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 4, "number": 22},
+              "encoder": {"type": "cc7", "channel": 4, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 4, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 4, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 4, "number": 42},
+              "select": {"type": "note", "channel": 4, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 4, "number": 23},
+              "encoder": {"type": "cc7", "channel": 4, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 4, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 4, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 4, "number": 43},
+              "select": {"type": "note", "channel": 4, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 4, "number": 24},
+              "encoder": {"type": "cc7", "channel": 4, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 4, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 4, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 4, "number": 44},
+              "select": {"type": "note", "channel": 4, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 4, "number": 25},
+              "encoder": {"type": "cc7", "channel": 4, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 4, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 4, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 4, "number": 45},
+              "select": {"type": "note", "channel": 4, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 4, "number": 26},
+              "encoder": {"type": "cc7", "channel": 4, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 4, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 4, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 4, "number": 46},
+              "select": {"type": "note", "channel": 4, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 4, "number": 27},
+              "encoder": {"type": "cc7", "channel": 4, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 4, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 4, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 4, "number": 47},
+              "select": {"type": "note", "channel": 4, "number": 55}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "row": {
+        "play": {"type": "note", "channel": 5, "number": 84},
+        "stop": {"type": "note", "channel": 5, "number": 85},
+        "rec": {"type": "note", "channel": 5, "number": 86},
+        "rew": {"type": "note", "channel": 5, "number": 87},
+        "ff": {"type": "note", "channel": 5, "number": 88},
+        "bankLeft": {"type": "note", "channel": 5, "number": 89},
+        "bankRight": {"type": "note", "channel": 5, "number": 90},
+        "up": {"type": "note", "channel": 5, "number": 91},
+        "down": {"type": "note", "channel": 5, "number": 92},
+        "left": {"type": "note", "channel": 5, "number": 93},
+        "right": {"type": "note", "channel": 5, "number": 94}
+      },
+      "pages": [
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 5, "number": 20},
+              "encoder": {"type": "cc7", "channel": 5, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 5, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 5, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 5, "number": 40},
+              "select": {"type": "note", "channel": 5, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 5, "number": 21},
+              "encoder": {"type": "cc7", "channel": 5, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 5, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 5, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 5, "number": 41},
+              "select": {"type": "note", "channel": 5, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 5, "number": 22},
+              "encoder": {"type": "cc7", "channel": 5, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 5, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 5, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 5, "number": 42},
+              "select": {"type": "note", "channel": 5, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 5, "number": 23},
+              "encoder": {"type": "cc7", "channel": 5, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 5, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 5, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 5, "number": 43},
+              "select": {"type": "note", "channel": 5, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 5, "number": 24},
+              "encoder": {"type": "cc7", "channel": 5, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 5, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 5, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 5, "number": 44},
+              "select": {"type": "note", "channel": 5, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 5, "number": 25},
+              "encoder": {"type": "cc7", "channel": 5, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 5, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 5, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 5, "number": 45},
+              "select": {"type": "note", "channel": 5, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 5, "number": 26},
+              "encoder": {"type": "cc7", "channel": 5, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 5, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 5, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 5, "number": 46},
+              "select": {"type": "note", "channel": 5, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 5, "number": 27},
+              "encoder": {"type": "cc7", "channel": 5, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 5, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 5, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 5, "number": 47},
+              "select": {"type": "note", "channel": 5, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 6, "number": 20},
+              "encoder": {"type": "cc7", "channel": 6, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 6, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 6, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 6, "number": 40},
+              "select": {"type": "note", "channel": 6, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 6, "number": 21},
+              "encoder": {"type": "cc7", "channel": 6, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 6, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 6, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 6, "number": 41},
+              "select": {"type": "note", "channel": 6, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 6, "number": 22},
+              "encoder": {"type": "cc7", "channel": 6, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 6, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 6, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 6, "number": 42},
+              "select": {"type": "note", "channel": 6, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 6, "number": 23},
+              "encoder": {"type": "cc7", "channel": 6, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 6, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 6, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 6, "number": 43},
+              "select": {"type": "note", "channel": 6, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 6, "number": 24},
+              "encoder": {"type": "cc7", "channel": 6, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 6, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 6, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 6, "number": 44},
+              "select": {"type": "note", "channel": 6, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 6, "number": 25},
+              "encoder": {"type": "cc7", "channel": 6, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 6, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 6, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 6, "number": 45},
+              "select": {"type": "note", "channel": 6, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 6, "number": 26},
+              "encoder": {"type": "cc7", "channel": 6, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 6, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 6, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 6, "number": 46},
+              "select": {"type": "note", "channel": 6, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 6, "number": 27},
+              "encoder": {"type": "cc7", "channel": 6, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 6, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 6, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 6, "number": 47},
+              "select": {"type": "note", "channel": 6, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 7, "number": 20},
+              "encoder": {"type": "cc7", "channel": 7, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 7, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 7, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 7, "number": 40},
+              "select": {"type": "note", "channel": 7, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 7, "number": 21},
+              "encoder": {"type": "cc7", "channel": 7, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 7, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 7, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 7, "number": 41},
+              "select": {"type": "note", "channel": 7, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 7, "number": 22},
+              "encoder": {"type": "cc7", "channel": 7, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 7, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 7, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 7, "number": 42},
+              "select": {"type": "note", "channel": 7, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 7, "number": 23},
+              "encoder": {"type": "cc7", "channel": 7, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 7, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 7, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 7, "number": 43},
+              "select": {"type": "note", "channel": 7, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 7, "number": 24},
+              "encoder": {"type": "cc7", "channel": 7, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 7, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 7, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 7, "number": 44},
+              "select": {"type": "note", "channel": 7, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 7, "number": 25},
+              "encoder": {"type": "cc7", "channel": 7, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 7, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 7, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 7, "number": 45},
+              "select": {"type": "note", "channel": 7, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 7, "number": 26},
+              "encoder": {"type": "cc7", "channel": 7, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 7, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 7, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 7, "number": 46},
+              "select": {"type": "note", "channel": 7, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 7, "number": 27},
+              "encoder": {"type": "cc7", "channel": 7, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 7, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 7, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 7, "number": 47},
+              "select": {"type": "note", "channel": 7, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 8, "number": 20},
+              "encoder": {"type": "cc7", "channel": 8, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 8, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 8, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 8, "number": 40},
+              "select": {"type": "note", "channel": 8, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 8, "number": 21},
+              "encoder": {"type": "cc7", "channel": 8, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 8, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 8, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 8, "number": 41},
+              "select": {"type": "note", "channel": 8, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 8, "number": 22},
+              "encoder": {"type": "cc7", "channel": 8, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 8, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 8, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 8, "number": 42},
+              "select": {"type": "note", "channel": 8, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 8, "number": 23},
+              "encoder": {"type": "cc7", "channel": 8, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 8, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 8, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 8, "number": 43},
+              "select": {"type": "note", "channel": 8, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 8, "number": 24},
+              "encoder": {"type": "cc7", "channel": 8, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 8, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 8, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 8, "number": 44},
+              "select": {"type": "note", "channel": 8, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 8, "number": 25},
+              "encoder": {"type": "cc7", "channel": 8, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 8, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 8, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 8, "number": 45},
+              "select": {"type": "note", "channel": 8, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 8, "number": 26},
+              "encoder": {"type": "cc7", "channel": 8, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 8, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 8, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 8, "number": 46},
+              "select": {"type": "note", "channel": 8, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 8, "number": 27},
+              "encoder": {"type": "cc7", "channel": 8, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 8, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 8, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 8, "number": 47},
+              "select": {"type": "note", "channel": 8, "number": 55}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "row": {
+        "play": {"type": "note", "channel": 9, "number": 84},
+        "stop": {"type": "note", "channel": 9, "number": 85},
+        "rec": {"type": "note", "channel": 9, "number": 86},
+        "rew": {"type": "note", "channel": 9, "number": 87},
+        "ff": {"type": "note", "channel": 9, "number": 88},
+        "bankLeft": {"type": "note", "channel": 9, "number": 89},
+        "bankRight": {"type": "note", "channel": 9, "number": 90},
+        "up": {"type": "note", "channel": 9, "number": 91},
+        "down": {"type": "note", "channel": 9, "number": 92},
+        "left": {"type": "note", "channel": 9, "number": 93},
+        "right": {"type": "note", "channel": 9, "number": 94}
+      },
+      "pages": [
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 9, "number": 20},
+              "encoder": {"type": "cc7", "channel": 9, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 9, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 9, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 9, "number": 40},
+              "select": {"type": "note", "channel": 9, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 9, "number": 21},
+              "encoder": {"type": "cc7", "channel": 9, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 9, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 9, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 9, "number": 41},
+              "select": {"type": "note", "channel": 9, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 9, "number": 22},
+              "encoder": {"type": "cc7", "channel": 9, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 9, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 9, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 9, "number": 42},
+              "select": {"type": "note", "channel": 9, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 9, "number": 23},
+              "encoder": {"type": "cc7", "channel": 9, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 9, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 9, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 9, "number": 43},
+              "select": {"type": "note", "channel": 9, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 9, "number": 24},
+              "encoder": {"type": "cc7", "channel": 9, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 9, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 9, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 9, "number": 44},
+              "select": {"type": "note", "channel": 9, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 9, "number": 25},
+              "encoder": {"type": "cc7", "channel": 9, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 9, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 9, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 9, "number": 45},
+              "select": {"type": "note", "channel": 9, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 9, "number": 26},
+              "encoder": {"type": "cc7", "channel": 9, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 9, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 9, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 9, "number": 46},
+              "select": {"type": "note", "channel": 9, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 9, "number": 27},
+              "encoder": {"type": "cc7", "channel": 9, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 9, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 9, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 9, "number": 47},
+              "select": {"type": "note", "channel": 9, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 10, "number": 20},
+              "encoder": {"type": "cc7", "channel": 10, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 10, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 10, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 10, "number": 40},
+              "select": {"type": "note", "channel": 10, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 10, "number": 21},
+              "encoder": {"type": "cc7", "channel": 10, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 10, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 10, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 10, "number": 41},
+              "select": {"type": "note", "channel": 10, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 10, "number": 22},
+              "encoder": {"type": "cc7", "channel": 10, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 10, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 10, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 10, "number": 42},
+              "select": {"type": "note", "channel": 10, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 10, "number": 23},
+              "encoder": {"type": "cc7", "channel": 10, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 10, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 10, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 10, "number": 43},
+              "select": {"type": "note", "channel": 10, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 10, "number": 24},
+              "encoder": {"type": "cc7", "channel": 10, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 10, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 10, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 10, "number": 44},
+              "select": {"type": "note", "channel": 10, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 10, "number": 25},
+              "encoder": {"type": "cc7", "channel": 10, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 10, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 10, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 10, "number": 45},
+              "select": {"type": "note", "channel": 10, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 10, "number": 26},
+              "encoder": {"type": "cc7", "channel": 10, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 10, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 10, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 10, "number": 46},
+              "select": {"type": "note", "channel": 10, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 10, "number": 27},
+              "encoder": {"type": "cc7", "channel": 10, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 10, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 10, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 10, "number": 47},
+              "select": {"type": "note", "channel": 10, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 11, "number": 20},
+              "encoder": {"type": "cc7", "channel": 11, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 11, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 11, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 11, "number": 40},
+              "select": {"type": "note", "channel": 11, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 11, "number": 21},
+              "encoder": {"type": "cc7", "channel": 11, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 11, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 11, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 11, "number": 41},
+              "select": {"type": "note", "channel": 11, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 11, "number": 22},
+              "encoder": {"type": "cc7", "channel": 11, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 11, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 11, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 11, "number": 42},
+              "select": {"type": "note", "channel": 11, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 11, "number": 23},
+              "encoder": {"type": "cc7", "channel": 11, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 11, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 11, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 11, "number": 43},
+              "select": {"type": "note", "channel": 11, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 11, "number": 24},
+              "encoder": {"type": "cc7", "channel": 11, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 11, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 11, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 11, "number": 44},
+              "select": {"type": "note", "channel": 11, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 11, "number": 25},
+              "encoder": {"type": "cc7", "channel": 11, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 11, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 11, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 11, "number": 45},
+              "select": {"type": "note", "channel": 11, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 11, "number": 26},
+              "encoder": {"type": "cc7", "channel": 11, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 11, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 11, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 11, "number": 46},
+              "select": {"type": "note", "channel": 11, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 11, "number": 27},
+              "encoder": {"type": "cc7", "channel": 11, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 11, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 11, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 11, "number": 47},
+              "select": {"type": "note", "channel": 11, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 12, "number": 20},
+              "encoder": {"type": "cc7", "channel": 12, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 12, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 12, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 12, "number": 40},
+              "select": {"type": "note", "channel": 12, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 12, "number": 21},
+              "encoder": {"type": "cc7", "channel": 12, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 12, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 12, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 12, "number": 41},
+              "select": {"type": "note", "channel": 12, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 12, "number": 22},
+              "encoder": {"type": "cc7", "channel": 12, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 12, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 12, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 12, "number": 42},
+              "select": {"type": "note", "channel": 12, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 12, "number": 23},
+              "encoder": {"type": "cc7", "channel": 12, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 12, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 12, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 12, "number": 43},
+              "select": {"type": "note", "channel": 12, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 12, "number": 24},
+              "encoder": {"type": "cc7", "channel": 12, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 12, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 12, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 12, "number": 44},
+              "select": {"type": "note", "channel": 12, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 12, "number": 25},
+              "encoder": {"type": "cc7", "channel": 12, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 12, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 12, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 12, "number": 45},
+              "select": {"type": "note", "channel": 12, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 12, "number": 26},
+              "encoder": {"type": "cc7", "channel": 12, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 12, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 12, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 12, "number": 46},
+              "select": {"type": "note", "channel": 12, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 12, "number": 27},
+              "encoder": {"type": "cc7", "channel": 12, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 12, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 12, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 12, "number": 47},
+              "select": {"type": "note", "channel": 12, "number": 55}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "row": {
+        "play": {"type": "note", "channel": 13, "number": 84},
+        "stop": {"type": "note", "channel": 13, "number": 85},
+        "rec": {"type": "note", "channel": 13, "number": 86},
+        "rew": {"type": "note", "channel": 13, "number": 87},
+        "ff": {"type": "note", "channel": 13, "number": 88},
+        "bankLeft": {"type": "note", "channel": 13, "number": 89},
+        "bankRight": {"type": "note", "channel": 13, "number": 90},
+        "up": {"type": "note", "channel": 13, "number": 91},
+        "down": {"type": "note", "channel": 13, "number": 92},
+        "left": {"type": "note", "channel": 13, "number": 93},
+        "right": {"type": "note", "channel": 13, "number": 94}
+      },
+      "pages": [
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 13, "number": 20},
+              "encoder": {"type": "cc7", "channel": 13, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 13, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 13, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 13, "number": 40},
+              "select": {"type": "note", "channel": 13, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 13, "number": 21},
+              "encoder": {"type": "cc7", "channel": 13, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 13, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 13, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 13, "number": 41},
+              "select": {"type": "note", "channel": 13, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 13, "number": 22},
+              "encoder": {"type": "cc7", "channel": 13, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 13, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 13, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 13, "number": 42},
+              "select": {"type": "note", "channel": 13, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 13, "number": 23},
+              "encoder": {"type": "cc7", "channel": 13, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 13, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 13, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 13, "number": 43},
+              "select": {"type": "note", "channel": 13, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 13, "number": 24},
+              "encoder": {"type": "cc7", "channel": 13, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 13, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 13, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 13, "number": 44},
+              "select": {"type": "note", "channel": 13, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 13, "number": 25},
+              "encoder": {"type": "cc7", "channel": 13, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 13, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 13, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 13, "number": 45},
+              "select": {"type": "note", "channel": 13, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 13, "number": 26},
+              "encoder": {"type": "cc7", "channel": 13, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 13, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 13, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 13, "number": 46},
+              "select": {"type": "note", "channel": 13, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 13, "number": 27},
+              "encoder": {"type": "cc7", "channel": 13, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 13, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 13, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 13, "number": 47},
+              "select": {"type": "note", "channel": 13, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 14, "number": 20},
+              "encoder": {"type": "cc7", "channel": 14, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 14, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 14, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 14, "number": 40},
+              "select": {"type": "note", "channel": 14, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 14, "number": 21},
+              "encoder": {"type": "cc7", "channel": 14, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 14, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 14, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 14, "number": 41},
+              "select": {"type": "note", "channel": 14, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 14, "number": 22},
+              "encoder": {"type": "cc7", "channel": 14, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 14, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 14, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 14, "number": 42},
+              "select": {"type": "note", "channel": 14, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 14, "number": 23},
+              "encoder": {"type": "cc7", "channel": 14, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 14, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 14, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 14, "number": 43},
+              "select": {"type": "note", "channel": 14, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 14, "number": 24},
+              "encoder": {"type": "cc7", "channel": 14, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 14, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 14, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 14, "number": 44},
+              "select": {"type": "note", "channel": 14, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 14, "number": 25},
+              "encoder": {"type": "cc7", "channel": 14, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 14, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 14, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 14, "number": 45},
+              "select": {"type": "note", "channel": 14, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 14, "number": 26},
+              "encoder": {"type": "cc7", "channel": 14, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 14, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 14, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 14, "number": 46},
+              "select": {"type": "note", "channel": 14, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 14, "number": 27},
+              "encoder": {"type": "cc7", "channel": 14, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 14, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 14, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 14, "number": 47},
+              "select": {"type": "note", "channel": 14, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "cc7", "channel": 15, "number": 20},
+              "encoder": {"type": "cc7", "channel": 15, "number": 102, "mode": "acc1"},
+              "m": {"type": "note", "channel": 15, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 15, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 15, "number": 40},
+              "select": {"type": "note", "channel": 15, "number": 48}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 15, "number": 21},
+              "encoder": {"type": "cc7", "channel": 15, "number": 103, "mode": "acc1"},
+              "m": {"type": "note", "channel": 15, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 15, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 15, "number": 41},
+              "select": {"type": "note", "channel": 15, "number": 49}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 15, "number": 22},
+              "encoder": {"type": "cc7", "channel": 15, "number": 104, "mode": "acc1"},
+              "m": {"type": "note", "channel": 15, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 15, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 15, "number": 42},
+              "select": {"type": "note", "channel": 15, "number": 50}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 15, "number": 23},
+              "encoder": {"type": "cc7", "channel": 15, "number": 105, "mode": "acc1"},
+              "m": {"type": "note", "channel": 15, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 15, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 15, "number": 43},
+              "select": {"type": "note", "channel": 15, "number": 51}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 15, "number": 24},
+              "encoder": {"type": "cc7", "channel": 15, "number": 106, "mode": "acc1"},
+              "m": {"type": "note", "channel": 15, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 15, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 15, "number": 44},
+              "select": {"type": "note", "channel": 15, "number": 52}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 15, "number": 25},
+              "encoder": {"type": "cc7", "channel": 15, "number": 107, "mode": "acc1"},
+              "m": {"type": "note", "channel": 15, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 15, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 15, "number": 45},
+              "select": {"type": "note", "channel": 15, "number": 53}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 15, "number": 26},
+              "encoder": {"type": "cc7", "channel": 15, "number": 108, "mode": "acc1"},
+              "m": {"type": "note", "channel": 15, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 15, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 15, "number": 46},
+              "select": {"type": "note", "channel": 15, "number": 54}
+            },
+            {
+              "fader": {"type": "cc7", "channel": 15, "number": 27},
+              "encoder": {"type": "cc7", "channel": 15, "number": 109, "mode": "acc1"},
+              "m": {"type": "note", "channel": 15, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 15, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 15, "number": 47},
+              "select": {"type": "note", "channel": 15, "number": 55}
+            }
+          ]
+        },
+        {
+          "strips": [
+            {
+              "fader": {"type": "nrpn", "channel": 16, "number": 256},
+              "encoder": {"type": "nrpn", "channel": 16, "number": 384, "mode": "acc1"},
+              "m": {"type": "note", "channel": 16, "number": 24, "mode": "toggle"},
+              "s": {"type": "note", "channel": 16, "number": 32, "mode": "toggle"},
+              "r": {"type": "note", "channel": 16, "number": 40},
+              "select": {"type": "note", "channel": 16, "number": 48}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 16, "number": 257},
+              "encoder": {"type": "nrpn", "channel": 16, "number": 385, "mode": "acc1"},
+              "m": {"type": "note", "channel": 16, "number": 25, "mode": "toggle"},
+              "s": {"type": "note", "channel": 16, "number": 33, "mode": "toggle"},
+              "r": {"type": "note", "channel": 16, "number": 41},
+              "select": {"type": "note", "channel": 16, "number": 49}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 16, "number": 258},
+              "encoder": {"type": "nrpn", "channel": 16, "number": 386, "mode": "acc1"},
+              "m": {"type": "note", "channel": 16, "number": 26, "mode": "toggle"},
+              "s": {"type": "note", "channel": 16, "number": 34, "mode": "toggle"},
+              "r": {"type": "note", "channel": 16, "number": 42},
+              "select": {"type": "note", "channel": 16, "number": 50}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 16, "number": 259},
+              "encoder": {"type": "nrpn", "channel": 16, "number": 387, "mode": "acc1"},
+              "m": {"type": "note", "channel": 16, "number": 27, "mode": "toggle"},
+              "s": {"type": "note", "channel": 16, "number": 35, "mode": "toggle"},
+              "r": {"type": "note", "channel": 16, "number": 43},
+              "select": {"type": "note", "channel": 16, "number": 51}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 16, "number": 260},
+              "encoder": {"type": "nrpn", "channel": 16, "number": 388, "mode": "acc1"},
+              "m": {"type": "note", "channel": 16, "number": 28, "mode": "toggle"},
+              "s": {"type": "note", "channel": 16, "number": 36, "mode": "toggle"},
+              "r": {"type": "note", "channel": 16, "number": 44},
+              "select": {"type": "note", "channel": 16, "number": 52}
+            },
+            {
+              "fader": {"type": "nrpn", "channel": 16, "number": 261},
+              "encoder": {"type": "nrpn", "channel": 16, "number": 389, "mode": "acc1"},
+              "m": {"type": "note", "channel": 16, "number": 29, "mode": "toggle"},
+              "s": {"type": "note", "channel": 16, "number": 37, "mode": "toggle"},
+              "r": {"type": "note", "channel": 16, "number": 45},
+              "select": {"type": "note", "channel": 16, "number": 53}
+            },
+            {
+              "fader": {"type": "rpn", "channel": 16, "number": 1},
+              "encoder": {"type": "nrpn", "channel": 16, "number": 390, "mode": "acc1"},
+              "m": {"type": "note", "channel": 16, "number": 30, "mode": "toggle"},
+              "s": {"type": "note", "channel": 16, "number": 38, "mode": "toggle"},
+              "r": {"type": "note", "channel": 16, "number": 46},
+              "select": {"type": "note", "channel": 16, "number": 54}
+            },
+            {
+              "fader": {"type": "cc14", "channel": 16, "number": 27},
+              "encoder": {"type": "nrpn", "channel": 16, "number": 391, "mode": "acc1"},
+              "m": {"type": "note", "channel": 16, "number": 31, "mode": "toggle"},
+              "s": {"type": "note", "channel": 16, "number": 39, "mode": "toggle"},
+              "r": {"type": "note", "channel": 16, "number": 47},
+              "select": {"type": "note", "channel": 16, "number": 55}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+# NRPN and RPN faders (FR-CTL-01, FR-CTL-03; docs/core.md, "NRPN and RPN"): a fader sends its
+# full 14-bit position as data entry, CC 6 (MSB) then CC 38 (LSB). The parameter number, CC 99/98
+# (RPN: 101/100), goes first when the channel's selection is another parameter and at the start of
+# each gesture. Bank 16 of the test configuration (preset 4, page 4, channel 16) is the 14-bit bank:
+# faders 1-6 NRPN 256 + n (MSB 2, LSB n), fader 7 RPN 1, fader 8 CC 14-bit 27, encoders NRPN 384 + n.
+{"say": "Hold Shift, tap Bank right (preset 4) and the right arrow (page 4), release Shift"}
+{"press": "shift"}
+{"tap": "bank_right"}
+{"tap": "right"}
+{"release": "shift"}
+{"expect_state": {"preset": 4, "page": 4}}
+{"say": "Move fader 1 to the top: NRPN 256 = 16383"}
+{"fader": "fader1", "to_pos": 16383}
+{"expect_midi": ["BF 63 02", "BF 62 00", "BF 06 7F", "BF 26 7F"]}
+{"say": "Down three positions: three values, the parameter still selected"}
+{"fader": "fader1", "from_pos": 16383, "to_pos": 16380, "steps": 3}
+{"expect_midi": ["BF 06 7F", "BF 26 7E", "BF 06 7F", "BF 26 7D", "BF 06 7F", "BF 26 7C"]}
+{"say": "Fader 2 (NRPN 257) on the same channel selects its own parameter"}
+{"fader": "fader2", "to_pos": 100}
+{"expect_midi": ["BF 63 02", "BF 62 01", "BF 06 00", "BF 26 64"]}
+{"say": "Fader 1 again, in the same gesture: its parameter is selected again"}
+{"fader": "fader1", "to_pos": 8192}
+{"expect_midi": ["BF 63 02", "BF 62 00", "BF 06 40", "BF 26 00"]}
+{"say": "After a rest, a new gesture selects it again too"}
+{"wait_ms": 400}
+{"fader": "fader1", "to_pos": 8193}
+{"expect_midi": ["BF 63 02", "BF 62 00", "BF 06 40", "BF 26 01"]}
+{"say": "Fader 7 is RPN 1, fader 8 CC 14-bit 27"}
+{"fader": "fader7", "to_pos": 0}
+{"expect_midi": ["BF 65 00", "BF 64 01", "BF 06 00", "BF 26 00"]}
+{"fader": "fader8", "to_pos": 16383}
+{"expect_midi": ["BF 1B 7F", "BF 3B 7F"]}
+{"say": "The instrument reports NRPN 257 at 8192: fader 2 (at 100) waits for it"}
+{"midi_in": "BF 63 02"}
+{"midi_in": "BF 62 01"}
+{"midi_in": "BF 06 40"}
+{"midi_in": "BF 26 00"}
+{"wait_ms": 400}
+{"fader": "fader2", "from_pos": 100, "to_pos": 4000, "steps": 4}
+{"expect_midi": []}
+{"expect_led": "enc2", "state": "slow"}
+{"expect_log": "fader 2 waits", "module": "engine"}
+{"fader": "fader2", "from_pos": 4000, "to_pos": 8300, "steps": 2}
+{"expect_midi": ["BF 63 02", "BF 62 01", "BF 06 40", "BF 26 6C"]}
+{"expect_led": "enc2", "state": "off"}
+{"expect_log": "fader 2 picked up", "module": "engine"}
+{"say": "Turn encoder 1 a click right: NRPN 384, from 8192 by the 14-bit fine step, 7"}
+{"turn": "enc1", "clicks": 1}
+{"expect_midi": ["BF 63 03", "BF 62 00", "BF 06 40", "BF 26 07"]}

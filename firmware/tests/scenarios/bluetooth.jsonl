@@ -1,0 +1,35 @@
+# Bluetooth on and off (SPEC §5.5, FR-IO-04): a long press of BT (800 ms, as the stock firmware's
+# 41 scans of 20 ms) turns it off, another turns it on; a short press does nothing. Its LED blinks
+# while Bluetooth is on and no central is connected, and is dark while it is off. While it is off
+# the output goes to USB alone (ctl: test_ctl.c, test_ble) and MIDI in from BLE is ignored.
+{"say": "A short press does nothing: it still blinks"}
+{"tap": "bt", "hold_ms": 500}
+{"expect_led": "bt", "state": "slow"}
+{"say": "Hold BT: it turns off at 800 ms, while still held"}
+{"press": "bt"}
+{"wait_ms": 850}
+{"expect_log": "^bluetooth off$", "module": "engine"}
+{"expect_led": "bt", "state": "off"}
+{"release": "bt"}
+{"say": "MIDI in from BLE is ignored now; from USB it is not"}
+{"midi_in": "90 18 64", "transport": "ble"}
+{"expect_led": "m1", "state": "off"}
+{"expect_log": "midi in from BLE ignored", "module": "engine"}
+{"midi_in": "90 18 64"}
+{"expect_led": "m1", "state": "on"}
+{"midi_in": "80 18 00"}
+{"say": "The controls still send (over USB)"}
+{"tap": "m1"}
+{"expect_midi": ["90 18 7F"]}
+{"tap": "m1"}
+{"expect_midi": ["90 18 00"]}
+{"say": "Hold BT again: on"}
+{"press": "bt"}
+{"wait_ms": 850}
+{"release": "bt"}
+{"expect_log": "^bluetooth on$", "module": "engine"}
+{"expect_led": "bt", "state": "slow"}
+{"midi_in": "90 18 64", "transport": "ble"}
+{"expect_led": "m1", "state": "on"}
+{"midi_in": "80 18 00", "transport": "ble"}
+{"expect_led": "m1", "state": "off"}

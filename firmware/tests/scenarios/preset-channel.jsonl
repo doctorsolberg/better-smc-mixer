@@ -1,0 +1,16 @@
+# The preset's MIDI channel (FR-MOD-06, docs/config.md): an assignment on the channel "preset"
+# follows it; one on a fixed channel keeps its own. The factory configuration has every
+# assignment on its preset's channel, preset K on channel K.
+{"set": {"config": "factory", "channel_p1": 5}}
+{"say": "Preset 1, now on channel 5: tap R1, turn encoder 1 a click right"}
+{"tap": "r1"}
+{"expect_log": "presets 1-4: channels 5 2 3 4", "module": "engine"}
+{"expect_midi": ["94 38 7F", "94 38 00"]}
+{"turn": "enc1", "clicks": 1}
+{"expect_midi": ["B4 66 41"]}
+{"say": "Hold Shift, tap the double right arrow (preset 2, channel 2), release; tap R1"}
+{"press": "shift"}
+{"tap": "ff"}
+{"release": "shift"}
+{"tap": "r1"}
+{"expect_midi": ["91 38 7F", "91 38 00"]}

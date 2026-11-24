@@ -1,0 +1,75 @@
+better-smc-mixer
+================
+
+Our code is under the MIT License (SPEC D-7). This file lists the third-party code that is part
+of the repository or of the device images built from it, with the notices its licenses ask for.
+
+TinyUSB
+-------
+third_party/tinyusb/ is an unmodified copy of part of TinyUSB 0.21.0
+(https://github.com/hathach/tinyusb, commit dae3f9a366bfcddbf9dcf1b48d7500286a849539).
+Copyright (c) 2012-2026, hathach (tinyusb.org). MIT License: third_party/tinyusb/LICENSE.
+The bootloader image, the RP2040 recovery key firmware (tools/usbkey) and the application link
+TinyUSB code.
+
+JieLi AC63 SDK
+--------------
+The application is built against the JieLi AC63 SDK (https://github.com/Jieli-Tech/fw-AC63_BT_SDK,
+commit fdc018de81629e21e594d677cf05f87d288be0f0), Apache License 2.0
+(http://www.apache.org/licenses/LICENSE-2.0; included as licenses/jieli-ac63-sdk.txt). The SDK is fetched by
+tools/env/fetch_deps.sh and is not part of the repository.
+
+Files in this repository derived from SDK files (Apache License 2.0). Each one names its source
+file and lists our changes in its header:
+
+  firmware/app/include/app_config.h                     from apps/hid/include/app_config.h
+  firmware/app/board/board_smc_mixer_cfg.h              from apps/hid/board/br25/board_ac636n_demo_cfg.h
+  firmware/app/board/board_smc_mixer_global_build_cfg.h from apps/hid/board/br25/board_ac636n_demo_global_build_cfg.h
+  firmware/app/board/board_smc_mixer.c                  from apps/hid/board/br25/board_ac636n_demo.c
+  firmware/app/config/lib_update_config.c               from apps/hid/config/lib_update_config.c
+  firmware/app/Makefile                                 from apps/hid/board/br25/Makefile
+
+The application image also contains SDK code: SDK source files compiled as they are (listed in
+firmware/app/Makefile) and members of six of the SDK's prebuilt libraries in cpu/br25/liba
+(btctrler.a, btstack.a, cpu.a, crypto_toolbox_Osize.a, system.a, update.a; the link maps of
+2026-11-14, the controller with and without BLE-MIDI and the hardware test alike). The SDK's
+repository states one license, its LICENSE file at the top, and no other terms for these
+libraries (its README says nothing about licensing); we read that LICENSE as covering them.
+A release package carries the SDK's LICENSE as licenses/jieli-ac63-sdk.txt.
+
+The bootloader contains no SDK code.
+
+GCC runtime (RP2040 key)
+------------------------
+The RP2040 recovery key firmware links libgcc from Debian's gcc-arm-none-eabi 12.2 (GPL v3 with
+the GCC Runtime Library Exception, which lets the linked firmware be distributed under our
+license without further conditions). It contains no C library and no Raspberry Pi SDK code.
+
+JieLi toolchain
+---------------
+Device images link a few functions from the JieLi toolchain (clang 4.0.1 for pi32v2,
+jieli-linux-toolchains-20260730.1, docs/build.md); the toolchain package carries no license or
+notice files of its own. From the link maps of 2026-11-14:
+
+  libc.a, libm.a   newlib 2.2.0 (_NEWLIB_VERSION in the toolchain's newlib.h; the archives name
+                   src/newlib/newlib/... as their sources): memcmp, memcpy, memset, strchr,
+                   strcmp, strcpy, strlen, strncmp, the ctype table (ctype_), ceil (s_ceil, from
+                   fdlibm); the bootloader only memcpy and memset
+  libcompiler-rt.a LLVM compiler-rt: adddf3, subdf3, muldf3, divdf3, comparedf2, fixdfsi,
+                   fixunsdfsi, floatsidf, floatunsidf (double arithmetic; divdf3, fixdfsi and
+                   floatsidf in the BLE-MIDI build only)
+
+Their notices, copied unchanged from those versions' sources, are in licenses/newlib.txt and
+licenses/compiler-rt.txt, which go into every release package with this file:
+
+- newlib: ctype_.c is under the University of California's BSD license (Copyright (c) 1989 The
+  Regents of the University of California), s_ceil.c under Sun's fdlibm notice (Copyright (C)
+  1993 by Sun Microsystems, Inc.), and the string functions, which carry no notice of their own,
+  under COPYING.NEWLIB's notice (1) (Copyright (c) 1994-2009 Red Hat, Inc., the BSD License).
+  ctype_.c's text still has the advertising clause; the University withdrew it for its software
+  in 1999. memcpy, memset, strcmp and strcpy have no source named in the archive (no debug
+  information): they may be the toolchain's own assembly rather than newlib's C.
+- compiler-rt 4.0.1: the University of Illinois/NCSA Open Source License and the MIT license
+  (Copyright (c) 2009-2016, and 2009-2015 in the MIT text, by the contributors listed in its
+  CREDITS.TXT), at the user's choice;
+  both ask that the notice go with a binary distribution.

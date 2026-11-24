@@ -1,0 +1,57 @@
+{
+  "name": "stock-details",
+  "description": "Stage 0, after stock-behaviour, in DAW mode (relative encoders, so nothing clamps): encoder steps per revolution (only with a mark on the knob: the knobs have no pointer and no detents), the CC of encoders 2 and 8, the MIDI channel of faders 2 and 8, fader touch, several faders at once. Read-only: nothing is sent to the mixer. No BT, no power-on key combinations.",
+  "steps": [
+    {
+      "id": "daw-check",
+      "text": "Hold Shift and look at ◀ and ▶. If ▶ is lit, press ◀ while still holding Shift (DAW mode). Release.",
+      "ask": "Which arrow is lit while Shift is held now?"
+    },
+    {
+      "id": "idle",
+      "text": "Do not touch the mixer.",
+      "seconds": 5
+    },
+    {
+      "id": "enc1-mark-cw",
+      "text": "Only if you can put a mark on encoder 1 (a bit of tape or a marker dot), otherwise press s: turn encoder 1 clockwise exactly one full revolution, slowly (about 3 s), stopping at the mark."
+    },
+    {
+      "id": "enc1-mark-ccw",
+      "text": "Only with the mark, otherwise s: turn encoder 1 counter-clockwise exactly one full revolution, slowly."
+    },
+    {
+      "id": "enc1-mark-cw-fast",
+      "text": "Only with the mark, otherwise s: turn encoder 1 clockwise exactly one full revolution, as fast as is comfortable."
+    },
+    {
+      "id": "enc2-turn",
+      "text": "Turn encoder 2 a little clockwise, then a little counter-clockwise."
+    },
+    {
+      "id": "enc8-turn",
+      "text": "Turn encoder 8 a little clockwise, then a little counter-clockwise."
+    },
+    {
+      "id": "fader1-touch",
+      "text": "Touch the cap of fader 1 without moving it, keep the finger on it for 2 s, take it off."
+    },
+    {
+      "id": "fader2-full",
+      "text": "Move fader 2 from the bottom to the top and back to the bottom."
+    },
+    {
+      "id": "fader8-full",
+      "text": "Move fader 8 from the bottom to the top and back to the bottom."
+    },
+    {
+      "id": "faders-together",
+      "text": "With one hand, move faders 1 to 4 together from the bottom to the top and back to the bottom."
+    },
+    {
+      "id": "idle-end",
+      "text": "Do not touch the mixer.",
+      "seconds": 5
+    }
+  ]
+}

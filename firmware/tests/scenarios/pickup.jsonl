@@ -1,0 +1,34 @@
+# Fader pickup across pages (FR-CTL-03, FR-PG-02, FR-PG-04): after a page switch a fader waits
+# until it reaches the value its target already has; the encoder LED shows which way to move
+# (slow: up, fast: down).
+{"say": "Move fader 1 to about 3/4"}
+{"fader": "fader1", "to": 100}
+{"expect_midi": ["B0 14 64"]}
+{"say": "Shift + down arrow: page 2"}
+{"press": "shift"}
+{"tap": "down"}
+{"release": "shift"}
+{"say": "(a synth reports page 2's fader 1 parameter at 30)"}
+{"midi_in": "B1 14 1E"}
+{"wait_ms": 400}
+{"say": "Move fader 1 down slowly"}
+{"fader": "fader1", "from": 100, "to": 40, "steps": 6}
+{"expect_midi": []}
+{"expect_led": "enc1", "state": "fast"}
+{"expect_log": "fader 1 waits", "module": "engine"}
+{"fader": "fader1", "from": 40, "to": 20, "steps": 2}
+{"expect_midi": ["B1 14 14"]}
+{"expect_led": "enc1", "state": "off"}
+{"expect_log": "fader 1 picked up"}
+{"say": "Back to page 1, where the value is still 100"}
+{"press": "shift"}
+{"tap": "up"}
+{"release": "shift"}
+{"wait_ms": 400}
+{"fader": "fader1", "from": 20, "to": 50, "steps": 3}
+{"expect_midi": []}
+{"expect_led": "enc1", "state": "slow"}
+{"wait_ms": 400}
+{"expect_led": "enc1", "state": "off"}
+{"fader": "fader1", "from": 50, "to": 110, "steps": 3}
+{"expect_midi": ["B0 14 6E"]}

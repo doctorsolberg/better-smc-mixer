@@ -1,0 +1,20 @@
+# check=skip=FromPlatformFlagConstDisallowed
+# Build environment for the JieLi AC63 SDK (BR25 / AC636N, the SMC-Mixer's AC6966C).
+# The JieLi toolchain is x86_64 Linux only, so the image is linux/amd64 (emulated on Apple silicon).
+# Nothing from JieLi is baked in: tools/env/run.sh mounts the toolchain, the post-build tools and
+# the SDK from deps/ (tools/env/fetch_deps.sh) read-only at run time.
+# The base image is pinned by digest (bookworm-slim as of 2026-11-07); of the Debian packages the
+# ARM toolchain and Node.js are pinned.
+FROM --platform=linux/amd64 debian:bookworm-slim@sha256:734a72b3d6142a71993b4bc580ca01d8ca687f77a2c422d96a961d3376b179bc
+# gcc-arm-none-eabi builds the RP2040 USB key firmware (tools/usbkey, docs/recovery.md): the compiler
+# and libgcc only, no C library and no Raspberry Pi SDK. Pinned to the bookworm versions.
+# nodejs runs the editor's own modules in its contract tests (tools/env/test_editor.sh,
+# docs/integration.md, T-1; SPEC A-20 decided 2026-11-13): Debian's package, no npm.
+# The host tests on Linux (gcc, Python, Node) run in docker/Dockerfile.host, on the machine's own
+# platform with no emulation; this image builds for the device.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        make bash coreutils file xxd python3 ca-certificates \
+        gcc-arm-none-eabi=15:12.2.rel1-1 binutils-arm-none-eabi=2.40-2+18+b1 \
+        nodejs=18.20.4+dfsg-1~deb12u3 libnode108=18.20.4+dfsg-1~deb12u3 \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /work

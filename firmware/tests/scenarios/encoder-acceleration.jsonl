@@ -1,0 +1,16 @@
+# Encoder acceleration (FR-CTL-04, docs/core.md, "Encoder acceleration"):
+# the step grows with the speed of a click. Encoder 1 of the test configuration: CC 102, acc1,
+# starting at 64. The speed scale enc_accel = 200 puts acc1's top step at any click under about
+# 17 ms, so the device's timing (a few ms off the scenario's) cannot change a band: clicks 60 ms
+# apart stay slow, clicks 5 ms apart are fast.
+{"set": {"enc_accel": 200}}
+{"say": "Turn encoder 1 slowly 3 clicks right: one step a click"}
+{"turn": "enc1", "clicks": 3, "every_ms": 60}
+{"expect_midi": ["B0 66 41", "B0 66 42", "B0 66 43"]}
+{"say": "A slow click, then 3 fast ones: acc1's top step, 2.5 a click (2, 3, 2)"}
+{"turn": "enc1", "clicks": 4, "every_ms": 5, "after_ms": 60}
+{"expect_midi": ["B0 66 44", "B0 66 46", "B0 66 49", "B0 66 4B"]}
+{"say": "Turn back 2 clicks slowly: a reversal starts with one step"}
+{"turn": "enc1", "clicks": -2, "every_ms": 60, "after_ms": 60}
+{"expect_midi": ["B0 66 4A", "B0 66 49"]}
+{"expect_log": "encoder 1 [0-9a-f]+ -1: 75 -> 74", "module": "engine"}

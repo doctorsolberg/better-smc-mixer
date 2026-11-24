@@ -1,0 +1,32 @@
+# Buttons (FR-CTL-06, FR-CTL-07): toggles and momentary notes, LEDs from the target store.
+{"tap": "m1"}
+{"expect_midi": ["90 18 7F"]}
+{"expect_led": "m1", "state": "on"}
+{"tap": "m1"}
+{"expect_midi": ["90 18 00"]}
+{"expect_led": "m1", "state": "off"}
+{"press": "r1"}
+{"expect_led": "r1", "state": "on"}
+{"release": "r1"}
+{"expect_midi": ["90 28 7F", "90 28 00"]}
+{"expect_led": "r1", "state": "off"}
+{"say": "Hold R1, switch to page 2, release: the note off goes to page 1's channel"}
+{"press": "r1"}
+{"press": "shift"}
+{"tap": "down"}
+{"release": "shift"}
+{"release": "r1"}
+{"expect_midi": ["90 28 7F", "90 28 00"]}
+{"tap": "r1"}
+{"expect_midi": ["91 28 7F", "91 28 00"]}
+{"say": "(a synth turns S2 on; page 2 is channel 2)"}
+{"midi_in": "91 21 7F"}
+{"expect_led": "s2", "state": "on"}
+{"tap": "s2"}
+{"expect_midi": ["91 21 00"]}
+{"expect_led": "s2", "state": "off"}
+{"say": "The bottom row is the same on every page: notes on the preset's first channel"}
+{"tap": "play"}
+{"expect_midi": ["90 54 7F", "90 54 00"]}
+{"tap": "bt"}
+{"expect_midi": []}

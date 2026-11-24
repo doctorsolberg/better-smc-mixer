@@ -1,0 +1,5 @@
+{
+  "//": "Not an npm package: tells Node (the editor's contract tests, tools/editortest) that the .js files here are ES modules, as the browser loads them. No dependencies.",
+  "private": true,
+  "type": "module"
+}

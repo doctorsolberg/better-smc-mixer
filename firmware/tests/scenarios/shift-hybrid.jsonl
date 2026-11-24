@@ -1,0 +1,22 @@
+# Hybrid Shift (FR-SH-01): a short press latches, a hold or a use while held is temporary.
+{"set": {"shift_mode": "hybrid"}}
+{"say": "Tap Shift: it stays on"}
+{"tap": "shift", "hold_ms": 100}
+{"expect_state": {"shift": true}}
+{"expect_led": "shift", "state": "on"}
+{"tap": "down"}
+{"expect_state": {"page": 2, "shift": true}}
+{"say": "Tap Shift again: off"}
+{"tap": "shift", "hold_ms": 100}
+{"expect_state": {"shift": false}}
+{"expect_led": "shift", "state": "off"}
+{"say": "Hold Shift, tap the right arrow, release: temporary"}
+{"press": "shift"}
+{"tap": "right"}
+{"release": "shift"}
+{"expect_state": {"page": 4, "shift": false}}
+{"say": "Hold Shift for half a second: temporary"}
+{"press": "shift"}
+{"wait_ms": 500}
+{"release": "shift"}
+{"expect_state": {"shift": false}}

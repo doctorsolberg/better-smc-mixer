@@ -1,0 +1,32 @@
+# Page and preset navigation (FR-PG-01, FR-PG-03, FR-PG-06, FR-SH-06): Shift + arrows select
+# pages, Shift + double arrows select presets; the LEDs show where you are.
+{"say": "Hold Shift"}
+{"press": "shift"}
+{"expect_led": "shift", "state": "on"}
+{"expect_led": "up", "state": "on"}
+{"expect_led": "rew", "state": "on"}
+{"expect_led": "down", "state": "off"}
+{"say": "Tap the down arrow: page 2"}
+{"tap": "down"}
+{"expect_state": {"preset": 1, "page": 2, "shift": true}}
+{"expect_led": "down", "state": "fast"}
+{"expect_led": "up", "state": "off"}
+{"wait_ms": 1100}
+{"expect_led": "down", "state": "on"}
+{"say": "Tap Bank right: preset 4, page 1"}
+{"tap": "bank_right"}
+{"expect_state": {"preset": 4, "page": 1}}
+{"tap": "right"}
+{"expect_state": {"preset": 4, "page": 4}}
+{"say": "Tap Rew: preset 1, back on its page 2"}
+{"tap": "rew"}
+{"expect_state": {"preset": 1, "page": 2}}
+{"expect_log": "preset 1 page 2", "module": "engine"}
+{"release": "shift"}
+{"wait_ms": 1100}
+{"expect_led": "shift", "state": "off"}
+{"expect_led": "down", "state": "off"}
+{"expect_midi": []}
+{"say": "Move fader 1: page 2 of preset 1 is channel 2"}
+{"fader": "fader1", "to": 64}
+{"expect_midi": ["B1 14 40"]}

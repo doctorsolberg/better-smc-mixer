@@ -1,0 +1,10 @@
+# Injected input (LOG-33): the same path as real input, marked as injected in the log.
+{"tap": "m1", "injected": true}
+{"expect_midi": ["90 18 7F"]}
+{"expect_log": "button 0 down \\(injected\\)", "module": "input"}
+{"fader": "fader3", "to": 127, "injected": true}
+{"expect_midi": ["B0 16 7F"]}
+{"expect_log": "fader 3 = 16383 \\(injected\\)"}
+# M1 is a toggle: tapped again, so the scenario leaves no note sounding (the end check).
+{"tap": "m1", "injected": true}
+{"expect_midi": ["90 18 00"]}
