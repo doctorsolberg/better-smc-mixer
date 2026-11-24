@@ -32,6 +32,8 @@ jobs:
         run: python3 -I -m unittest discover -s tools/fwcycle -p 'test_*.py'
       - name: Every host test in the Linux test image
         run: tools/env/test_linux.sh
+      - name: The host simulator and configuration tool for the editor's tests
+        run: make -C firmware sim
       - name: The editor's contract tests
         env:
           SMC_EDITOR_TESTS: required
