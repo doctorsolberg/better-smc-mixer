@@ -9,7 +9,7 @@ files (D-8):
                   "pages": [{"name", "strips": [{"fader": ctl, "encoder": ctl, "m": ctl, "s": ctl,
                                                  "r": ctl, "select": ctl}]}],
                   "row": [ctl] * 11}]}
-    ctl = {"name", "normal": assign, "shift": assign, "shift_kind"}; assign = {c field: value}
+    ctl = {"name", "normal": assign, "shift": assign, "shift_kind", "shift_name"}; assign = {c field: value}
 
 An assignment's channel is 0-15, or 16 (CORE_CHANNEL_PRESET, "preset" in files): the preset's.
 
@@ -67,7 +67,7 @@ def empty_assign():
 
 
 def empty_control():
-    return {"name": None, "normal": empty_assign(), "shift": empty_assign(), "shift_kind": INHERIT}
+    return {"name": None, "normal": empty_assign(), "shift": empty_assign(), "shift_kind": INHERIT, "shift_name": None}
 
 
 def empty_config(dev=None):
@@ -328,9 +328,11 @@ def control_from_json(obj, kind, nav, path):
         ctl["shift_kind"] = SHIFT.index(s)
         return ctl
     need(isinstance(s, dict), path + ".shift", "\"inherit\", \"block\" or a layer of its own")
-    keys_ok(s, JSON_KEYS, path + ".shift")
+    keys_ok(s, ["name"] + JSON_KEYS, path + ".shift")
     need("type" in s, path + ".shift", "a layer of its own is written in full: its type at least")
-    ctl["shift"] = resolve(kind, s, path + ".shift")
+    # its own name (only a layer of its own has one; names live only in the file, D-8)
+    ctl["shift_name"] = name_of(s, path + ".shift")
+    ctl["shift"] = resolve(kind, {k: v for k, v in s.items() if k in JSON_KEYS}, path + ".shift")
     need(ctl["shift"]["msg"] != NONE, path + ".shift", "a layer that sends nothing: use \"block\"")
     ctl["shift_kind"] = OVERRIDE
     return ctl
@@ -426,9 +428,11 @@ def control_to_json(kind, nav, ctl):
     if ctl["name"] is not None:
         out["name"] = ctl["name"]
     out.update(assign_to_json(kind, ctl["normal"]))
-    if (ctl["shift_kind"], ctl["shift"]) != default_shift(kind, ctl["normal"]):
+    named = ctl["shift_kind"] == OVERRIDE and ctl.get("shift_name") is not None
+    if named or (ctl["shift_kind"], ctl["shift"]) != default_shift(kind, ctl["normal"]):
         if ctl["shift_kind"] == OVERRIDE:
-            out["shift"] = assign_to_json(kind, ctl["shift"])
+            out["shift"] = {"name": ctl["shift_name"]} if ctl.get("shift_name") is not None else {}
+            out["shift"].update(assign_to_json(kind, ctl["shift"]))
         else:
             out["shift"] = SHIFT.json[ctl["shift_kind"]]
     return out

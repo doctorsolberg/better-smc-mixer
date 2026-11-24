@@ -58,6 +58,20 @@ offers to send them when you connect again.
 Use one editor at a time. If another app changes the mixer's configuration, the editor notices and
 asks you to load the mixer's copy or send yours.
 
+## Copy, paste and clear
+
+**Copy**, **Paste** and **Clear** (in the inspector, or ⌘C, ⌘V and Delete) act on the layer you see:
+Normal or Shift. The other layer and the controls' names stay as they are. To give a control a
+Shift layer that differs in one setting, copy it under Normal, switch the Layer to Shift, paste,
+and change that setting. A paste onto another kind of control keeps what that kind can take.
+
+A control that does something else with Shift (**Own** under “With Shift held”) has a name of its
+own there: switch the Layer to Shift and type it in the name field. Otherwise Shift shows the
+control's name.
+
+The bottom row belongs to the whole preset: **Clear page** leaves it, and the preset menu's
+**Clear bottom row** clears it.
+
 ## Mapping an instrument
 
 **Map instrument** in the top bar puts a synth's parameters on the controls. Choose the instrument,

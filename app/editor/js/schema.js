@@ -97,8 +97,8 @@ export class Schema {
       errs.push(`${path}: not an object`);
       return;
     }
-    const allowed = new Set(['type', ...this.layerFields.map((f) => f.json)]);
-    if (!isShift) { allowed.add('name'); allowed.add('shift'); }
+    const allowed = new Set(['type', 'name', ...this.layerFields.map((f) => f.json)]);
+    if (!isShift) allowed.add('shift');
     for (const k of Object.keys(layer)) if (!allowed.has(k)) errs.push(`${path}.${k}: unknown field`);
     const fieldKeys = Object.keys(layer).filter((k) => k !== 'name' && k !== 'shift');
     if (fieldKeys.length && layer.type === undefined) {
@@ -142,6 +142,7 @@ export class Schema {
     if (typeof obj.shift === 'string') { errs.push(`${path}.shift: "inherit", "block" or a layer of its own`); return; }
     if (obj.shift && obj.shift.type === undefined) { errs.push(`${path}.shift: a layer of its own is written in full: its type at least`); return; }
     this.checkLayer(obj.shift, kind, path + '.shift', errs, true);
+    if (obj.shift.name !== undefined) this.checkName(obj.shift.name, path + '.shift.name', errs);
   }
 
   checkName(v, path, errs) {

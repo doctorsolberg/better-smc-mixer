@@ -80,7 +80,7 @@ export class Config {
       case 'inherit': return this.normal(ctl);
       case 'block': return null;
       case 'fine': { const l = this.normal(ctl); l.mode = 'fine'; delete l.n; return l; }
-      default: return structuredClone(ctl.shift);
+      default: { const { name, ...l } = ctl.shift; return structuredClone(l); }
     }
   }
 
@@ -89,6 +89,7 @@ export class Config {
   setShiftState(ctl, kind, state) {
     if (state === 'own') {
       if (!(ctl.shift && typeof ctl.shift === 'object')) {
+        // a name of the Shift layer lives on it: it starts without one (the control's name shows)
         const l = this.shiftLayer(ctl, kind) ?? this.normal(ctl);
         if (!l.type || l.type === 'none') { l.type = this.S.types(kind)[1]; }
         ctl.shift = this.cleanLayer(l, kind);
@@ -96,6 +97,52 @@ export class Config {
     } else if (state === 'block') ctl.shift = 'block';
     else if (state === 'fine') delete ctl.shift;
     else if (state === 'inherit') { if (kind === 'encoder') ctl.shift = 'inherit'; else delete ctl.shift; }
+  }
+
+  // ---- names (they live only in the file, D-8) ----------------------------------------------
+
+  // The name of a layer: a Shift layer of its own has its own (none until given; the control's
+  // would name something it does not do); any other Shift layer plays the Normal one, named so.
+  nameOn(ctl, kind, layer) {
+    if (layer === 'shift' && this.canRename(ctl, kind, 'shift')) return ctl.shift.name;
+    return ctl.name;
+  }
+  // Under Shift, only a layer of its own does something else, so only it takes another name.
+  canRename(ctl, kind, layer) { return layer === 'normal' || this.shiftState(ctl, kind) === 'own'; }
+  rename(ctl, kind, layer, name) {
+    const target = layer === 'shift' && this.canRename(ctl, kind, 'shift') ? ctl.shift : ctl;
+    if (name) target.name = name; else delete target.name;
+    return ctl;
+  }
+
+  // ---- one layer at a time (copy, paste, clear: the panel shows one layer) -------------------
+
+  // What a layer of a control plays: its fields only (no name, no Shift), or null for nothing.
+  layerOf(ctl, kind, layer) {
+    if (layer === 'normal') { const l = this.normal(ctl); return (l.type ?? 'none') === 'none' ? null : l; }
+    return this.shiftLayer(ctl, kind);
+  }
+
+  // Puts a layer (from layerOf, maybe of another control or kind) onto one layer of ctl. The other
+  // layer and the name stay; fields this kind cannot take go. null: that layer sends nothing.
+  putLayer(ctl, kind, layer, src) {
+    const fields = src && (src.type ?? 'none') !== 'none' && this.S.types(kind).includes(src.type) ? structuredClone(src) : null;
+    if (fields) {
+      // One field, mode, means a different thing on each kind: keep it only if this kind has it.
+      if (fields.mode !== undefined && !this.S.modeEnum(kind).values.some((v) => v.json === fields.mode)) delete fields.mode;
+      this.cleanLayer(fields, kind);
+    }
+    if (layer === 'shift') {
+      // the Shift layer's own name stays with it, as the control's name stays with the control
+      const keep = ctl.shift && typeof ctl.shift === 'object' ? ctl.shift.name : undefined;
+      ctl.shift = fields ? { ...(keep !== undefined && { name: keep }), ...fields } : 'block';
+      return ctl;
+    }
+    for (const k of Object.keys(ctl)) if (k !== 'name' && k !== 'shift') delete ctl[k];
+    if (fields) Object.assign(ctl, fields);
+    // An encoder's default Shift (fine) needs a type; one that sends nothing has nothing to refine.
+    if (!fields && ctl.shift === undefined && kind === 'encoder') delete ctl.shift;
+    return ctl;
   }
 
   // ---- edits -------------------------------------------------------------------------------
@@ -171,7 +218,8 @@ export class Config {
     if (st === 'own') {
       const own = this.canonLayer(ctl.shift, kind);
       const fine = this.canonLayer(this.shiftLayer({ ...ctl, shift: undefined }, kind) ?? {}, kind);
-      if (!(def === 'fine' && JSON.stringify(own) === JSON.stringify(fine))) out.shift = own;
+      if (ctl.shift.name) out.shift = { name: ctl.shift.name, ...own };
+      else if (!(def === 'fine' && JSON.stringify(own) === JSON.stringify(fine))) out.shift = own;
     } else if (st !== def && st !== 'fine') {
       out.shift = st;
     }

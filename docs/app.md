@@ -269,8 +269,9 @@ named in place (offline, GitHub's rate limit, not found, data the editor cannot 
 instruments opened before still work.
 
 **The instrument card** at the top of the side panel: "Instrument", its name, "Change" at the right,
-and one line on where its list comes from (the number of parameters, MIDI Guide with its licence
-and date, a link to correct a mistake in MIDI Guide's repository).
+and one line on where its list comes from: the number of parameters and a "MIDI Guide" link with an
+icon to this instrument's own file in MIDI Guide's repository, where its data can be read and
+corrected. The source and its licence are named in the "Choose an instrument" dialog.
 
 **Onto this page**: each section of the list (Oscillator, Filter, Envelope…) has a button that puts
 the whole section on the page in one undo step, by a rule simple enough to predict:
@@ -384,7 +385,16 @@ value. The dialog speaks the type's terms, because one start and one step do not
 
 - **Controls:** Copy takes the selection; Paste of one control fills every selected control of the
   same kind; Paste of several keeps their shape, moved so the leftmost strip lands on the
-  selection's leftmost strip.
+  selection's leftmost strip. Copy, Paste and Clear act on the layer shown, Normal or Shift, and
+  leave the other layer and the names as they are (the owner, 2026-11-24: the panel shows one
+  layer, so an operation on the hidden one was a surprise). A layer copied under Normal pastes onto
+  Shift and back: a Shift layer that differs in one setting starts as a copy. A layer pasted onto
+  another kind keeps what that kind takes (a fader's pickup is not a button's mode); a message the
+  kind cannot send is skipped and the toast counts it. Clear under Normal makes the Normal layer
+  send nothing and keeps a Shift layer of its own; under Shift it makes the control do nothing
+  with Shift.
+- **The bottom row** belongs to the whole preset, not to a page: "Clear page" leaves it (the toast
+  says so) and the preset menu's "Clear bottom row" clears it.
 - **Pages and presets** (a second tap on the open tab, or a right click): rename, copy, paste,
   paste a page **with an offset** (numbers +k, fixed channels +k; note numbers only when asked,
   names dropped unless kept), save a copy, clear; a preset also opens its settings, is saved as a

@@ -490,3 +490,40 @@ test('failed Update stock check leaves one dismissible error result, not an acti
   assert.equal(m.firmwareJob.active,false);
   assert.match(m.firmwareJob.error.message,/stock check refused/);
 });
+
+// The instrument card's source line, built by the page's real function with the page's h().
+function sourceLine(list) {
+  const node = (tag, attrs = {}, ...kids) => {
+    const n = { tag, attrs, children: [] };
+    for (const c of kids.flat()) if (c !== null && c !== undefined && c !== false) n.children.push(typeof c === 'object' && c.tag ? c : String(c));
+    return n;
+  };
+  const start = app.indexOf('function instrumentSource(');
+  assert.ok(start >= 0, 'app.js defines instrumentSource(list)');
+  const ctx = vm.createContext({ h: node, icon: (name) => node('span', { class: 'ic', name }),
+    plural: (n, one) => `${n} ${n === 1 ? one : one + 's'}` });
+  vm.runInContext(app.slice(start, app.indexOf('\n}\n', start) + 3), ctx);
+  return ctx.instrumentSource(list);
+}
+const texts = (n) => typeof n === 'string' ? [n] : n.children.flatMap(texts);
+const links = (n) => typeof n === 'string' ? [] : [...(n.tag === 'a' ? [n] : []), ...n.children.flatMap(links)];
+
+test('instrument card: a MIDI Guide list links to its own file, compactly, with no raw URL or licence', () => {
+  const file = 'https://github.com/pencilresearch/midi/blob/main/Elektron/Digitone%20II.csv';
+  const line = sourceLine({ name: 'Elektron Digitone II', params: new Array(341).fill({}),
+    source: { name: 'MIDI Guide', url: 'https://midi.guide', data: file, updated: '2025-06-01T10:00:00Z' } });
+  const text = texts(line).join('');
+  assert.doesNotMatch(text, /https?:|,\s*$|CC BY-SA/, text);
+  assert.match(text, /^341 parameters · MIDI Guide/);
+  const a = links(line);
+  assert.equal(a.length, 1, 'one link: the instrument in MIDI Guide');
+  assert.equal(a[0].attrs.href, file);
+  assert.equal(a[0].attrs.target, '_blank');
+  assert.match(a[0].attrs.title, /MIDI Guide/);
+});
+
+test('instrument card: a built-in list keeps its own description', () => {
+  const line = sourceLine({ name: 'Generic', params: [{}], about: 'Plain CCs.' });
+  assert.deepEqual(texts(line), ['Plain CCs.']);
+  assert.equal(links(line).length, 0);
+});

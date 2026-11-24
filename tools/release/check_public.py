@@ -9,7 +9,8 @@ The published files are everything under the repository root that .gitignore doe
                lists and strings in text; needs the local stock files in materials/ (the update file
                *.fwsc, dumps/stock*.bin and dumps/smc-mixer_*.bin), skipped without them
   private      a string from materials/private-strings.txt (local, never published: one string per
-               line, '#' comments; the serial number, Bluetooth addresses, names), case-insensitive
+               line, '#' comments; the serial number, Bluetooth addresses, names), case-insensitive;
+               a line '!text' allows that whole text (a public link that contains a private name)
   home         an absolute home path (/Users/x, /home/x, C:\\Users\\x)
   email        an e-mail address (noreply@ and example.* addresses allowed)
   mac          a Bluetooth or Ethernet address written aa:bb:cc:dd:ee:ff (all-zero and all-FF allowed)
@@ -139,13 +140,29 @@ def load_private(root):
     path = os.path.join(root, "materials", "private-strings.txt")
     if not os.path.exists(path):
         return None
-    out = []
+    out, allowed = [], []
     with open(path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
-            if line and not line.startswith("#"):
+            if line.startswith("!") and len(line) > 1:
+                allowed.append(line[1:].lower())
+            elif line and not line.startswith("#"):
                 out.append(line.lower())
-    return out
+    return Private(out, allowed)
+
+
+class Private(list):
+    """The private strings, with the texts allowed although they contain one."""
+
+    def __init__(self, strings, allowed=()):
+        super().__init__(strings)
+        self.allowed = list(allowed)
+
+    def mask(self, low):
+        """low with every allowed text blanked out (same length, so line numbers hold)."""
+        for a in self.allowed:
+            low = low.replace(a, " " * len(a))
+        return low
 
 
 def line_of(text, pos):
@@ -180,6 +197,8 @@ def check_file(rel, data, stock, private):
     if third or rel == SELF:
         return found
     low = text.lower()
+    if isinstance(private, Private):
+        low = private.mask(low)
     for s in private or ():
         i = low.find(s)
         if i >= 0:

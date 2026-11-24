@@ -464,6 +464,29 @@ class FileTest(unittest.TestCase):
             with self.subTest(where=where):
                 self.assertError(bad, where)
 
+    def test_shift_layer_name(self):
+        # a Shift layer of its own may have a name of its own (names live only in the file, D-8)
+        doc_ = strip_doc(fader={"name": "Volume", "type": "cc7", "number": 7, "shift": {"name": "Pan", "type": "cc7", "number": 10}})
+        m = codec.from_json(doc_)
+        f = first_strip(m)["fader"]
+        self.assertEqual((f["name"], f["shift_name"]), ("Volume", "Pan"))
+        out = codec.to_json(m)
+        self.assertEqual(out["presets"][0]["pages"][0]["strips"][0]["fader"]["shift"],
+                         {"name": "Pan", "type": "cc7", "number": 10})
+        # not on the device: the binary form is the same with or without it
+        plain = strip_doc(fader={"name": "Volume", "type": "cc7", "number": 7, "shift": {"type": "cc7", "number": 10}})
+        self.assertEqual(codec.encode(codec.from_json(doc_)), codec.encode(codec.from_json(plain)))
+        self.assertEqual(codec.edits(codec.from_json(plain), codec.from_json(doc_)), [])
+        # only a layer of its own has one; a name alone is not a layer
+        self.assertError(strip_doc(fader={"type": "cc7", "shift": {"name": "Pan"}}), "a layer of its own is written in full")
+        self.assertError(strip_doc(fader={"type": "cc7", "shift": {"name": 5, "type": "cc7"}}), "fader.shift.name")
+        self.assertError(strip_doc(fader={"type": "cc7", "shift": {"name": "x" * 65, "type": "cc7"}}), "fader.shift.name")
+        # an encoder's fine Shift layer with a name stays written: the name is not lost
+        fine = strip_doc(encoder={"type": "cc7", "number": 1, "shift": {"name": "Fine cut", "type": "cc7", "number": 1, "mode": "fine"}})
+        e = codec.to_json(codec.from_json(fine))["presets"][0]["pages"][0]["strips"][0]["encoder"]
+        self.assertEqual(e["shift"], {"name": "Fine cut", "type": "cc7", "number": 1, "mode": "fine"})
+        self.assertEqual(codec.to_json(codec.from_json(json.loads(json.dumps(codec.to_json(codec.from_json(fine)))))), codec.to_json(codec.from_json(fine)))
+
     def test_shift_layer(self):
         # a layer of its own is written in full: nothing comes from the Normal layer
         m = codec.from_json(strip_doc(fader={"type": "cc7", "number": 7, "lo": 10, "shift": {"type": "cc7", "number": 8}}))

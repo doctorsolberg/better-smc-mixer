@@ -1,30 +1,59 @@
 :root {
   color-scheme: light dark;
-  --bg: #f3f3f5; --surface: #ffffff; --text: #1c1c1e; --muted: #6b6b73; --line: rgba(60, 60, 67, .14);
+  --bg: #f3f3f5; --surface: #ffffff; --text: #1c1c1e; --muted: #5c5c64; --line: rgba(60, 60, 67, .14);
   --accent: oklch(.56 .17 256); --on-accent: #fff;
+  --mango: #ffb020; --on-mango: #1c1c1e;
+  --pad: clamp(16px, 4vw, 40px);
+  --text-max: 860px;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #0d0d0f; --surface: #17171a; --text: #f2f2f4; --muted: #9b9ba5; --line: rgba(255, 255, 255, .1);
+  :root { --bg: #0d0d0f; --surface: #17171a; --text: #f2f2f4; --muted: #a5a5ae; --line: rgba(255, 255, 255, .1);
     --accent: oklch(.7 .15 256); --on-accent: #0d0d0f; }
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text);
   font: 17px/1.55 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 a { color: var(--accent); }
-.wrap { max-width: 980px; margin: 0 auto; padding: 0 24px; }
-.hero { padding: 72px 0 48px; border-bottom: 1px solid var(--line); background: var(--surface); }
-.kicker { margin: 0; color: var(--muted); font-size: 14px; letter-spacing: .02em; }
-h1 { margin: 8px 0 12px; font-size: clamp(36px, 6vw, 56px); letter-spacing: -.02em; line-height: 1.05; }
-.lead { max-width: 720px; font-size: 20px; margin: 0 0 28px; }
-.actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 12px; }
+.wrap { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 var(--pad); }
+
+.hero { padding: clamp(48px, 7vw, 80px) 0 clamp(40px, 6vw, 64px); border-bottom: 1px solid var(--line); background: var(--surface); }
+h1 { margin: 0 0 14px; font-size: clamp(36px, 6vw, 60px); letter-spacing: -.02em; line-height: 1.05; }
+.lead { max-width: 780px; font-size: clamp(18px, 2vw, 21px); margin: 0 0 28px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 14px; }
 .button { display: inline-block; padding: 11px 18px; border-radius: 10px; border: 1px solid var(--line);
-  color: var(--text); text-decoration: none; font-weight: 600; background: var(--bg); }
-.button.primary { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+  color: var(--text); text-decoration: none; font-weight: 600; background: var(--bg); white-space: nowrap; }
+.hero .button { border-color: color-mix(in srgb, var(--text) 22%, transparent); }
+.button.primary, .hero .button.primary { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+.button.mango { background: var(--mango); color: var(--on-mango); border-color: transparent; }
 .note { color: var(--muted); font-size: 15px; margin: 0; }
-main section { padding: 40px 0 8px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-.grid article { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 4px 22px 14px; }
-h2 { font-size: 21px; margin: 18px 0 8px; }
+
+main section { padding-top: clamp(40px, 6vw, 64px); }
+main section > p, .steps { max-width: var(--text-max); }
+.section-title { font-size: clamp(24px, 3vw, 30px); letter-spacing: -.01em; margin: 0 0 12px; }
+.section-lead { margin: 0 0 24px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 18px; }
+.grid article { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px 8px; }
+.grid h3 { font-size: 18px; margin: 0 0 6px; }
+.grid p { margin: 0 0 12px; font-size: 16px; }
 .steps { padding-left: 22px; }
 .steps li { margin: 6px 0; }
-footer { padding: 40px 24px 56px; color: var(--muted); font-size: 14px; }
+
+main section.support { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 40px;
+  margin-top: clamp(40px, 6vw, 64px); padding: 24px 28px; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 14px; }
+.support > div { flex: 1 1 420px; }
+.support .section-title { font-size: 21px; margin-bottom: 4px; }
+.support p { margin: 0; }
+
+footer.wrap { margin-top: clamp(48px, 7vw, 72px); padding-top: 28px; padding-bottom: 64px;
+  border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+footer h2 { font-size: 15px; margin: 0 0 8px; color: var(--text); }
+footer ul { margin: 0; padding-left: 18px; max-width: var(--text-max); }
+footer li { margin: 0 0 8px; }
+@media (max-width: 520px) {
+  .grid article { padding: 16px 16px 4px; }
+  main section.support { padding: 20px 18px; }
+  .actions .button { flex: 1 1 auto; text-align: center; }
+}
+.nowrap { white-space: nowrap; }
+p, li { text-wrap: pretty; }

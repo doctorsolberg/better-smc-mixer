@@ -393,6 +393,7 @@ def gen_json_schema(S):
         # not none ("block" says that).
         layer_props = dict(props)
         layer_props["type"] = dict(props["type"], enum=[t for t in props["type"]["enum"] if t != "none"])
+        layer_props["name"] = name  # its own name, when it does something else than the Normal layer
         defs[kind.name + "Layer"] = {
             "type": "object", "properties": layer_props, "additionalProperties": False, "required": ["type"],
             "description": "a Shift layer of its own, written in full as the Normal layer is", "allOf": rules}

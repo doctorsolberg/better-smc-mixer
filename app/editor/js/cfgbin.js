@@ -130,7 +130,7 @@ export class Codec {
   // --- the model --------------------------------------------------------------------------------
 
   emptyAssign() { return Object.fromEntries(FIELD_ORDER.map((c) => [c, 0])); }
-  emptyControl() { return { name: null, normal: this.emptyAssign(), shift: this.emptyAssign(), shiftKind: this.INHERIT }; }
+  emptyControl() { return { name: null, normal: this.emptyAssign(), shift: this.emptyAssign(), shiftKind: this.INHERIT, shiftName: null }; }
   emptyConfig() {
     const dev = this.device;
     const g = Object.fromEntries(this.globalFields.map((f) => [f.c, this.def(f)]));
@@ -342,9 +342,11 @@ export class Codec {
       return ctl;
     }
     need(s !== null && typeof s === 'object' && !Array.isArray(s), path + '.shift', '"inherit", "block" or a layer of its own');
-    this.keysOk(s, this.JSON_KEYS, path + '.shift');
+    this.keysOk(s, ['name', ...this.JSON_KEYS], path + '.shift');
     need('type' in s, path + '.shift', 'a layer of its own is written in full: its type at least');
-    ctl.shift = this.resolve(kind, s, path + '.shift');
+    // its own name (only a layer of its own has one; names live only in the file, D-8)
+    ctl.shiftName = this.nameOf(s, path + '.shift');
+    ctl.shift = this.resolve(kind, Object.fromEntries(Object.entries(s).filter(([k]) => this.JSON_KEYS.includes(k))), path + '.shift');
     need(ctl.shift.msg !== this.NONE, path + '.shift', 'a layer that sends nothing: use "block"');
     ctl.shiftKind = this.OVERRIDE;
     return ctl;
@@ -432,8 +434,10 @@ export class Codec {
     const out = {};
     if (ctl.name !== null) out.name = ctl.name;
     Object.assign(out, this.assignToJson(kind, ctl.normal));
-    if (!this.sameShift(ctl, kind)) {
-      out.shift = ctl.shiftKind === this.OVERRIDE ? this.assignToJson(kind, ctl.shift) : this.SHIFT.json[ctl.shiftKind];
+    const named = ctl.shiftKind === this.OVERRIDE && ctl.shiftName !== null && ctl.shiftName !== undefined;
+    if (named || !this.sameShift(ctl, kind)) {
+      out.shift = ctl.shiftKind === this.OVERRIDE
+        ? { ...(named && { name: ctl.shiftName }), ...this.assignToJson(kind, ctl.shift) } : this.SHIFT.json[ctl.shiftKind];
     }
     return out;
   }

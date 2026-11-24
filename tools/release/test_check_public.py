@@ -41,7 +41,7 @@ def main():
         write(root, ".gitignore", "/materials/\n/build/\n.DS_Store\n__pycache__/\n")
         write(root, "materials/dumps/stock-a.bin", stock)
         write(root, "materials/dumps/rom-read-ours.bin", b"OURS" * 64 + stock[:8])
-        write(root, "materials/private-strings.txt", "# local\n%s\n" % secret)
+        write(root, "materials/private-strings.txt", "# local\n%s\nzedq\n!pay.example/zedq\n" % secret)
         write(root, "build/out.bin", b"\0" * 64)
         write(root, "tools/x/__pycache__/m.pyc", b"\0\1\2")
         write(root, ".DS_Store", b"\0\1")
@@ -54,6 +54,8 @@ def main():
         write(root, "a/stock-str.json", '{"hex": "%s"}\n' % stock[3000:3060].hex())
         write(root, "a/large.txt", "x" * (check_public.LARGE + 1))
         write(root, "a/private.md", "the serial is %s\n" % secret.lower())
+        write(root, "a/allowed.md", "tip jar: https://PAY.example/ZedQ\n")
+        write(root, "a/allowed-and-private.md", "https://pay.example/zedq and zedq's phone\n")
         write(root, "a/home.md", "see /Us" + "ers/alice/project\n")
         write(root, "a/email.md", "write to a.b" + "@" + "corp.io\n")
         write(root, "a/mac.md", "address " + ":".join(["a4", "c1", "38", "0f", "12", "9e"]) + "\n")
@@ -66,7 +68,8 @@ def main():
         want = {("a/binary.dat", "binary"), ("a/stock.dat", "binary"), ("a/stock.dat", "stock"),
                 ("a/stock-hex.c", "stock"), ("a/stock-str.json", "stock"), ("a/large.txt", "large"),
                 ("a/private.md", "private"), ("a/home.md", "home"), ("a/email.md", "email"),
-                ("a/mac.md", "mac"), ("a/language.md", "language"), ("a/names.md", "names")}
+                ("a/mac.md", "mac"), ("a/language.md", "language"), ("a/names.md", "names"),
+                ("a/allowed-and-private.md", "private")}
         for w in sorted(want - found):
             check(False, "not found: %s %s" % w)
         for f in sorted(found - want):

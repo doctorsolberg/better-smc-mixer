@@ -11,6 +11,7 @@ const P = {
   keys: '<rect x="3" y="5" width="14" height="10" rx="1.5"/><path d="M7.5 5v6M10 5v10M12.5 5v6"/>',
   more: '<circle cx="5" cy="10" r=".9" fill="currentColor"/><circle cx="10" cy="10" r=".9" fill="currentColor"/><circle cx="15" cy="10" r=".9" fill="currentColor"/>',
   lock: '<rect x="5" y="9" width="10" height="8" rx="1.5"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9"/>',
+  external: '<path d="M11.5 4.5h4v4"/><path d="M15.5 4.5 9 11"/><path d="M13.5 11.5v3a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 14.5V8a1.5 1.5 0 0 1 1.5-1.5h3"/>',
   link: '<path d="M8.5 11.5 11.5 8.5"/><path d="M9 6.5 10.5 5a3 3 0 0 1 4.5 4.5L13.5 11M11 13.5 9.5 15A3 3 0 0 1 5 10.5L6.5 9"/>',
   unlink: '<path d="M9 6.5 10.5 5a3 3 0 0 1 4.5 4.5L13.5 11M11 13.5 9.5 15A3 3 0 0 1 5 10.5L6.5 9"/><path d="M3.5 3.5 6 6M14 14l2.5 2.5"/>',
   learn: '<circle cx="10" cy="10" r="1.8"/><path d="M6.6 6.6a4.8 4.8 0 0 0 0 6.8M13.4 6.6a4.8 4.8 0 0 1 0 6.8M4 4a8.5 8.5 0 0 0 0 12M16 4a8.5 8.5 0 0 1 0 12"/>',

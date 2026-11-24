@@ -535,10 +535,12 @@ function ctlEl(id, cls) {
     else tag = 'own';
   }
   const type = layer?.type ?? 'none';
-  const named = st.layer === 'normal' || cfg.shiftState(c, kind) !== 'own' ? c.name : null;
+  // A Shift layer of its own shows its own name, or its message: the control's name would say the
+  // wrong thing there, since it does something else.
+  const named = st.layer === 'shift' && cfg.shiftState(c, kind) === 'own' ? (c.shift.name ?? null) : c.name;
   let label = layer ? shortLabel(S, layer) : '—';
   if (cls === 'btn' && type === 'note') label = noteName(layer.number ?? 0);
-  const title = `${ctlName(id)}${c.name ? ` · ${c.name}` : ''}: ${type === 'none' || !layer ? 'nothing' : shortLabel(S, layer)}`;
+  const title = `${ctlName(id)}${named ? ` · ${named}` : ''}: ${type === 'none' || !layer ? 'nothing' : shortLabel(S, layer)}`;
   const el = h('div', {
     class: `ctl ${cls} t-${type} ${extra} ${st.sel.has(id) ? 'sel' : ''} ${st.lit.has(id) ? 'lit' : ''}`,
     'data-id': id, style: { '--tc': typeVar(type) }, title, role: 'button', tabindex: '-1', 'aria-pressed': st.sel.has(id) ? 'true' : 'false',
@@ -614,7 +616,10 @@ function tableRow(id) {
   const cell = (...k) => h('td', {}, ...k);
   tr.append(cell(h('input', { type: 'checkbox', 'aria-label': `Select ${ctlName(id)}`, checked: st.sel.has(id), onclick: (e) => { e.stopPropagation(); if (st.sel.has(id)) st.sel.delete(id); else st.sel.add(id); renderAll(); } })));
   tr.append(cell(h('span', { class: 'tdot', style: { background: typeVar(type) } }), ctlName(id)));
-  tr.append(cell(h('input', { value: c.name ?? '', placeholder: 'Name', 'aria-label': 'Name', onchange: (e) => edit('rename', () => { if (e.target.value) c.name = e.target.value; else delete c.name; }) })));
+  const renamable = !navShift && cfg.canRename(c, kind, st.layer);
+  tr.append(cell(h('input', { value: (renamable ? cfg.nameOn(c, kind, st.layer) : c.name) ?? '', placeholder: 'Name', 'aria-label': st.layer === 'shift' ? 'Name with Shift' : 'Name', disabled: !renamable,
+    title: renamable ? '' : 'With Shift this control does what it does without it, under the same name. “Own” gives it a name of its own.',
+    onchange: (e) => edit('rename', () => cfg.rename(c, kind, st.layer, e.target.value)) })));
   if (navShift) { tr.append(h('td', { colspan: 6, class: 'muted' }, h('span', { class: 'inline-ic' }, icon('lock', 13)), `Selects ${NAV[id.slice(4)][0]} ${NAV[id.slice(4)][1] + 1}`)); return tr; }
   tr.append(cell(h('select', { disabled: !editable, 'aria-label': 'Message', onchange: (e) => edit('message', () => cfg.setField(layer, kind, 'type', e.target.value)) },
     ...S.types(kind).map((x) => h('option', { value: x, selected: x === type }, TYPE_LABEL[x])))));
@@ -687,10 +692,25 @@ function insHead(where, title, nameInput) {
   return h('div', { class: 'insp-head' }, h('div', { class: 'where' }, where), h('h2', {}, title), nameInput);
 }
 
+// The name field follows the layer shown: a Shift layer of its own has a name of its own (it does
+// something else); a Shift layer that is the same as Normal, fine or nothing shows the control's,
+// read-only, with the way to change that.
+function nameInput(id, c, kind) {
+  const shiftNav = st.layer === 'shift' && cfg.isNav(id);
+  const own = !shiftNav && cfg.canRename(c, kind, st.layer);
+  if (!own) return h('input', { id: 'ctl-name', value: c.name ?? '', placeholder: 'Name', 'aria-label': 'Name', disabled: true,
+    title: 'With Shift this control has no layer of its own, so it keeps its name. “Own” below gives it one, with a name.' });
+  const isShift = st.layer === 'shift';
+  return h('input', { id: 'ctl-name', value: (isShift ? c.shift.name : c.name) ?? '', maxlength: S.nameMax,
+    placeholder: isShift ? 'Name with Shift, e.g. Resonance' : 'Name, e.g. Cutoff',
+    'aria-label': isShift ? 'Name with Shift' : 'Name',
+    onchange: (e) => edit('rename', () => cfg.rename(c, kind, st.layer, e.target.value)) });
+}
+
 function singleInspector(box, id) {
   const kind = cfg.kind(id), c = ctlAt(id);
   box.append(insHead(`${presetLabel(st.preset)} · ${id.startsWith('row.') ? 'Bottom row, every page' : pageLabel(st.preset, st.page)}`, ctlName(id),
-    h('input', { id: 'ctl-name', value: c.name ?? '', placeholder: 'Name, e.g. Cutoff', 'aria-label': 'Name', maxlength: S.nameMax, onchange: (e) => edit('rename', () => { if (e.target.value) c.name = e.target.value; else delete c.name; }) })));
+    nameInput(id, c, kind)));
   box.append(layerSwitch());
 
   if (st.layer === 'shift') {
@@ -701,7 +721,7 @@ function singleInspector(box, id) {
     }
     const s = cfg.shiftState(c, kind);
     box.append(shiftBox([id], s));
-    if (s !== 'own') { if (s !== 'block') box.append(sendsBox(kind, cfg.shiftLayer(c, kind) ?? {})); return; }
+    if (s !== 'own') { if (s !== 'block') box.append(sendsBox(kind, cfg.shiftLayer(c, kind) ?? {})); box.append(actionsRow()); return; }
     fieldsFor(box, kind, [c.shift], true);
     box.append(sendsBox(kind, c.shift));
   } else {
@@ -885,9 +905,9 @@ function bulkInspector(box, ids) {
   if (st.layer === 'shift' && navs.length) box.append(h('p', { class: 'note warn' }, icon('lock', 16), h('span', {}, `${plural(navs.length, 'page or preset key')} left as they are: with Shift they always select pages and presets.`)));
 
   const pat = h('input', { id: 'name-pattern', placeholder: 'e.g. Track {n}' });
-  box.append(field('Names', h('div', { class: 'row' }, pat,
-    h('button', { onclick: () => edit('names', () => { orderIds(usable, 'ltr').forEach((i, k) => { const v = pat.value.replaceAll('{n}', k + 1); if (v) ctlAt(i).name = v; else delete ctlAt(i).name; }); }) }, 'Apply')),
-  '{n} becomes 1, 2, 3… from left to right. Leave empty to remove the names.'));
+  box.append(field(st.layer === 'shift' ? 'Names with Shift' : 'Names', h('div', { class: 'row' }, pat,
+    h('button', { onclick: () => edit('names', () => { orderIds(usable, 'ltr').forEach((i, k) => { const v = pat.value.replaceAll('{n}', k + 1); if (cfg.canRename(ctlAt(i), cfg.kind(i), st.layer)) cfg.rename(ctlAt(i), cfg.kind(i), st.layer, v); }); }) }, 'Apply')),
+  st.layer === 'shift' ? '{n} becomes 1, 2, 3… from left to right; only controls with a Shift layer of their own (“Own”) take a name with Shift. Leave empty to remove them.' : '{n} becomes 1, 2, 3… from left to right. Leave empty to remove the names.'));
 
   if (st.layer === 'shift') {
     const states = usable.map((i) => cfg.shiftState(ctlAt(i), cfg.kind(i)));
@@ -1114,11 +1134,14 @@ function fillDialog(kind, layers, fld, idsOpt) {
 
 // ---- copy, paste, clear ------------------------------------------------------------------------
 
+// Copy, paste and clear act on the layer shown (Normal or Shift), never on the hidden one: what you
+// see is what is copied. A layer copied under Normal can go onto Shift and back, so a Shift layer
+// that differs in one setting starts as a copy. Names stay with their controls.
 function copySel() {
-  const ids = IDS.filter((i) => st.sel.has(i));
+  const ids = IDS.filter((i) => st.sel.has(i) && !(st.layer === 'shift' && cfg.isNav(i)));
   if (!ids.length) return;
-  st.clip = { kind: 'controls', items: ids.map((i) => ({ id: i, kind: cfg.kind(i), ctl: structuredClone(ctlAt(i)) })) };
-  toast(`Copied ${plural(ids.length, 'control')}`);
+  st.clip = { kind: 'controls', layer: st.layer, items: ids.map((i) => ({ id: i, kind: cfg.kind(i), layer: cfg.layerOf(ctlAt(i), cfg.kind(i), st.layer) })) };
+  toast(`Copied ${plural(ids.length, 'control')}, ${st.layer === 'shift' ? 'with Shift' : 'without Shift'}`);
   renderSide();
 }
 function pasteSel() {
@@ -1126,13 +1149,16 @@ function pasteSel() {
   const targets = IDS.filter((i) => st.sel.has(i));
   const items = st.clip.items;
   let done = 0, skipped = 0;
+  const put = (t, it) => {
+    if (st.layer === 'shift' && cfg.isNav(t)) { skipped++; return; }
+    if (it.layer && !S.types(cfg.kind(t)).includes(it.layer.type)) { skipped++; return; }
+    cfg.putLayer(ctlAt(t), cfg.kind(t), st.layer, it.layer); done++;
+  };
   edit('paste', () => {
     if (items.length === 1) {
       for (const t of targets.length ? targets : [items[0].id]) {
         if (cfg.kind(t) !== items[0].kind) { skipped++; continue; }
-        const c = structuredClone(items[0].ctl);
-        if (cfg.isNav(t)) delete c.shift;
-        cfg.setControl(st.preset, st.page, t, c); done++;
+        put(t, items[0]);
       }
     } else {
       const stripOf = (x) => (x.startsWith('row.') ? 99 : cfg.strip(x));
@@ -1141,22 +1167,24 @@ function pasteSel() {
       for (const it of items) {
         let t = it.id;
         if (!t.startsWith('row.')) { const s = cfg.strip(t) - strip0 + (t0 === 99 ? strip0 : t0); if (s > 7) { skipped++; continue; } t = `s${s}.${cfg.key(t)}`; }
-        cfg.setControl(st.preset, st.page, t, structuredClone(it.ctl)); done++;
+        put(t, it);
       }
     }
   });
-  toast(`Pasted onto ${plural(done, 'control')}${skipped ? `; ${skipped} skipped (another kind, or past strip 8)` : ''}`);
+  const onto = st.layer === 'shift' ? 'with Shift' : 'without Shift';
+  const from = st.clip.layer && st.clip.layer !== st.layer ? ` (copied ${st.clip.layer === 'shift' ? 'with' : 'without'} Shift)` : '';
+  toast(`Pasted onto ${plural(done, 'control')}, ${onto}${from}${skipped ? `; ${skipped} skipped (another kind, a message it cannot send, or past strip 8)` : ''}. Undo takes it back.`);
 }
 function clearSel() {
   const ids = IDS.filter((i) => st.sel.has(i));
   if (!ids.length) return;
   edit(st.layer === 'shift' ? 'nothing with Shift' : `clear ${plural(ids.length, 'control')}`, () => {
     for (const i of ids) {
-      if (st.layer === 'shift') { if (!cfg.isNav(i)) cfg.setShiftState(ctlAt(i), cfg.kind(i), 'block'); }
-      else cfg.setControl(st.preset, st.page, i, {});
+      if (st.layer === 'shift' && cfg.isNav(i)) continue;
+      cfg.putLayer(ctlAt(i), cfg.kind(i), st.layer, null);
     }
   });
-  toast(`${st.layer === 'shift' ? 'Set to nothing with Shift' : 'Cleared'}. Undo brings it back.`);
+  toast(`${st.layer === 'shift' ? 'Set to nothing with Shift' : 'Cleared without Shift (a Shift layer of its own stays)'}. Undo brings it back.`);
 }
 
 // ---- mapping a synth's parameters -------------------------------------------------------------------
@@ -1272,16 +1300,26 @@ function mapSection(group) {
   toast(`${group}: ${plural(done, 'parameter')} on ${where}.${left.length ? ` ${left.length} did not fit.` : ''}${skipped ? ` ${skipped} already here.` : ''} Undo takes it back.`);
 }
 
+// The instrument card's second line. A MIDI Guide list: its size, then "MIDI Guide" with an icon,
+// one link to this instrument's own file there (where its data can be read and corrected; the
+// catalogue dialog names the source and its licence). A built-in list: its own description.
+function instrumentSource(list) {
+  const src = list.source;
+  if (!src) return h('p', {}, list.about);
+  const href = src.data ?? src.url;
+  return h('p', { class: 'inst-src' }, `${plural(list.params.length, 'parameter')} · `,
+    h('a', { href, target: '_blank', rel: 'noopener', title: `${list.name} in ${src.name}` }, src.name, icon('external', 12)));
+}
+
 function renderParams() {
   const box = $('#params');
   const list = curList();
-  const src = list.source;
   put(box,
     h('div', { class: 'inst-card' },
       h('small', {}, 'Instrument'),
       h('button', { class: 'inst-change', onclick: instrumentDialog }, 'Change'),
       h('b', {}, list.name),
-      h('p', {}, src ? [`${plural(list.params.length, 'parameter')} · `, h('a', { href: src.url, target: '_blank', rel: 'noopener' }, 'MIDI Guide'), `, CC BY-SA 4.0${src.updated ? ` · ${src.updated.slice(0, 10)}` : ''}`, src.data ? [' · ', h('a', { href: src.data, target: '_blank', rel: 'noopener' }, 'Correct a mistake')] : null] : list.about)),
+      instrumentSource(list)),
     h('ol', { class: 'steps' },
       h('li', { class: st.armed === null ? 'now' : 'done' }, 'Tap a parameter, or “Onto this page” for a whole section: faders, then encoders; switches and drum notes on the buttons. Controls that already hold this instrument’s parameters are kept.'),
       h('li', { class: st.armed === null ? '' : 'now' }, 'Tap a control on the panel, or touch it on the mixer. The next parameter is ready by itself.')),
@@ -1618,7 +1656,7 @@ function addMonitor(d) {
   if (st.paused) return;
   const t = (performance.now() / 1000).toFixed(3);
   const c = d.id ? ctlAt(d.id, d.preset ?? dev.state.preset, d.page ?? dev.state.page) : null;
-  st.monitor.push({ t, dir: d.dir, bytes: d.bytes, text: decode(d.bytes), who: d.id ? `${ctlName(d.id)}${d.layer === 'shift' ? ' (Shift)' : ''}${c?.name ? ` · ${c.name}` : ''}` : d.who ?? '', tr: d.transport });
+  st.monitor.push({ t, dir: d.dir, bytes: d.bytes, text: decode(d.bytes), who: d.id ? `${ctlName(d.id)}${d.layer === 'shift' ? ' (Shift)' : ''}${(() => { const n = c && cfg.nameOn(c, cfg.kind(d.id), d.layer === 'shift' ? 'shift' : 'normal'); return n ? ` · ${n}` : ''; })()}` : d.who ?? '', tr: d.transport });
   if (st.monitor.length > 400) st.monitor.shift();
   if (monitorFrame === null) monitorFrame = requestAnimationFrame(() => {
     monitorFrame = null;
@@ -2509,6 +2547,7 @@ function presetMenu(anchor, p) {
     { label: 'Paste preset here', icon: 'paste', disabled: st.clip?.kind !== 'preset', do: () => edit('paste preset', () => { cfg.file.presets[p] = structuredClone(st.clip.data); cfg.fill(cfg.file); }) },
     { label: 'Save a copy…', icon: 'download', do: () => showJson(cfg.canonical({ preset: p }), presetLabel(p)) },
     '-',
+    { label: 'Clear bottom row', icon: 'trash', danger: true, do: () => { edit('clear bottom row', () => { cfg.file.presets[p].row = {}; cfg.fill(cfg.file); }); toast('Bottom row cleared on every page of this preset. Undo brings it back.'); } },
     { label: 'Clear preset…', icon: 'trash', danger: true, do: () => askConfirm(`Clear ${presetLabel(p)}?`, 'All its pages and the bottom row will send nothing. Undo brings it back.', 'Clear', () => edit('clear preset', () => { cfg.file.presets[p] = {}; cfg.fill(cfg.file); })) },
   ]);
 }
@@ -2524,7 +2563,7 @@ function pageMenu(anchor, g) {
     { label: 'Paste with numbers moved on…', disabled: st.clip?.kind !== 'page', do: () => offsetDialog(g) },
     { label: 'Save a copy…', icon: 'download', do: () => showJson(cfg.canonical({ preset: p, page: g }), pageLabel(p, g)) },
     '-',
-    { label: 'Clear page', icon: 'trash', danger: true, do: () => { edit('clear page', () => { cfg.file.presets[p].pages[g] = {}; cfg.fill(cfg.file); }); toast('Page cleared. Undo brings it back.'); } },
+    { label: 'Clear page', icon: 'trash', danger: true, do: () => { edit('clear page', () => { cfg.file.presets[p].pages[g] = {}; cfg.fill(cfg.file); }); toast('Page cleared. The bottom row belongs to the whole preset and stays: “Clear bottom row” in the preset’s menu clears it. Undo brings it back.'); } },
   ]);
 }
 
@@ -2636,6 +2675,7 @@ function offsetDialog(g) {
           }
           const nm = renamed(ctl.name);
           if (nm) ctl.name = nm; else delete ctl.name;
+          if (ctl.shift && typeof ctl.shift === 'object') { const sn = renamed(ctl.shift.name); if (sn) ctl.shift.name = sn; else delete ctl.shift.name; }
         }
       });
       if (names.value === 'drop') delete page.name; else if (page.name) page.name = renamed(page.name);
@@ -2709,7 +2749,7 @@ function libraryDialog() {
   const mine = myTemplates();
   dialog(h('div', {},
     h('div', { class: 'dlg-head' }, h('h2', {}, 'Templates'), h('button', { class: 'icon-only', 'aria-label': 'Close', onclick: closeDialog }, icon('close'))),
-    h('p', { class: 'help' }, `A template is a whole preset to start from: pages, controls, names and channel. “${replaceLabel()}” turns ${presetLabel(st.preset)} into a copy of it, name included; undo brings the old one back. To fill another preset, open its tab first.`),
+    h('p', { class: 'help' }, `A template is a whole preset to start from: pages, controls, names and channel. “Replace” turns ${presetLabel(st.preset)} into a copy of it, name included; undo brings the old one back. To fill another preset, open its tab first.`),
     h('div', { class: 'compare' },
       h('div', {}, h('b', {}, 'A template'), h('p', {}, 'One preset. Kept here, in this app on this computer, ready to use in any preset with one click.')),
       h('div', {}, h('b', {}, 'Save a copy (a file)'), h('p', {}, 'The configuration, or a part of it, as a file: to keep as a backup, send to someone, or open on another computer.'))),
@@ -2717,12 +2757,12 @@ function libraryDialog() {
     mine.length
       ? h('div', { class: 'cards' }, ...mine.map((t) => h('div', { class: 'card' }, h('b', {}, t.name), h('p', {}, t.about ? [t.about, h('br'), h('span', { class: 'muted' }, `Saved ${t.saved}`)] : `Saved ${t.saved}.`),
         h('div', { class: 'row' },
-          h('button', { title: `${presetLabel(st.preset)} becomes a copy of this template: its pages, controls, names and channel`, onclick: () => useTemplate(t) }, replaceLabel()),
+          h('button', { title: `${replaceLabel()}: it becomes a copy of this template, with its pages, controls, names and channel`, onclick: () => useTemplate(t) }, h('span', { class: 'ell' }, 'Replace')),
           h('button', { class: 'icon-only danger', title: 'Remove from My templates', 'aria-label': `Remove ${t.name}`, onclick: () => { store.set('smc-my-templates', JSON.stringify(myTemplates().filter((x) => x.name !== t.name))); libraryDialog(); } }, icon('trash', 16))))))
       : h('p', { class: 'help' }, 'None yet. A preset’s menu (its tab) has “Save as a template…”.'),
     h('h3', {}, 'Ready-made templates'),
     h('div', { class: 'cards' }, ...LAYOUTS.map((l) => h('div', { class: 'card' }, h('b', {}, l.name), h('p', {}, l.about),
-      h('button', { title: `${presetLabel(st.preset)} becomes a copy of this template: its pages, controls, names and channel`, onclick: () => useTemplate({ name: l.name, file: l.file, editor: {} }) }, replaceLabel())))),
+      h('button', { title: `${replaceLabel()}: it becomes a copy of this template, with its pages, controls, names and channel`, onclick: () => useTemplate({ name: l.name, file: l.file, editor: {} }) }, h('span', { class: 'ell' }, 'Replace'))))),
 
     h('div', { class: 'dlg-foot' }, h('button', { class: 'primary', onclick: closeDialog }, 'Close'))));
 }

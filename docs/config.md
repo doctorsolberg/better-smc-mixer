@@ -81,7 +81,8 @@ takes its default, so a file can be as short as what it changes:
   `play`, `stop`, `rec`, `rew`, `ff`, `bankLeft`, `bankRight`, `up`, `down`, `left`, `right`).
   A missing item, or `null` in a list, is all defaults (sends nothing). A control is an object
   of its Normal layer's fields (below) plus `name` and `shift`.
-- **Names** (`name` of the configuration, a preset, a page, a control; at most 64 characters)
+- **Names** (`name` of the configuration, a preset, a page, a control, a control's own Shift
+  layer; at most 64 characters)
   live only in the file (D-8): the device does not keep them. `id` (a UUID) and `revision`
   identify the configuration on the device (FR-APP-24).
 - **Running revision (P-6).** The device assigns it when applying a full upload, each live
@@ -169,7 +170,16 @@ It can send anything the control's kind can, on any channel, in any mode:
 "encoder": {"type": "cc7", "number": 74, "shift": {"type": "cc7", "number": 71, "mode": "acc0"}}
 ```
 
-turns CC 74 with acceleration and, under Shift, CC 71 without. Rules:
+turns CC 74 with acceleration and, under Shift, CC 71 without.
+
+A layer of its own may have a `name` of its own, since it does something else (the owner,
+2026-11-24): `"shift": {"name": "Resonance", "type": "cc7", "number": 71}`. Like every name it
+lives only in the file and the editor (D-8): the binary form is the same with or without it, and a
+configuration loaded from the mixer has none. Only a layer of its own takes one (the editor shows
+its message while it has none); under `"inherit"`, `"block"` or the default the control's `name`
+is shown.
+
+Rules:
 
 - to send nothing under Shift, write `"block"`: an object of type `none` is an error;
 - the encoder's default Shift layer is the same target in `fine`: same type, channel, number,
