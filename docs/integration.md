@@ -11,6 +11,18 @@ sides and ✅ ran on the mixer (controller 32, 2026-11-13: `make e2e` over USB M
 `smcsim device`, the page in Chrome). I-7's events/selection and named MIDI followed on
 2026-11-14; the protocol is now 4, binary form 1, schema 1, product 0.1.0.
 
+## Hardware results, 0.1.1 (2026-11-24)
+
+The 0.1.1 candidate (controller-ble `f6739e31`, the 0.1.0 firmware with the new version number) on
+the same retail mixer, Chrome on macOS: installed through the editor over USB (stock V013 after an
+interrupted update session: backup, install, physical off/on; the saved configuration kept).
+`make e2e` 37/37 over USB once the faders rested at the bottom: two earlier runs failed only
+where a fader resting mid-travel sent values during the run ("no real input during the run"),
+the gen-2 comparison once more on one message. The page self-test 30/30 against the factory
+baseline, served from the repository (`app/editor/serve.py`): served from a release package it
+cannot read `test.json` (the package carries only `factory.json` and `schema.json`), so "open a
+file: sent whole" fails there. The owner's configuration restored and verified after each run.
+
 ## Hardware results, 2026-11-23
 
 The release candidate on a retail mixer, Chrome on macOS:

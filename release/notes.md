@@ -7,6 +7,19 @@ It saves a full backup of the mixer's memory first; **Go back to M-Vave's firmwa
 mixer to its original firmware at any time. Guide:
 https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md
 
+## What's new in 0.1.1
+
+The firmware is 0.1.0's with the new version number; the changes are in the editor:
+
+- Copy, Paste and Clear work on the layer you see (Normal or Shift), so one layer can be copied
+  onto the other. A Shift layer of its own can have a name of its own.
+- The bottom row is labelled as shared by all pages of a preset; Clear page asks whether to clear
+  it too.
+- Polish: firmware sheets keep their buttons in a footer that is never cut off, faders fit narrow
+  screens, the instrument card's MIDI Guide link stays in its box, templates show a short
+  Replace, longer button names take two lines, consistent spacing on phones and in dialogs.
+- A new home page with pictures of the editor.
+
 ## What it does
 
 - Four presets of four pages, eight strips each; every fader, encoder and button sends CC, 14-bit
@@ -22,8 +35,9 @@ https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md
 
 On a retail SMC-Mixer with M-Vave firmware V012 and V013: installation, update and going back
 over USB and over Bluetooth, with power off/on and byte-exact read-back of the configuration;
-the end-to-end test (37 checks) and the editor's self-test (29 checks) on the mixer; every
-image built twice from source with identical bytes.
+the end-to-end test (37 checks) and the editor's self-test on the mixer; every image built twice
+from source with identical bytes. 0.1.1 was installed over 0.1.0 through the editor over USB, and
+the end-to-end test and the self-test passed on it.
 
 ## Files
 

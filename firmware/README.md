@@ -4,7 +4,7 @@ Firmware for the SMC-Mixer (JieLi AC6966C, BR25): the application, the DFU bootl
 portable libraries both use. Requirements: [docs/SPEC.md](../docs/SPEC.md); build environment:
 [docs/build.md](../docs/build.md); logging: [docs/logging.md](../docs/logging.md).
 
-Status: version 0.1.0 (pre-release). ✅ The hardware-test image and controller have run on the
+Status: version 0.1.1 (pre-release). ✅ The hardware-test image and controller have run on the
 mixer since 2026-11-11; USB/CDC/MIDI, panel scan, configuration storage, BLE and keyless
 installation/return have dated run evidence in their area documents. The defects found by the
 2026-11-15 code review (R01–R12) were fixed (2026-11-16..19) and verified on the mixer. On

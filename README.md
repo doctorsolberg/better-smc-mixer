@@ -16,7 +16,7 @@ Web MIDI on macOS, Windows or Android). Releases:
   lists from the [MIDI Guide](https://midi.guide), firmware installation and a way back to
   M-Vave's firmware.
 
-Version 0.1.0 is a pre-release. It was verified on a retail mixer: installation, update and going
+Version 0.1.1 is a pre-release. It was verified on a retail mixer: installation, update and going
 back over USB and Bluetooth, power off/on with byte-exact configuration read-back, and the
 end-to-end and editor self-tests on the device.
 

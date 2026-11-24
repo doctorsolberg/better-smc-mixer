@@ -1888,13 +1888,23 @@ function stepsDialog(title, steps, intro, job) {
   let at = 0;
   const draw = () => put(box, steps.map((s, i) => h('div', { class: `step ${i < at ? 'done' : i === at ? 'now' : ''}` },
     h('span', { class: 'num' }, i < at ? icon('check', 14) : String(i + 1)), h('div', {}, h('b', {}, s.title), i === at ? s.body(() => { if (job?.cancelled || job?.error) return; at++; draw(); }) : null))));
+  // One footer button, named for what it does now: Cancel while the job runs, Close once it has
+  // ended (done, failed or cancelled). The job's `active` drives the label wherever it changes. The
+  // button sits in the sheet's footer, never cut off.
+  const foot = job ? h('button', { onclick: () => {
+    if (!job.active) { dev.firmwareJob = null; closeDialog(); return; }
+    if (!job.cancel?.()) toast('Writing has started: it cannot be cancelled now. Closing this view does not stop it.');
+  } }) : null;
   const view = h('div', {}, h('div', { class: 'dlg-head' }, h('h2', {}, title), h('button', { class: 'icon-only', 'aria-label': 'Close', onclick: closeDialog }, icon('close'))),
     intro ? h('p', { class: 'help' }, intro) : null, box,
-    job ? h('button', { onclick: () => {
-      if (!job.active) { dev.firmwareJob = null; closeDialog(); return; }
-      if (!job.cancel?.()) toast('The firmware operation is busy. Closing the view does not cancel it.');
-    } }, 'Cancel before writing / Dismiss result') : null);
-  if (job) job.view = view;
+    foot ? h('div', { class: 'dlg-foot' }, foot) : null);
+  if (job) {
+    job.view = view;
+    let active = job.active;
+    const label = () => { foot.textContent = active ? 'Cancel' : 'Close'; };
+    Object.defineProperty(job, 'active', { configurable: true, enumerable: true, get: () => active, set: (v) => { active = v; label(); } });
+    label();
+  }
   dialog(view);
   draw();
 }

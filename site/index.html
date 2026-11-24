@@ -11,17 +11,18 @@
 <header class="hero">
   <div class="wrap hero-grid">
     <div class="hero-text">
-      <p class="eyebrow">Alternative firmware · free and open source</p>
+      <p class="eyebrow">Free, open-source firmware</p>
       <h1>Better SMC-Mixer</h1>
-      <p class="lead">Turns the M-Vave SMC-Mixer into a configurable MIDI controller for hardware
-        synthesizers and music apps: presets and pages, a Shift layer, fader pickup, encoder
-        acceleration, USB and Bluetooth MIDI. Set it up in the browser, no app to install.</p>
+      <p class="lead">Turns the M-Vave SMC-Mixer into a controller for your synths and music apps:
+        16 banks of named controls, a second layer with Shift, synth maps in a few taps, and faders
+        that don't jump when you switch pages. Over USB or Bluetooth, set up in the browser with
+        nothing to install.</p>
       <p class="actions">
         <a class="button primary" href="editor/">Open the editor</a>
         <a class="button" href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md">How to install</a>
         <a class="button" href="https://github.com/doctorsolberg/better-smc-mixer">Source on GitHub</a>
       </p>
-      <p class="note">Needs Google Chrome with Web MIDI on macOS, Windows or Android.</p>
+      <p class="note">The editor needs Google Chrome on macOS, Windows or Android. Installing saves a full backup first, and going back to M-Vave's firmware takes one click.</p>
     </div>
     <figure class="hero-photo">
       <img src="img/smc-mixer.webp" width="908" height="431" alt="The M-Vave SMC-Mixer: eight faders, eight encoders above them and rows of lit buttons">
@@ -41,7 +42,7 @@
     <figure class="shot">
       <picture>
         <source srcset="img/editor-dark.webp" media="(prefers-color-scheme: dark)">
-        <img src="img/editor-light.webp" width="1600" height="1153" loading="lazy" alt="The editor: a picture of the mixer with every control named and coloured by its message, and the settings of the selected fader">
+        <img src="img/editor-light.webp" width="1600" height="1247" loading="lazy" alt="The editor: a picture of the mixer with every control named and coloured by its message, and the settings of the selected fader">
       </picture>
       <figcaption>The editor is a picture of the mixer. Touch a control on the mixer or on the
         screen and it is selected; a change plays at once. The colour says what it sends.</figcaption>
@@ -56,8 +57,8 @@
         tap, or both. Encoders turn into fine adjustment under Shift by default.</p>
     </div>
     <div class="feature-media pair">
-      <figure><picture><source srcset="img/strips-normal-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/strips-normal.webp" loading="lazy" alt="Four strips without Shift: Cutoff, Resonance, Env amount, Drive"></picture><figcaption>Without Shift</figcaption></figure>
-      <figure><picture><source srcset="img/strips-shift-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/strips-shift.webp" loading="lazy" alt="The same strips with Shift: Filter env, Key track, Noise, Sub level"></picture><figcaption>With Shift</figcaption></figure>
+      <figure><a class="zoom" href="img/strips-normal.webp"><picture><source srcset="img/strips-normal-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/strips-normal.webp" width="868" height="1146" loading="lazy" alt="Four strips without Shift: Cutoff, Resonance, Env amount, Drive"></picture></a><figcaption>Without Shift: Cutoff…</figcaption></figure>
+      <figure><a class="zoom" href="img/strips-shift.webp"><picture><source srcset="img/strips-shift-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/strips-shift.webp" width="868" height="1146" loading="lazy" alt="The same strips with Shift: Filter env, Key track, Noise, Sub level"></picture></a><figcaption>With Shift: Filter env…</figcaption></figure>
     </div>
   </section>
 
@@ -66,12 +67,11 @@
       <h2>Map a synth in a few taps</h2>
       <p>Pick your instrument from the <a href="https://midi.guide">MIDI Guide</a>: hundreds of
         synths with their parameters. Tap a parameter, then a control, and the next one is ready.
-        A whole section goes onto a page in one tap. Or move a knob on the synth and Learn takes
-        its message.</p>
+        A whole section goes onto a page in one tap.</p>
     </div>
     <div class="feature-media mapping">
-      <picture><source srcset="img/mapping-dark.webp" media="(prefers-color-scheme: dark)"><img class="side" src="img/mapping.webp" loading="lazy" alt="Mapping an Elektron Digitone II: filter parameters with their CC and NRPN numbers, the next one waiting for a control"></picture>
-      <picture><source srcset="img/mapping-strips-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/mapping-strips.webp" loading="lazy" alt="The first faders now send the Digitone II's filter frequency and its next parameters, named after them"></picture>
+      <figure><a class="zoom" href="img/mapping.webp"><picture><source srcset="img/mapping-dark.webp" media="(prefers-color-scheme: dark)"><img class="side" src="img/mapping.webp" width="760" height="1520" loading="lazy" alt="Mapping an Elektron Digitone II: filter parameters with their CC and NRPN numbers, the next one waiting for a control"></picture></a><figcaption>Pick a parameter</figcaption></figure>
+      <figure><a class="zoom" href="img/mapping-strips.webp"><picture><source srcset="img/mapping-strips-dark.webp" media="(prefers-color-scheme: dark)"><img src="img/mapping-strips.webp" width="868" height="1146" loading="lazy" alt="The first faders now send the Digitone II's filter frequency and its next parameters, named after them"></picture></a><figcaption>…it is on a fader, named</figcaption></figure>
     </div>
   </section>
 
@@ -94,7 +94,7 @@
         <circle class="catch" cx="210" cy="92" r="6"/>
         <text class="lbl value-lbl" x="58" y="76">Pickup: the value stays</text>
         <text class="lbl" x="150" y="170">your fader</text>
-        <text class="lbl jump-lbl" x="50" y="132" text-anchor="middle" transform="rotate(-90 50 132)">stock: jumps</text>
+        <text class="lbl jump-lbl" x="66" y="116">stock: jumps</text>
         <text class="lbl catch-lbl" x="222" y="114">caught: follows</text>
       </svg>
     </div>
@@ -109,10 +109,10 @@
     </div>
     <div class="feature-media banks" aria-hidden="true">
       <div class="banks-head"><span>Presets</span><span>Pages · 8 strips each</span></div>
-      <div class="bank-row"><span class="bank-name">Prophet</span><i class="on"></i><i></i><i></i><i></i></div>
-      <div class="bank-row"><span class="bank-name">Drums</span><i></i><i></i><i></i><i></i></div>
-      <div class="bank-row"><span class="bank-name">AUM</span><i></i><i></i><i></i><i></i></div>
-      <div class="bank-row"><span class="bank-name">Delay</span><i></i><i></i><i></i><i></i></div>
+      <div class="bank-row"><span class="bank-name">Prophet</span><i class="on"><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i></div>
+      <div class="bank-row"><span class="bank-name">Drums</span><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i></div>
+      <div class="bank-row"><span class="bank-name">AUM</span><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i></div>
+      <div class="bank-row"><span class="bank-name">Delay</span><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i><i><s></s><s></s><s></s><s></s><s></s><s></s><s></s><s></s></i></div>
       <div class="bank-row foot"><span class="bank-name"></span><b>1</b><b>2</b><b>3</b><b>4</b></div>
     </div>
   </section>
@@ -120,14 +120,15 @@
   <section class="wrap">
     <h2 class="section-title">And more</h2>
     <ul class="more">
+      <li><h3>Learn in one move</h3><p>Select a control, press Learn and move a knob on your synth: the control now sends that message. Touching a control on the mixer selects it in the editor.</p></li>
       <li><h3>Every control on its own channel</h3><p>One preset plays several synths at once, or moves to another channel with one setting.</p></li>
       <li><h3>Always in sync with your gear</h3><p>Values coming back from synths and apps update the mixer, so the next move starts from the real value.</p></li>
-      <li><h3>Encoders that speak synth</h3><p>Plain absolute CCs any synth understands, four acceleration levels, and relative modes for DAWs.</p></li>
+      <li><h3>Encoders that speak synth</h3><p>Plain values any synth understands, faster when you turn fast (four levels), or relative modes for DAWs.</p></li>
       <li><h3>Any MIDI message</h3><p>7- and 14-bit CC, NRPN, RPN, pitch bend, aftertouch, program change and notes; any range, reversed too.</p></li>
       <li><h3>Wired or wireless</h3><p>Class-compliant USB MIDI and Bluetooth MIDI at the same time; with <span class="nowrap">M-Vave's</span> adapter, a synth's DIN input with no computer.</p></li>
-      <li><h3>Fast and precise</h3><p>Controls scanned 2 500 times a second, buttons answer in about 5 ms, faders reach 0 and the maximum every time.</p></li>
+      <li><h3>Quick and exact</h3><p>Buttons answer in about 5 ms; faders reach 0 and the maximum every time and stay quiet at rest.</p></li>
       <li><h3>Install and go back</h3><p>Installs over USB or Bluetooth after a full backup; going back to <span class="nowrap">M-Vave's</span> firmware needs no file.</p></li>
-      <li><h3>Open and reproducible</h3><p>MIT-licensed; every image builds twice with identical bytes, and the editor checks each file's SHA-256.</p></li>
+      <li><h3>Open source, yours to change</h3><p>MIT-licensed code for the firmware and the editor: change it to fit your setup, build it yourself, share what you make.</p></li>
     </ul>
   </section>
 
@@ -135,7 +136,7 @@
     <h2 class="section-title">Get started</h2>
     <ol class="steps">
       <li><h3>Connect</h3><p>Open <a href="editor/">the editor</a> in Chrome and connect the mixer with a USB cable.</p></li>
-      <li><h3>Install</h3><p>Choose <strong>Install</strong>, save the backup file it offers, and follow the steps.</p></li>
+      <li><h3>Install</h3><p>Choose <strong>Install</strong>, save the backup file it offers, and follow the steps. Going back to M-Vave's firmware needs no file.</p></li>
       <li><h3>Play</h3><p>Switch the mixer off and on. Your controls send what the editor shows; change anything and it plays at once.</p></li>
     </ol>
     <p class="guides">Read the <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/README.md">user guide</a>:
@@ -143,15 +144,8 @@
       <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/connecting.md">connecting</a>,
       <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/editor.md">the editor</a>,
       <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/panel.md">the panel</a> and
-      <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/first-preset.md">a first preset</a>.</p>
-  </section>
-
-  <section class="wrap">
-    <h2 class="section-title">Downloads</h2>
-    <p class="guides">Every release with its firmware images, checksums and notes is on
-      <a href="https://github.com/doctorsolberg/better-smc-mixer/releases">GitHub Releases</a>.
-      The editor on this site always installs the firmware of its own release
-      (<a href="manifest.json">manifest</a>, <a href="SHA256SUMS">checksums</a>).</p>
+      <a href="https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/first-preset.md">a first preset</a>.
+      Firmware files and release notes: <a href="https://github.com/doctorsolberg/better-smc-mixer/releases">GitHub Releases</a>.</p>
   </section>
 
   <section class="wrap">
@@ -161,7 +155,7 @@
         <p>Better SMC-Mixer is free and made in spare time. If it makes your mixer better, you can
           buy the author a mango.</p>
       </div>
-      <a class="button mango" href="https://buymeacoffee.com/igorzilberg" target="_blank" rel="noopener">🥭&nbsp; Buy me a mango</a>
+      <a class="button mango" href="https://buymeacoffee.com/igorzilberg" target="_blank" rel="noopener"><span aria-hidden="true">🥭</span>&nbsp; Buy me a mango</a>
     </div>
   </section>
 </main>

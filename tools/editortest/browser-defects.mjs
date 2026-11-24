@@ -238,7 +238,7 @@ try {
       reconnectDone();await until(()=>!!button('Read and save the backup'));
       button('Read and save the backup').click();await until(()=>!!job.go);
       T.closeDialog();T.stockReal();if(T.job!==job||job.view!==view)throw Error('backup owner changed on reopen');
-      button('Cancel before writing / Dismiss result').click();await until(()=>!job.active);
+      button('Cancel').click();await until(()=>!job.active);await until(()=>!!button('Close'));
       if(job.go||!/cancel/i.test(job.error?.message))throw Error('backup cancellation did not settle');
       if(await sum(stock.flash)!==await sum(flash))throw Error('backup cancellation wrote synthetic flash');
       results.push({transport,cancelled:job.cancelled,active:job.active,reverts,disabled});

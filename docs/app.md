@@ -733,7 +733,7 @@ the host, wired into the page and exercised on the developer's mixer as dated be
 The connected device now owns one firmware job from preparation through backup, confirmation,
 writes, read-check and completion (R09). Install, Update and Go back reopen that job's retained
 view instead of starting competing transports. Closing the dialog hides it, never cancels it.
-The explicit Cancel before writing action settles a pending confirmation; there is no mid-write
+The sheet's footer button (Cancel while the job runs, Close once it has ended) settles a pending confirmation; there is no mid-write
 cancellation. Update keeps cancellation blocked through its sector-0 switch and uncertain
 reconnect, then unlocks it only after a confirmed USB/Bluetooth stock connection; the backup
 confirmation can be cancelled without starting the installation. Disconnect and device

@@ -6,20 +6,20 @@
    "size": 6312
   },
   "controller": {
-   "build_id": "b54e5c66a9d57beaf7bafab3458a1d0cd7bf8c44",
-   "sha256": "385b138b46c78aa7682ba4a333e523c3e24a0d7adca32d05c4cca6c8aa4cdf7e",
+   "build_id": "ce5fa069e721fe8663cf9ddf7d4ebf9ffacd4993",
+   "sha256": "cb04efe5d687a6205f9863ba36a9f561d91ff65328d99a1638f533ccba61f4fa",
    "size": 104112
   },
   "controller-ble": {
-   "build_id": "8e2ee8c4dd832b65654ca70c0acc3ce65c341a24",
-   "sha256": "594ffcd9d5b96e2296c90d5855fa5e77bc08c1912e864f8cc655f91fab46c123",
+   "build_id": "f6739e31fdd68d34dbe61402a2d2a3e85e19b448",
+   "sha256": "3df08e2fc9134d290742cd890f60fd0d565b8f12fdb10add911ca97a6f245dba",
    "size": 172872
   },
   "hwtest": {
-   "build_id": "0f0a759e968410bab060c8bfa3e90ab2bd68354e",
-   "sha256": "f0471f57c19a803b69b79de0693ad752efeb515f61727a2567ca311e29953b88",
+   "build_id": "f9a152c96327bed2a72c970f91cb088b1ee77805",
+   "sha256": "9f4ec9d2deb9ac4006f6823a0c004aea0ef9f0571a98e38319cad0443bf49268",
    "size": 73264
   }
  },
- "version": "0.1.0"
+ "version": "0.1.1"
 }
