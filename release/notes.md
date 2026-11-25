@@ -33,8 +33,9 @@ https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md
 On a retail SMC-Mixer with M-Vave firmware V012 and V013: installation, update and going back
 over USB and over Bluetooth, with power off/on and byte-exact read-back of the configuration;
 the end-to-end test (37 checks) and the editor's self-test on the mixer; every image built twice
-from source with identical bytes. 0.1.1 was installed over 0.1.0 through the editor over USB, and
-the end-to-end test and the self-test passed on it.
+from source with identical bytes. 0.1.2 was installed over 0.1.1 through the editor over USB, the
+configuration read back unchanged after power off/on, and the light levels and the glow were
+checked by eye in the dark.
 
 ## Files
 
