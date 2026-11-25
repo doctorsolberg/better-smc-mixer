@@ -460,6 +460,18 @@ SMC_RAM_CODE ___interrupt static void scan_isr(void)
             led_driven = scan->led_drive;
             led_columns(led_driven);
         }
+        if (scan->led_pulse && led_driven >= 0) {
+            /* The light's short part (scan.h, scan_led_light): the word just latched shows for
+             * led_pulse quarter-µs only, timed here, so a late step cannot lengthen it. */
+            uint32_t q0 = SCAN_TIMER->CNT, want = scan->led_pulse * stats.ticks_per_us / 4u;
+            for (;;) {
+                uint32_t c = SCAN_TIMER->CNT;
+                if ((c >= q0 ? c - q0 : c + SCAN_TIMER->PRD + 1u - q0) >= want)
+                    break;
+            }
+            led_driven = -1;
+            led_columns(-1);
+        }
         scan_pass(scan, now); /* the word is on its way: the pass's evaluation delays nothing */
         if (scan->stats.passes != passes) {
             if (have_pass)

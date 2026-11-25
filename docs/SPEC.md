@@ -538,10 +538,13 @@ per-module log levels (§8).
 
 The LED light is built for 0.1.2 (the owner, 2026-11-25): `ledLevel` 1–10 (default 10, full) and
 `ledUnlit` 0–10 (default 0, dark), two ten-step sliders in the editor's Settings ▸ Mixer ▸ Lights,
-the mixer following while the slider moves (Linked); the steps meant to look even (a square law;
-⚠️ to be confirmed on the mixer); the unlit glow lights the buttons' LEDs, not the encoders'; a
-glow at or above the lit level is allowed, and the editor warns that lit and unlit then look
-alike; set in the editor only, not on the panel.
+the mixer following while the slider moves (Linked); the steps meant to look even (a square law);
+the dimmest level kept as it is, the owner preferring a trace of flicker to a brighter minimum
+(2026-11-25: the LEDs refresh at 500 Hz and short pulses are timed exactly, so level 1 shows
+without visible flicker; ✅ the mixer, levels 1 and 5 and the glow at 2, [hwtest.md](hwtest.md),
+"The LED light"); the unlit glow lights the buttons' LEDs, not the encoders'; a glow at or above
+the lit level is allowed, and the editor warns that lit and unlit then look alike; set in the
+editor only, not on the panel.
 
 ### 5.8 Power-on key combinations
 

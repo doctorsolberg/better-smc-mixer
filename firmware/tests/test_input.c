@@ -620,7 +620,9 @@ static void test_leds(void)
         step(&s);
         int d = s.led_drive;
         uint16_t rows_lit = (uint16_t)~latched;
-        CHECK_EQ((uint16_t)~shifted, d < 0 ? 0 : s.led_rows[d]); /* the word carries d's rows */
+        /* the word carries d's rows; a blank step's, none (the column's last, latched in the blank,
+         * shows nothing: no column driven) */
+        CHECK_EQ((uint16_t)~shifted, d < 0 ? 0 : s.led_rows[d]);
         if (d < 0) {
             blanks++;
         } else {
@@ -835,61 +837,99 @@ static void test_inject(void)
 static uint32_t clock_us;
 static uint32_t host_now(void) { return clock_us++; }
 
-/* Steps in two LED cycles that the latched word lights LED led while its column is driven. */
-static unsigned lit_steps(unsigned led)
+/* Quarter-µs LED led shows in each of its column's times, on average over `cycles` LED cycles: a
+ * step for every step that latches a word lighting it with its column driven, or the pulse the
+ * platform times (led_pulse). late: every 7th step comes `late` µs late (an interrupt held off),
+ * as the mixer's lost periods do. */
+static uint32_t shown_q(unsigned led, unsigned cycles, unsigned late)
 {
     uint8_t pos = scan_led_pos[led];
-    unsigned row = pos >> 4, col = pos & 0x0Fu, n = 0;
+    unsigned row = pos >> 4, col = pos & 0x0Fu;
+    uint64_t q = 0;
     while (!(s.led_col == 0 && s.led_phase == 0)) /* from the start of a cycle */
         step(&s);
-    for (unsigned i = 0; i < 2u * SCAN_LED_COLS * s.p.led_steps; i++) {
+    int drive = -1, pulse = 0;
+    bool on = false;
+    /* one step more: the last column's last word shows in the next cycle's first (blank) step, as
+     * the cycle before's did in this one's, which drive -1 leaves out */
+    for (unsigned i = 0, n = cycles * SCAN_LED_COLS * s.p.led_steps; i <= n; i++) {
+        unsigned dt = SCAN_STEP_US + (late && i % 7u == 3u ? late : 0u);
+        if (drive == (int)col && on) /* what the outputs showed until this step */
+            q += pulse ? (unsigned)pulse : dt * 4u;
+        if (i == n)
+            break;
+        now += dt - SCAN_STEP_US;
         step(&s);
-        if (s.led_drive == (int)col && (~latched >> row & 1u))
-            n++;
+        drive = s.led_drive;
+        pulse = s.led_pulse;
+        on = (~latched >> row & 1u) != 0;
+        if (pulse)
+            CHECK(pulse <= (int)SCAN_LIGHT_PULSE_MAX && drive >= 0);
     }
-    return n / 2;
+    return (uint32_t)((q + cycles / 2u) / cycles);
 }
 
-/* The LED light (SPEC §5.7, ledLevel and ledUnlit): a lit LED's rows go out for the first steps of
- * its column's time, more for a higher level; an unlit button's LED glows the same way for its own
- * level, and the encoders' LEDs never glow. */
+/* The LED light (SPEC §5.7, ledLevel and ledUnlit; scan.h): whole words and pulses the platform
+ * times, so the dimmest levels are exact; a late step's longer word paid back after. */
 static void test_led_light(void)
 {
     fresh(NULL);
-    unsigned full_window = s.p.led_steps - s.p.led_blank - 1u; /* what a column shows (test_leds) */
+    unsigned window = s.p.led_steps - s.p.led_blank - 1u, full = window * SCAN_LIGHT_STEP_Q;
     scan_led(&s, 0, true); /* M of strip 1 */
     step(&s);
-    CHECK_EQ(lit_steps(0), full_window); /* the default: full, as before */
+    CHECK_EQ(shown_q(0, 4, 0), full); /* the default: full, every word, no pulse */
     unsigned last = 0;
     for (unsigned level = 1; level <= 10; level++) {
         scan_led_light(&s, level, 0);
-        unsigned n = lit_steps(0);
-        CHECK(n > last); /* each level brighter than the one below */
-        last = n;
+        unsigned want = level == 10 ? full : scan_light_q(&s, level);
+        unsigned got = shown_q(0, 8, 0);
+        CHECK(got > last); /* each level brighter than the one below */
+        CHECK(got + 1u >= want && got <= want + 1u); /* exact, on average */
+        last = got;
     }
-    CHECK_EQ(last, full_window);
-    scan_led_light(&s, 1, 0);
-    CHECK_EQ(lit_steps(0), 1u); /* the dimmest: one step a column */
-    scan_led_light(&s, 5, 0);
-    unsigned five = lit_steps(0);
-    CHECK(five * 5u < full_window * 2u && five * 5u > full_window); /* about a quarter: squared */
+    CHECK_EQ(last, full);
+    /* level 1: 1/71 of the full light (the owner's dimmest, 2026-11-25), as a pulse */
+    CHECK_EQ(scan_light_q(&s, 1), (full + 35u) / 71u);
+    CHECK(scan_light_q(&s, 1) < SCAN_LIGHT_STEP_Q);
+    CHECK(scan_light_q(&s, 5) * 71u >= full * 18u - 71u && scan_light_q(&s, 5) * 71u <= full * 18u + 71u);
     scan_led_light(&s, 0, 0); /* out of range: the nearest level */
-    CHECK_EQ(lit_steps(0), 1u);
+    CHECK_EQ(shown_q(0, 8, 0), scan_light_q(&s, 1));
     scan_led_light(&s, 11, 0);
-    CHECK_EQ(lit_steps(0), full_window);
+    CHECK_EQ(shown_q(0, 4, 0), full);
+
+    /* late steps: a whole word that lasted longer is paid back, a pulse cannot last longer */
+    for (unsigned level = 1; level <= 9; level++) {
+        scan_led_light(&s, level, 0);
+        unsigned want = scan_light_q(&s, level), got = shown_q(0, 64, 60);
+        CHECK(got * 100u <= want * 103u + 100u && got * 100u + 100u >= want * 97u);
+    }
 
     /* unlit LEDs: dark at 0; at a level they glow as a lit LED of that level would */
-    CHECK_EQ(lit_steps(1), 0u); /* S of strip 1, not lit */
+    scan_led_light(&s, 10, 0);
+    CHECK_EQ(shown_q(1, 4, 0), 0u); /* S of strip 1, not lit */
     scan_led_light(&s, 10, 5);
-    CHECK_EQ(lit_steps(1), five);
-    CHECK_EQ(lit_steps(0), full_window); /* the lit one keeps its level */
-    CHECK_EQ(lit_steps(CORE_LED_ENC(0)), 0u); /* an encoder's LED does not glow */
-    CHECK_EQ(lit_steps(CORE_BTN_SHIFT), five);
+    unsigned five = scan_light_q(&s, 5);
+    CHECK(shown_q(1, 8, 0) + 1u >= five && shown_q(1, 8, 0) <= five + 1u);
+    CHECK_EQ(shown_q(0, 4, 0), full - (five % SCAN_LIGHT_STEP_Q ? SCAN_LIGHT_STEP_Q : 0u) * 0u); /* lit: full */
+    CHECK_EQ(shown_q(CORE_LED_ENC(0), 4, 0), 0u); /* an encoder's LED does not glow */
+    scan_led_light(&s, 10, 1);
+    unsigned one = shown_q(CORE_BTN_SHIFT, 8, 0);
+    CHECK(one + 1u >= scan_light_q(&s, 1) && one <= scan_light_q(&s, 1) + 1u);
     scan_led(&s, CORE_LED_ENC(0), true);
-    CHECK_EQ(lit_steps(CORE_LED_ENC(0)), full_window); /* lit, it follows the level */
+    CHECK_EQ(shown_q(CORE_LED_ENC(0), 4, 0), full); /* lit, it follows the level */
     scan_led_light(&s, 1, 10); /* brighter unlit than lit: allowed, each its own */
-    CHECK_EQ(lit_steps(0), 1u);
-    CHECK_EQ(lit_steps(1), full_window);
+    unsigned lit1 = shown_q(0, 8, 0);
+    CHECK(lit1 + 1u >= scan_light_q(&s, 1) && lit1 <= scan_light_q(&s, 1) + 1u);
+    CHECK_EQ(shown_q(1, 4, 0), full);
+    for (unsigned lvl = 1; lvl <= 9; lvl++) /* both dim: each exact, the pulses one channel each */
+        for (unsigned g = 1; g <= 9; g += 4) {
+            scan_led_light(&s, lvl, g);
+            /* when the pulses do not fit, one more whole word now, paid back later: exact on
+             * average over a few times (a 50 µs step has room for fewer pulses) */
+            unsigned a = shown_q(0, 32, 0), b = shown_q(1, 32, 0), wa = scan_light_q(&s, lvl), wb = scan_light_q(&s, g);
+            CHECK(a * 100u + 200u >= wa * 99u && a * 100u <= wa * 101u + 200u); /* within 1% */
+            CHECK(b * 100u + 200u >= wb * 99u && b * 100u <= wb * 101u + 200u);
+        }
 }
 
 /* The defaults are times, not step counts: the same behaviour at a 25 or a 50 µs step. */
@@ -898,8 +938,8 @@ static void test_defaults_in_time(void)
     const struct scan_params *p = &scan_default_params;
     unsigned debounce_us = p->debounce * SCAN_PASS_US;
     CHECK(debounce_us >= 4800u && debounce_us < 4800u + SCAN_PASS_US);
-    CHECK_EQ(p->led_steps * SCAN_STEP_US, 2000u);  /* 2 ms a column, 125 Hz refresh */
-    CHECK_EQ(p->led_blank * SCAN_STEP_US, 200u);   /* 0.2 ms dark between columns */
+    CHECK_EQ(p->led_steps * SCAN_STEP_US, 500u); /* 0.5 ms a column, 500 Hz refresh */
+    CHECK_EQ(p->led_blank * SCAN_STEP_US, 50u);  /* 50 µs dark between columns */
     CHECK(SCAN_ENC_INFER_PASSES * SCAN_PASS_US >= 6400u);
     CHECK(SCAN_ENC_INFER_PASSES * SCAN_PASS_US < 6400u + SCAN_PASS_US);
     CHECK(p->led_steps <= 255u && SCAN_ENC_INFER_PASSES < 255u); /* uint8_t counters */

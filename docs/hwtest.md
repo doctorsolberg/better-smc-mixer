@@ -128,23 +128,38 @@ timing does not depend on the SPI clock and the scan's share of CPU time is boun
   100 events a second on the mixer: its noise (raw 1017..1023, ✅ run 19) dips the filtered value
   under the snap and back.
 - **LEDs**: the core's LED states go into a 4 × 16 frame (`scan_led`). Each LED column is shown
-  for `led_steps` steps (default 80 at 25 µs a step: 2 ms, so the 4 columns refresh at 125 Hz), of
-  which the first `led_blank` (default 8: 0.2 ms) are blank: no column pin driven, rows off. The word carries the rows of
-  the column being shown, inverted (active low). A column's rows reach the outputs one step after
-  its pin is driven; that step still shows the blank rows, so a column never meets another
-  column's rows (`test_leds` follows the pipeline through two cycles). Blinking states (slow, fast)
-  will toggle frame bits on a clock of their own.
-- **The LED light** (SPEC §5.7, `scan_led_light()`): within its column's time a LED shows for
-  the first steps only, as many as its level gives, and is dark for the rest: the refresh stays
-  at 125 Hz, so dimming adds no flicker. Ten levels, the share of the full time the square of the
-  level (gamma 2, so the steps look even): 1, 3, 6, 11, 18, 26, 35, 45, 58 and 71 of the 71 steps
-  a column shows at 25 µs a step (1.4 % … 100 %); a level always shows more than the one below
-  (`test_led_light`). The unlit glow lights the buttons' LEDs that are off (`led_glow`, built from
-  `scan_led_pos` at start), never the encoders', for its own level. Level 10 puts the rows in every
-  word, exactly as before the light. The controller sets it from the running configuration
-  (`ledLevel`, `ledUnlit`) through `ctl_ops.light`; the hardware test leaves the defaults (full,
-  dark). ⚠️ Whether the dimmest steps look even on the mixer and whether 1/71 still shows is for
-  the hardware check.
+  for `led_steps` steps (default 20 at 25 µs a step: 0.5 ms, so the 4 columns refresh at 500 Hz;
+  2 ms and 125 Hz before 2026-11-25), of which the first `led_blank` (default 2: 50 µs) are blank:
+  no column pin driven, rows off. The word carries the rows of the column being shown, inverted
+  (active low). A column's rows reach the outputs one step after its pin is driven; that step
+  still shows the blank rows, so a column never meets another column's rows (`test_leds` follows
+  the pipeline through two cycles). Blinking states (slow, fast) will toggle frame bits on a clock
+  of their own.
+- **The LED light** (SPEC §5.7, `scan_led_light()`), redone on 2026-11-25 after the owner saw
+  level 1 flicker on the mixer: with whole steps only, level 1 was one 25 µs step in 8 ms, its
+  refresh visible, and a step that came late (up to 200 µs, "Lost periods" below) lit it several
+  times longer for once, a flash about every second. Now:
+  - each channel (the lit LEDs; the unlit buttons' glow) owes a column's time a light in
+    quarter-µs, the share of the full time the square of the level, level 1 kept at 1/71 (the
+    owner's dimmest, as checked): 1, 3, 6, 11, 18, 26, 35, 45, 58 and 71 of 71 parts of the 17
+    steps a column shows (`light_share`, `scan_light_q()`);
+  - it shows in whole words first, then the rest in pulse words of at most 10 µs, one channel's
+    rows each, after both channels' whole words; the column's last word, latched at the next
+    column's first (blank) step, can be one, with the column driven again for the pulse only;
+  - the platform times a pulse inside the interrupt (`led_pulse`, `input_br25.c`): it releases the
+    column after that many quarter-µs, so a late step cannot lengthen it;
+  - a whole word a late step lengthened is measured (the step times), and what a column's time
+    showed beyond what it owed is paid back at its next times (`light_debt`, at most a column's
+    time); when the pulses do not fit, a remainder takes one more whole word, paid back the same
+    way;
+  - level 10 is every word, as without the light; `light_plan()` runs from the scan interrupt
+    (in RAM, `rampath`), once a column's time.
+
+  ✅ The mixer, 2026-11-25 (test build `8eeb3ce7`): level 1 shows and does not flicker, only
+  barely at the edge of the eye ("quite acceptable"); level 5 clearly brighter, no more flicker;
+  the glow at 2 shows on the buttons, not on the encoders, hardly flickers, and a lit M stands
+  out. Host tests: `test_led_light` (each level exact on average, within 3 % with every 7th step
+  60 µs late; both channels dim at once within 1 %), at 25 and 50 µs a step.
   Two diagnostic build switches (`firmware/app/Makefile`): `LED_DARK=1` never drives a column,
   `LED_DARK=2` also takes PB5 (⚠️ the 595s' /OE) high, which stops the buttons. The bottom row's,
   BT's and Shift's LEDs glow faintly with either (controllers 16 and 17, 2026-11-11):

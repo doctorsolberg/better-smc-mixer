@@ -45,8 +45,8 @@ const struct scan_params scan_default_params = {
     .adc_bits = 10,
     .fader_shift = 3,       /* about 13 ms at a sample every 1.62 ms */
     .fader_hysteresis = 80, /* 5 raw counts: docs/hwtest.md, "The faders measured" */
-    .led_steps = SCAN_STEPS_FOR_US(2000u), /* 2 ms a column: the 4 columns refresh at 125 Hz */
-    .led_blank = SCAN_STEPS_FOR_US(200u),  /* 0.2 ms dark between columns */
+    .led_steps = SCAN_STEPS_FOR_US(500u), /* 0.5 ms a column: the 4 columns refresh at 500 Hz */
+    .led_blank = SCAN_STEPS_FOR_US(50u),  /* 50 µs dark between columns */
 };
 
 /* Quadrature: (previous AB << 2 | current AB) -> step; 0 for no change and for a jump. Bit masks,
@@ -85,41 +85,98 @@ void scan_init(struct scan *s, const struct scan_params *p, scan_sink sink, void
     scan_led_light(s, SCAN_LIGHT_LEVELS, 0);
 }
 
-/* A level's share of the full light in thousandths: the square of the level, so that the steps
- * look even (brightness is seen roughly as the square root of the light; a gamma of 2). */
-static const uint16_t light_share[SCAN_LIGHT_LEVELS] = {10, 40, 90, 160, 250, 360, 490, 640, 810, 1000};
+/* A level's share of the full light, in 71sts: the square of the level, so that the steps look even
+ * (brightness is seen roughly as the square root of the light; a gamma of 2), and level 1 as
+ * bright as 1 of 71 steps, the dimmest the owner checked on the mixer (2026-11-25). */
+static const uint8_t light_share[SCAN_LIGHT_LEVELS] = {1, 3, 6, 11, 18, 26, 35, 45, 58, 71};
 
-/* With the default times a column shows 71 steps (35 at a 50 µs step): the ten levels all differ.
- * A window under 10 steps would merge the top levels; none of the builds has one. */
-unsigned scan_light_steps(const struct scan *s, unsigned level)
+/* The words a column's time shows whole: its time less the blank and the step its rows take to
+ * reach the outputs (scan.h). Its last word shows only as a pulse, in the next blank's first step. */
+SMC_RAM_CODE static unsigned light_window(const struct scan *s)
 {
-    /* What a column shows: its time less the blank and the step its rows take to reach the
-     * outputs (scan.h). */
-    unsigned window = (unsigned)s->p.led_steps - s->p.led_blank - 1u, on = 0;
+    return (unsigned)s->p.led_steps - s->p.led_blank - 1u;
+}
+
+unsigned scan_light_q(const struct scan *s, unsigned level)
+{
     if (level < 1)
         level = 1;
     if (level > SCAN_LIGHT_LEVELS)
         level = SCAN_LIGHT_LEVELS;
-    for (unsigned l = 1; l <= level; l++) {
-        unsigned want = (window * light_share[l - 1] + 500u) / 1000u;
-        on = want > on ? want : on + 1u; /* each level brighter than the one below */
-    }
-    return on < window ? on : window;
-}
-
-/* The words of a column's time that carry a LED's rows: word q shows at step q + 1, and the
- * column's last word shows in the next blank, so n steps shown take the first n words; the full
- * light puts the rows in every word, as before the light (test_leds). */
-static uint8_t words_on(const struct scan *s, unsigned level)
-{
-    unsigned n = scan_light_steps(s, level), window = (unsigned)s->p.led_steps - s->p.led_blank - 1u;
-    return (uint8_t)(n < window ? n : window + 1u);
+    unsigned full = light_window(s) * SCAN_LIGHT_STEP_Q;
+    return (full * light_share[level - 1] + 35u) / 71u;
 }
 
 void scan_led_light(struct scan *s, unsigned level, unsigned unlit)
 {
-    s->led_on = words_on(s, level);
-    s->unlit_on = unlit ? words_on(s, unlit) : 0u;
+    s->light_q[0] = (uint16_t)(level >= SCAN_LIGHT_LEVELS ? SCAN_LIGHT_FULL : scan_light_q(s, level));
+    s->light_q[1] = (uint16_t)(!unlit ? 0u : unlit >= SCAN_LIGHT_LEVELS ? SCAN_LIGHT_FULL : scan_light_q(s, unlit));
+}
+
+/* Column col's plan for its next time. Its words 0..window-1 are shown whole, with the column
+ * driven for a step; word window, latched at the next column's first (blank) step, can carry a
+ * pulse with this column driven again for the pulse only. Each channel's rows go in whole words
+ * first, then the rest in pulse words of one channel each, after both channels' whole words.
+ * What the column's last time showed beyond what it owed is taken off (the debt). When the pulses
+ * do not fit, the lit LEDs at full give up the word latched in the blank, which shows nothing,
+ * else a remainder goes in one more whole word, the debt making it up next time. Called from the
+ * scan interrupt: no table, no flash (the divisions are by constants). */
+SMC_RAM_CODE static void light_plan(struct scan *s, unsigned col)
+{
+    unsigned window = light_window(s);
+    unsigned k[2], rem[2];
+    for (unsigned ch = 0; ch < 2; ch++) {
+        unsigned q = s->light_q[ch];
+        if (q == s->used_q[ch][col] && q != SCAN_LIGHT_FULL) {
+            int32_t debt = s->light_debt[ch][col] + s->shown_q[ch][col] - (int32_t)q;
+            /* never below 0: less than owed only when the rows were dark (a LED off), which owes
+             * nothing; at most a column's time */
+            int32_t cap = (int32_t)(window * SCAN_LIGHT_STEP_Q);
+            s->light_debt[ch][col] = debt > cap ? cap : debt < 0 ? 0 : debt;
+        } else {
+            s->light_debt[ch][col] = 0; /* full, or a new level: nothing carried over */
+            s->used_q[ch][col] = (uint16_t)q;
+        }
+        s->shown_q[ch][col] = 0;
+        if (q == SCAN_LIGHT_FULL) {
+            k[ch] = window + 1u; /* every word, as before the light (the last shows nothing) */
+            rem[ch] = 0;
+            continue;
+        }
+        int32_t due = (int32_t)q - s->light_debt[ch][col];
+        if (due < 0)
+            due = 0;
+        k[ch] = (unsigned)due / SCAN_LIGHT_STEP_Q;
+        rem[ch] = (unsigned)due % SCAN_LIGHT_STEP_Q;
+        if (k[ch] >= window) {
+            k[ch] = window;
+            rem[ch] = 0;
+        }
+    }
+    unsigned np[2];
+    for (;;) {
+        np[0] = (rem[0] + SCAN_LIGHT_PULSE_MAX - 1u) / SCAN_LIGHT_PULSE_MAX;
+        np[1] = (rem[1] + SCAN_LIGHT_PULSE_MAX - 1u) / SCAN_LIGHT_PULSE_MAX;
+        unsigned base = k[0] > k[1] ? k[0] : k[1];
+        if (base + np[0] + np[1] <= window + 1u)
+            break;
+        unsigned ch;
+        if (k[0] > window || k[1] > window) {
+            k[0] = k[0] > window ? window : k[0]; /* a channel at full gives up its last word, */
+            k[1] = k[1] > window ? window : k[1]; /* which shows nothing (in the blank) */
+            continue;
+        }
+        ch = rem[1] ? 1u : 0u; /* the glow's remainder first, the lit LEDs' then */
+        k[ch]++; /* shown beyond what it owes: paid back next time */
+        rem[ch] = 0;
+    }
+    unsigned base = k[0] > k[1] ? k[0] : k[1];
+    for (unsigned ch = 0; ch < 2; ch++) {
+        s->plan_k[ch] = (uint8_t)k[ch];
+        s->plan_np[ch] = (uint8_t)np[ch];
+        s->plan_first[ch] = (uint8_t)(base + (ch ? np[0] : 0u));
+        s->plan_plast[ch] = (uint8_t)(np[ch] ? rem[ch] - (np[ch] - 1u) * SCAN_LIGHT_PULSE_MAX : 0u);
+    }
 }
 
 SMC_RAM_CODE uint32_t scan_word(unsigned col, uint16_t led_on)
@@ -237,7 +294,7 @@ SMC_RAM_CODE void scan_pass(struct scan *s, uint32_t t_us)
     encoders(s, t_us, prime);
 }
 
-SMC_RAM_CODE static uint32_t scan_leds_step(struct scan *s, unsigned word_col);
+SMC_RAM_CODE static uint32_t scan_leds_step(struct scan *s, uint32_t t_us, unsigned word_col);
 
 /* A step of the encoder probe (SCAN_RAW_PROBE_SHIFT): stores and logs the read if it is one of the
  * probe's columns, and returns the column the word must select: the read two steps later is
@@ -287,7 +344,7 @@ SMC_RAM_CODE uint32_t scan_step(struct scan *s, uint32_t t_us, uint8_t rows)
     if (probe != s->probe)
         probe_switch(s, probe);
     if (s->probe)
-        return scan_leds_step(s, probe_step(s, rows));
+        return scan_leds_step(s, t_us, probe_step(s, rows));
     uint8_t c = s->col;
     if (c == SCAN_COLS - 1)
         s->raw_last_before = s->raw[c]; /* encoder 8's pairing (encoders()) */
@@ -309,27 +366,64 @@ SMC_RAM_CODE uint32_t scan_step(struct scan *s, uint32_t t_us, uint8_t rows)
         }
     }
     s->col = (uint8_t)((c + 1) % SCAN_COLS);
-    return scan_leds_step(s, s->col);
+    return scan_leds_step(s, t_us, s->col);
 }
 
-/* The LED column's phase for this step, and the word: column word_col and the LED rows. */
-SMC_RAM_CODE static uint32_t scan_leds_step(struct scan *s, unsigned word_col)
+/* The LED column's phase for this step, and the word: column word_col and the LED rows.
+ *
+ * The light (scan_led_light): what the outputs showed since the last step is counted first, the
+ * word latched then with the column driven then: a whole word for the time that passed, a late
+ * step's included; a pulse word for its pulse, which the platform timed. Then the word latched
+ * now (made at the last step) becomes the shown one, and the next word is made from the column's
+ * plan (light_plan): word q of the column's time (from its first step after the blank). */
+SMC_RAM_CODE static uint32_t scan_leds_step(struct scan *s, uint32_t t_us, unsigned word_col)
 {
+    if (s->light_timed && s->cur_col >= 0 && s->cur_bits) {
+        int32_t dq = s->cur_pulse ? (int32_t)s->cur_pulse : (int32_t)((t_us - s->light_t) * 4u);
+        for (unsigned ch = 0; ch < 2; ch++)
+            if (s->cur_bits >> ch & 1u)
+                s->shown_q[ch][s->cur_col] += dq;
+    }
+    s->light_t = t_us;
+    s->light_timed = true;
+
     /* The LED column: blank first, so the outgoing column's rows never meet the next column. */
+    unsigned prev = s->led_col;
     if (++s->led_phase >= s->p.led_steps) {
         s->led_phase = 0;
         s->led_col = (uint8_t)((s->led_col + 1) % SCAN_LED_COLS);
     }
-    if (s->led_phase < s->p.led_blank) {
-        s->led_drive = -1;
+    /* The word made at the last step is latched now. A blank step shows nothing, but for a pulse
+     * word the column before latched at its first: that column again, for the pulse. */
+    bool blank = s->led_phase < s->p.led_blank;
+    s->cur_bits = s->pend_bits;
+    s->cur_pulse = s->pend_pulse;
+    if (blank)
+        s->led_drive = s->led_phase == 0 && s->cur_pulse ? (int8_t)prev : -1;
+    else
+        s->led_drive = (int8_t)s->led_col;
+    s->cur_col = s->led_drive;
+    s->led_pulse = s->led_drive >= 0 ? s->cur_pulse : 0u;
+    s->pend_bits = 0;
+    s->pend_pulse = 0;
+    if (blank)
         return scan_word(word_col, 0);
+
+    unsigned col = s->led_col, q = (unsigned)s->led_phase - s->p.led_blank;
+    if (q == 0)
+        light_plan(s, col);
+    uint16_t lit = s->led_rows[col];
+    uint16_t chrows[2] = {lit, (uint16_t)(~lit & s->led_glow[col])}, rows = 0;
+    for (unsigned ch = 0; ch < 2; ch++) {
+        if (q < s->plan_k[ch] && chrows[ch]) {
+            rows |= chrows[ch];
+            s->pend_bits |= (uint8_t)(1u << ch);
+        } else if (q >= s->plan_first[ch] && q < s->plan_first[ch] + s->plan_np[ch] && chrows[ch]) {
+            rows = chrows[ch]; /* a pulse word: this channel alone */
+            s->pend_bits = (uint8_t)(1u << ch);
+            s->pend_pulse = (uint8_t)(q + 1u == s->plan_first[ch] + s->plan_np[ch] ? s->plan_plast[ch] : SCAN_LIGHT_PULSE_MAX);
+        }
     }
-    s->led_drive = (int8_t)s->led_col;
-    /* The light: a LED's rows go out for the first steps of the column's time (scan_led_light). */
-    unsigned q = (unsigned)s->led_phase - s->p.led_blank;
-    uint16_t lit = s->led_rows[s->led_col], rows = q < s->led_on ? lit : 0;
-    if (q < s->unlit_on)
-        rows |= (uint16_t)(~lit & s->led_glow[s->led_col]);
     return scan_word(word_col, rows);
 }
 

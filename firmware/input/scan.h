@@ -146,11 +146,31 @@ struct scan {
     uint16_t fader_raw[SCAN_FADERS];   /* raw mode: the last ADC value logged */
     uint16_t led_rows[SCAN_LED_COLS];  /* the LED frame: bit r = row r lit, for each column */
     uint16_t led_glow[SCAN_LED_COLS];  /* the buttons' LEDs: those an unlit glow lights */
-    uint8_t led_on;                    /* steps of a column's time a lit LED shows (scan_led_light) */
-    uint8_t unlit_on;                  /* the same for an unlit button's LED; 0: dark */
+    /* The LED light (scan_led_light), channel 0 the lit LEDs, 1 the unlit glow: the light a
+     * column's time owes, in quarter-µs; 0 dark, SCAN_LIGHT_FULL every word. Set by the task. */
+    uint16_t light_q[2];
+    /* The scan interrupt's own. Per channel and column: light_q its last time was planned with,
+     * what that time showed, and what its times showed beyond what they owed (the debt, paid back
+     * at the next ones), in quarter-µs. */
+    uint16_t used_q[2][SCAN_LED_COLS];
+    int32_t shown_q[2][SCAN_LED_COLS];
+    int32_t light_debt[2][SCAN_LED_COLS];
+    /* The plan of the column being shown, per channel: its rows in whole words 0..k-1, then in
+     * np pulse words from word first, SCAN_LIGHT_PULSE_MAX quarter-µs each but the last, plast. */
+    uint8_t plan_k[2], plan_first[2], plan_np[2], plan_plast[2];
+    /* The word returned last (latched at the next step) and the one latched at the last step:
+     * bit ch, it carries channel ch's rows; a pulse word's length (0: a whole word); the column
+     * it is shown with (-1: none). */
+    uint8_t pend_bits, pend_pulse, cur_bits, cur_pulse;
+    int8_t pend_col, cur_col;
+    bool light_timed;  /* light_t holds a step's time */
+    uint32_t light_t;  /* the last step's time, µs */
     uint8_t led_phase;                 /* the step within the current LED column's time */
     uint8_t led_col;                   /* the current LED column */
     int8_t led_drive;                  /* what the platform drives now: -1 no column, else 0-3 */
+    uint8_t led_pulse;                 /* with led_drive: 0 drive it the whole step; else drive it
+                                        * for this many quarter-µs, timed in the interrupt, then
+                                        * no column until the next step */
     struct scan_stats stats;
 };
 
@@ -174,18 +194,28 @@ void scan_led(struct scan *s, unsigned led, bool on);
 void scan_led_at(struct scan *s, unsigned row, unsigned col, bool on);
 void scan_leds_clear(struct scan *s);
 
-/* The LED light (SPEC §5.7): levels 1-10 of lit LEDs and 0-10 of unlit buttons' LEDs (0: dark;
- * the encoders' LEDs never glow), even steps to the eye. A LED shows for the first steps of its
- * column's time, as many as its level gives; 10 is all of them. Out-of-range levels take the
- * nearest. From the start: 10 and 0 (scan_init() sets them, so a scan_init() after the
- * controller's ctl_init() would lose the light ctl gave). Call it outside the scan interrupt; it
- * takes effect at the next step. A glow at or above the lit level makes lit and unlit buttons
- * look alike: allowed, the editor says so. */
+/* The LED light (SPEC §5.7; docs/hwtest.md, "The LED light"): levels 1-10 of lit LEDs and 0-10 of
+ * unlit buttons' LEDs (0: dark; the encoders' LEDs never glow), the share of the full light the
+ * square of the level (level 1 as bright as in 0.1.2's first build). In each column's time a
+ * channel shows for whole words (a step each) and the rest in one or two pulses of at most 10 µs,
+ * which the platform times inside the interrupt (led_pulse), exact however late a step comes.
+ * What a channel showed is measured, a late step's longer word included, and what it showed
+ * beyond what it owed is paid back at the column's next times (light_debt, at most a column's
+ * time). A pulse word carries one channel's rows only, after both channels' whole words; the
+ * column's last word, which the next column's first (blank) step latches, can be one. 10 is every
+ * word but that last one. Out-of-range levels take the nearest. From the start: 10 and 0 (scan_init() sets them, so a scan_init() after the
+ * controller's ctl_init() would lose the light ctl gave). Call it outside the scan interrupt:
+ * each channel's value is one aligned 16-bit store, and it takes effect at the column's next
+ * time. A glow at or above the lit level makes lit and unlit buttons look alike: allowed, the
+ * editor says so. */
 #define SCAN_LIGHT_LEVELS 10
+#define SCAN_LIGHT_FULL 0xFFFFu
 void scan_led_light(struct scan *s, unsigned level, unsigned unlit);
 
-/* Steps of a column's time a LED of level 1-10 shows (exposed for tests). */
-unsigned scan_light_steps(const struct scan *s, unsigned level);
+/* Quarter-µs a LED of level 1-10 shows each column's time (exposed for tests and the docs). */
+unsigned scan_light_q(const struct scan *s, unsigned level);
+#define SCAN_LIGHT_STEP_Q (SCAN_STEP_US * 4u) /* a step, in quarter-µs */
+#define SCAN_LIGHT_PULSE_MAX 40u             /* the longest pulse: 10 µs */
 
 /* The 595 word that selects column col, with the LEDs of led_on lit (bit r = row r): exposed for
  * tests and the platform's start-up. */
