@@ -17,19 +17,6 @@ https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md
   0.1.2 on the mixer: 0.1.1 and earlier keep their lights at full and play the rest of a
   configuration as before.
 
-## What's new in 0.1.1
-
-The firmware is 0.1.0's with the new version number; the changes are in the editor:
-
-- Copy, Paste and Clear work on the layer you see (Normal or Shift), so one layer can be copied
-  onto the other. A Shift layer of its own can have a name of its own.
-- The bottom row is labelled as shared by all pages of a preset; Clear page asks whether to clear
-  it too.
-- Polish: firmware sheets keep their buttons in a footer that is never cut off, faders fit narrow
-  screens, the instrument card's MIDI Guide link stays in its box, templates show a short
-  Replace, longer button names take two lines, consistent spacing on phones and in dialogs.
-- A new home page with pictures of the editor.
-
 ## What it does
 
 - Four presets of four pages, eight strips each; every fader, encoder and button sends CC, 14-bit
