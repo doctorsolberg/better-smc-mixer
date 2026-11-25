@@ -44,7 +44,8 @@ Alternative firmware for the M-Vave SMC-Mixer and a companion app to configure i
 ### 1.2 Non-goals (for version 1.0)
 
 - Mackie Control / HUI emulation for DAWs. (MAY come later as a separate "stock compatibility"
-  preset.)
+  preset: planned as a built-in template, [ideas.md](ideas.md), "A DAW template like the stock
+  firmware's".)
 - A native iOS editor and installer in the first public release. These are deferred, not
   rejected: the owner's 2026-11-14 direction is to support firmware operations over Bluetooth
   in the future mobile app as well as the desktop browser (FR-APP-20).

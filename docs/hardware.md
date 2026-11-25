@@ -392,6 +392,45 @@ bonding by default ([ble.md](ble.md)); no bond-key write was seen in those recor
 - PB5, PB6, PB7: the SPI2 clock (PB6) and data (PB7), and PB5 driven low after SPI2 starts (⚠️ the
   595 output enable); see "Input matrix".
 
+## Stock DAW mode: incoming MIDI (static analysis, 2026-11-25)
+
+How V012 handles MIDI from the host, for a template that makes our firmware work with DAWs' Mackie
+Control scripts as the stock firmware does ([ideas.md](ideas.md), "A DAW template like the
+stock firmware's"). Static analysis of `materials/re/v012/app.lst` only, addresses at run time;
+nothing was run on the mixer. "Code" means confirmed by the code, "inferred" not.
+
+- **One receive path for USB and BLE MIDI.** The MIDI task (`0x1E10154`) decodes USB-MIDI events
+  (parser `0x16C26`) and passes each complete message to `0x1E0EF78`; the BLE-MIDI write handler
+  (`0x1E0D5C4`) strips the BLE header and timestamps into the same queue (code; the BLE handle from
+  the GATT table above, inferred).
+- **Only Note On, CC and Pitch Bend are read** (code). Note Off (`8n`), channel pressure (Mackie
+  meters `D0`), polyphonic aftertouch, program change and every SysEx but the service packets are
+  ignored: the Mackie LCD (`F0 00 00 66 14 12 …`), the device query and the host handshake get no
+  answer, and nothing is sent at connect (inferred from the callers of the MIDI send routine; the
+  code holds no `00 00 66 14`/`15` sequence).
+- **Note On lights a button** (code): the channel is ignored; the note is looked up in the DAW
+  button table: R 0–7, S 8–15, M 16–23, SELECT 24–31, Rew 91, FF 92, Stop 93, Play 94, Rec 95.
+  Velocity ≠ 0 lights the LED, 0 turns it off. Velocity 1 (Mackie's "flash") lights it solid:
+  nothing blinks. «, », ▲, ▼, ◀ and ▶ have no host note (their record's last byte is `FF`).
+- **In DAW mode those LEDs are the host's only** (code): pressing M with no host sends the note
+  and leaves the LED dark; it lights when the host sends the note back. «, » and the arrows light
+  while held. In User mode every button LED is local (a toggle shows its state, the others light
+  while held) and incoming MIDI never changes them.
+- **Pitch Bend from the host** (DAW mode, code): the MSB per channel is the track's fader value.
+  About 500 ms after the last Pitch Bend of a strip, the fader is compared with it; more than 3
+  steps (of 127) apart (host 115–119 with the fader at or above it counts as met), the strip's
+  encoder LED blinks 0.6 s on, 0.6 s off, and the fader sends nothing until it meets the value
+  (between 0 and 3 steps above it): a pickup.
+- **Incoming CC** changes no LED (code). One whose number and channel are an encoder's sets that
+  encoder's value silently (in DAW mode the encoders are relative, so it does nothing); Mackie's
+  V-Pot rings (CC 48–55) and displays (CC 64–75) are ignored.
+- **Extras** (code, purpose inferred): `9F 7F 7F` turns every host-lit LED and the encoder LEDs
+  off; note 115 (Mackie's Rude Solo light) on makes each M LED show that strip's S; `B0 00 41`
+  stops the fader blink until the next Pitch Bend. Encoders set to Pitch Bend in the User table
+  send Mackie touch notes (`90 68+n 7F`, then `00` after about 200 ms idle); DAW faders send none.
+- **SysEx it does act on** (code; meaning inferred): `F0 35 59 xx xx xx F7` sets a flag; the USB
+  receive routine reboots into the JieLi loader on `F0 22 24 35 7D F7` (`0x1E0E4B6` → `0x17BD0`).
+
 ## Data and tools
 
 - `materials/dumps/` — flash dumps and their read logs (the logs contain flash contents). This is
