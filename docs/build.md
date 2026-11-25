@@ -446,10 +446,11 @@ Three GitHub Actions workflows in `.github/workflows/`, with `tools/release/publ
   package, fills the notes from `release/notes.md` and creates a draft GitHub release, a
   pre-release while the version is 0.x.
 - **`pages.yml`** (a release published by the owner): `publish.py site` lays out the Pages site,
-  the home page (`site/`) with that release's package at the root (`editor/`, `manifest.json`,
-  `firmware/`) and every older published release's package under `/vX.Y.Z/`. The release event
-  only starts the workflow again on the default branch (the `github-pages` environment deploys
-  from it); running `pages.yml` by hand with a tag redeploys that release.
+  the home page (`site/` on the default branch) with that release's package at the root
+  (`editor/`, `manifest.json`, `firmware/`) and every older published release's package under
+  `/vX.Y.Z/`. The release event only starts the workflow again on the default branch (the
+  `github-pages` environment deploys from it); running `pages.yml` by hand with the current tag
+  redeploys the home page from the default branch, the editor and firmware unchanged.
 
 Releasing a version: set `VERSION` and the documents' version lines (`check_versions.py`),
 install the candidate on the mixer and run its checks, `publish.py record build/release

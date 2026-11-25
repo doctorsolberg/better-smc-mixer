@@ -1,7 +1,8 @@
 name: Pages
 
-# Publishing a release deploys the site: the home page (site/), that release's package at the root
-# (editor/, manifest.json, firmware/), and every older release's package under /vX.Y.Z/.
+# Publishing a release deploys the site: the home page (site/ on the default branch), that release's
+# package at the root (editor/, manifest.json, firmware/), and every older release's package under
+# /vX.Y.Z/. Running it by hand with the current tag redeploys the home page without a release.
 # The release event runs on the tag, which the github-pages environment does not allow to deploy;
 # it therefore starts this workflow on the default branch, and that run deploys the tag's site.
 
@@ -42,9 +43,9 @@ jobs:
     env:
       TAG: ${{ inputs.tag }}
     steps:
+      # The default branch: the home page and the tools; the editor and firmware come from the package.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ env.TAG }}
           persist-credentials: false
       - name: Download the release packages
         env:
