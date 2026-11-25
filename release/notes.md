@@ -12,7 +12,8 @@ https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md
 - **Light settings** (Settings ▸ Mixer ▸ Lights): the brightness of lit buttons and encoders in ten
   steps, full by default; and a faint glow of the buttons that are off, so you can find them on a
   dark stage, in ten steps too, off by default (the encoders' lights stay dark). While the editor
-  is Linked, the mixer follows the slider as you move it; saved like any setting. Needs
+  is Linked, the mixer follows the slider as you move it; saved like any setting. The LEDs now
+  refresh four times as often, so even the dimmest step shows without visible flicker. Needs
   0.1.2 on the mixer: 0.1.1 and earlier keep their lights at full and play the rest of a
   configuration as before.
 
