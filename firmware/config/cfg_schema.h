@@ -27,6 +27,9 @@ _Static_assert(sizeof(struct core_preset) <= 0xFFFF, "the field offsets need mor
 /* shift: page u8, control u8, kind u8; override: mask u16, then the fields that differ from the
  * Normal layer */
 #define CFG_TAG_SHIFT 4
+/* global2: optional (an older firmware skips it): mask u8, then the global fields of this record
+ * ("record": "global2") that differ from their defaults */
+#define CFG_TAG_GLOBAL2 129
 #define CFG_TAG_OPTIONAL 0x80u /* unknown records with it are skipped, others refused */
 #define CFG_ROW_PAGE 255
 #define CFG_ROW_NAV 0x7f8u /* row buttons whose Shift layer is the firmware's */
@@ -114,7 +117,7 @@ static const struct cfg_field cfg_preset_field[CFG_PRESET_FIELDS] = {
     /* paramNull */
     {CFG_OFF(core_preset, param_null), 1, CFG_T_ANY, 0x07, 0xff, CFG_CONST, CFG_CONST, 0, 1, 0},
 };
-#define CFG_GLOBAL_FIELDS 7
+#define CFG_GLOBAL_FIELDS 9
 static const struct cfg_field cfg_global_field[CFG_GLOBAL_FIELDS] = {
     /* layerMode */
     {CFG_OFF(core_global, layer_mode), 1, CFG_T_ANY, 0x07, 0xff, CFG_CONST, CFG_CONST, 0, 1, 0},
@@ -130,7 +133,16 @@ static const struct cfg_field cfg_global_field[CFG_GLOBAL_FIELDS] = {
     {CFG_OFF(core_global, fine14), 1, CFG_T_ANY, 0x07, 0xff, CFG_CONST, CFG_CONST, 0, 1, 0},
     /* save */
     {CFG_OFF(core_global, save), 1, CFG_T_ANY, 0x07, 0xff, CFG_CONST, CFG_CONST, 0, 1, 0},
+    /* ledLevel */
+    {CFG_OFF(core_global, led_level), 1, CFG_T_ANY, 0x07, 0xff, CFG_CONST, CFG_CONST, 1, 10, 10},
+    /* ledUnlit */
+    {CFG_OFF(core_global, led_unlit), 1, CFG_T_ANY, 0x07, 0xff, CFG_CONST, CFG_CONST, 0, 10, 0},
 };
+/* The global settings' binary records: their tags and the first field of each in
+ * cfg_global_field (the next record's first ends it). */
+#define CFG_GLOBAL_RECORDS 2
+static const uint8_t cfg_global_tag[CFG_GLOBAL_RECORDS] = {0x01u, 0x81u};
+static const uint8_t cfg_global_first[CFG_GLOBAL_RECORDS + 1] = {0, 7, 9};
 
 /* the flags' members: a mask, its shift, and the values allowed, a bit per (value >> shift) */
 #define CFG_FLAG_MEMBERS 2

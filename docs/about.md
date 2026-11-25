@@ -120,6 +120,10 @@ channel on screen, and its mute button on the mixer goes dark.
 ### Small things
 
 - The BT button works as before: a long press turns Bluetooth on and off.
+- **Light settings** (Settings ▸ Mixer ▸ Lights): the brightness of lit buttons and encoders in ten
+  steps, and a faint glow of the buttons that are off, so you can find them on a dark stage
+  (off by default). The lights of the bottom row, BT and Shift glow faintly whatever the firmware
+  does: that comes from the board itself.
 
 ---
 
@@ -130,9 +134,6 @@ Ideas for later releases, without dates. More in [ideas.md](ideas.md).
 - **Several messages from one control**: one fader sends up to four messages, each with its own
   channel and range, so it can crossfade between two synths.
 - **The editor on iPad and iPhone**, over USB and over Bluetooth.
-- **Light settings**: adjustable brightness, and unlit buttons either dark or glowing faintly so
-  you can find them on a dark stage. (The lights of the bottom row, BT and Shift glow faintly
-  whatever the firmware does: that comes from the board itself.)
 - **Learn on the mixer**: teach a control its message from your synth, with no computer.
 
 ---

@@ -527,3 +527,49 @@ test('instrument card: a built-in list keeps its own description', () => {
   assert.deepEqual(texts(line), ['Plain CCs.']);
   assert.equal(links(line).length, 0);
 });
+
+// The LED light's sliders (schemaField's 'slider'): one undo step a drag, whatever ends it; a drag
+// back to where it started (no change event) leaves no undo step and no open drag behind.
+test('light slider: one undo step a drag, ended by release, change or the sheet closing', () => {
+  const ctx = vm.createContext({ JSON, Number, queueMicrotask() {}, document: { getElementById: () => null } });
+  const node = (tag, attrs = {}, ...kids) => {
+    const el = { tag, ...attrs, kids, attrs: { ...attrs }, setAttribute(k, v) { this.attrs[k] = v; }, textContent: kids[0] };
+    return el;
+  };
+  const S = { globalFields: [{ json: 'ledLevel', default: 10 }, { json: 'ledUnlit', default: 0 }] };
+  const st = { undo: [], redo: [] };
+  const cfg = { file: { global: {} } };
+  let pushes = 0, after = [];
+  Object.assign(ctx, { h: node, S, st, cfg, $: () => ({ open: true }), field: (label, input) => node('field', {}, input),
+    saveLocal() {}, pushToDevice() { pushes++; }, afterChange(label, sent) { after.push([label, sent]); }, lightNote() {},
+    ours: () => false, dev: {}, compareVersions: () => 0, put() {}, icon() {}, endDrag: null });
+  const start = app.indexOf('let endDrag = null;');
+  vm.runInContext(app.slice(start, app.indexOf('\n', start)), ctx);
+  const fs = app.indexOf('function schemaField(');
+  vm.runInContext(app.slice(fs, app.indexOf('\nfunction lightNote(', fs)), ctx);
+  const find = (n) => !n ? [] : [n, ...(n.kids || []).flatMap(find)];
+  const slider = (key) => find(ctx.schemaField([key, 'L', 'help', null, key === 'ledLevel' ? [1, 10, 'slider'] : [0, 10, 'slider']], cfg.file.global, 'global')).find((n) => n.tag === 'input');
+  const move = (el, ...values) => { el.onpointerdown(); for (const v of values) el.oninput({ target: { value: String(v), setAttribute() {} } }); };
+
+  let el = slider('ledLevel');
+  move(el, 7, 5, 10); el.onpointerup();                       // back to the start: no change event
+  assert.equal(st.undo.length, 0);
+  assert.deepEqual(cfg.file.global, {});
+  assert.equal(vm.runInContext('endDrag', ctx), null);
+  assert.equal(pushes, 3, 'every step goes to the mixer');
+
+  move(el, 4); el.onchange(); el.onpointerup();               // change, then release: one step
+  assert.equal(st.undo.length, 1);
+  assert.deepEqual(JSON.parse(st.undo[0].json).global, {});
+  assert.deepEqual(after.at(-1), ['the brightness of lit LEDs', true], 'not sent twice');
+
+  el = slider('ledUnlit');
+  move(el, 2, 3);                                              // the sheet closes mid-drag
+  vm.runInContext('endDrag()', ctx);
+  assert.equal(st.undo.length, 2);
+  assert.equal(st.undo[1].label, 'the glow of buttons that are off');
+  assert.deepEqual(JSON.parse(st.undo[1].json).global, { ledLevel: 4 });
+  assert.deepEqual(cfg.file.global, { ledLevel: 4, ledUnlit: 3 });
+  el.onblur();                                                 // a late blur adds nothing
+  assert.equal(st.undo.length, 2);
+});

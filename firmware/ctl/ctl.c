@@ -27,6 +27,18 @@ SMC_HOT static void show(struct ctl *c, unsigned led, bool on)
     }
 }
 
+/* The LED light of the running configuration to the platform, when it changed. */
+static void show_light(struct ctl *c)
+{
+    uint8_t level = c->cfg->global.led_level, unlit = c->cfg->global.led_unlit;
+    if (c->light_shown[0] == level && c->light_shown[1] == unlit)
+        return;
+    c->light_shown[0] = level;
+    c->light_shown[1] = unlit;
+    if (c->ops->light)
+        c->ops->light(c->ops->ctx, level, unlit);
+}
+
 /* core_io: a LED changed state. A blink starts lit. */
 SMC_HOT static void on_led(void *ctx, unsigned led, unsigned state)
 {
@@ -310,8 +322,10 @@ void ctl_init(struct ctl *c, struct core_config *cfg, struct evq *in, struct mid
     c->in = in;
     c->out = out;
     memset(c->led_shown, LED_UNKNOWN, sizeof c->led_shown);
+    memset(c->light_shown, 0xFF, sizeof c->light_shown);
     memset(c->src, 0xFF, sizeof c->src);
     core_init(&c->core, cfg, &io, c); /* no Bluetooth until ctl_set_ble() */
+    show_light(c);
     flush_unit(c);
     c->state_word = pack_state(&c->core);
     c->panel_word = pack_panel(c);
@@ -423,6 +437,7 @@ static void restart(struct ctl *c)
     bool bt_link = c->core.bt_link;
     core_init(&c->core, c->cfg, &io, c); /* every LED reported: drawn where it changed */
     core_set_bluetooth(&c->core, bt_on, bt_link);
+    show_light(c);
     flush_unit(c);
 }
 
@@ -505,6 +520,7 @@ static void apply_edit(struct ctl *c)
         c->source = CTL_SOURCE_RECEIVED;
     c->edit_len = 0;
     core_reconfigured(&c->core);
+    show_light(c);
     flush_unit(c);
 }
 

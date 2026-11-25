@@ -541,11 +541,15 @@ def record(tag, payload):
     return bytes([tag, len(payload)]) + payload
 
 
-def global_record(m):
-    """The global record (its mask 0 when every setting is the default)."""
-    gv = [m["global"][f.c] for f in S.global_fields]
-    gmask = sum(1 << i for i, f in enumerate(S.global_fields) if gv[i] != S.default(f))
-    return record(TAG["global"], bytes([gmask]) + pack_fields(S.global_fields, gv, gmask)), gmask
+def global_records(m):
+    """The global settings' records in order, each (record, mask); a mask is 0 when every setting
+    of that record is the default."""
+    out = []
+    for name, fields in S.global_record_fields:
+        gv = [m["global"][f.c] for f in fields]
+        gmask = sum(1 << i for i, f in enumerate(fields) if gv[i] != S.default(f))
+        out.append((record(TAG[name], bytes([gmask]) + pack_fields(fields, gv, gmask)), gmask))
+    return out
 
 
 def preset_record(p, preset):
@@ -580,9 +584,9 @@ def encode(m):
     """The canonical binary form of a model (checked first)."""
     check_model(m)
     body = bytearray()
-    g, gmask = global_record(m)
-    if gmask:
-        body += g
+    for g, gmask in global_records(m):
+        if gmask:
+            body += g
     for p, preset in enumerate(m["presets"]):
         recs = b"".join(control_records(pg, cid, kind, ctl) for pg, cid, kind, nav, ctl in controls(preset))
         prec, pmask = preset_record(p, preset)
@@ -607,8 +611,8 @@ def edits(old, new, limit=EDIT_MAX):
     records), each at most `limit` bytes, for CFG_SET in this order. Every setting record or
     control that differs is written whole, as the canonical form writes it (a control that has
     none: a Normal layer of no fields, none; settings at their defaults: a record of mask 0);
-    names do not count. The global record goes first, with the first preset that changes (else
-    preset 0). [] when they play the same."""
+    names do not count. The global settings' records go first, with the first preset that changes
+    (else preset 0). [] when they play the same."""
     check_model(new)
     per = []
     for p, (po, pn) in enumerate(zip(old["presets"], new["presets"])):
@@ -622,12 +626,12 @@ def edits(old, new, limit=EDIT_MAX):
                             record(TAG["assign"], bytes([pg, cid, 0, 0])))
         if recs:
             per.append((p, recs))
-    g, _ = global_record(new)
-    if g != global_record(old)[0]:
+    gs = [g for (g, _), (o, _) in zip(global_records(new), global_records(old)) if g != o]
+    if gs:
         if per:
-            per[0][1].insert(0, g)
+            per[0][1][:0] = gs
         else:
-            per.append((0, [g]))
+            per.append((0, gs))
     out = []
     for p, recs in per:
         for r in recs:
@@ -666,7 +670,8 @@ def decode(blob, dev=None):
     m["id"] = blob[20:36]
     off = hsize
     preset = None
-    seen_global = False
+    seen_global = set()
+    global_tags = {TAG[n]: (n, fields) for n, fields in S.global_record_fields}
     seen_presets = set()
     seen = set()  # (preset, page, control, layer)
     last = None
@@ -678,17 +683,17 @@ def decode(blob, dev=None):
         need(len(data) == ln, here, "a record of %d bytes past the end" % ln)
         off += 2 + ln
         this, last = last, None
-        if tag == TAG["global"]:
-            need(not seen_global, here, "a second global record")
-            seen_global = True
-            need(ln >= 1, here, "an empty global record")
+        if tag in global_tags:
+            name, fields = global_tags[tag]
+            need(name not in seen_global, here, "a second %s record" % name)
+            seen_global.add(name)
+            need(ln >= 1, here, "an empty %s record" % name)
             mask = data[0]
-            need(mask >> len(S.global_fields) == 0, here, "unknown global fields %#x" % mask)
-            vals = unpack_fields(S.global_fields, mask, data, 1, here)
+            need(mask >> len(fields) == 0, here, "unknown %s fields %#x" % (name, mask))
+            vals = unpack_fields(fields, mask, data, 1, here)
             for i, v in vals.items():
-                f = S.global_fields[i]
-                m["global"][f.c] = v
-            for f in S.global_fields:
+                m["global"][fields[i].c] = v
+            for f in fields:
                 check_setting(f, m["global"][f.c], here + " global." + f.json, S.enums.get(f.enum))
         elif tag == TAG["preset"]:
             need(ln >= 2, here, "a preset record of %d bytes" % ln)

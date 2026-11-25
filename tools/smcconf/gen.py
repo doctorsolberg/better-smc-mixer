@@ -298,6 +298,17 @@ struct cfg_field {
         out.append("static const struct cfg_field cfg_%s_field[CFG_%s_FIELDS] = {" % (name, name.upper()))
         out += [field_row(f, struct_name) for f in fields]
         out.append("};")
+    out.append("/* The global settings' binary records: their tags and the first field of each in")
+    out.append(" * cfg_global_field (the next record's first ends it). */")
+    out.append("#define CFG_GLOBAL_RECORDS %d" % len(S.global_record_fields))
+    first, at = [], 0
+    for _, fields in S.global_record_fields:
+        first.append(at)
+        at += len(fields)
+    out.append("static const uint8_t cfg_global_tag[CFG_GLOBAL_RECORDS] = {%s};" % ", ".join(
+        "0x%02xu" % S.tags[n] for n, _ in S.global_record_fields))
+    out.append("static const uint8_t cfg_global_first[CFG_GLOBAL_RECORDS + 1] = {%s};" % ", ".join(
+        str(x) for x in first + [at]))
     flags = next(f for f in S.assign_fields if f.members)
     out.append("")
     out.append("/* the flags' members: a mask, its shift, and the values allowed, a bit per (value >> shift) */")

@@ -167,6 +167,9 @@ struct core_global {
     /* save: how the mixer saves its configuration (Q-26); the core does not read it (enum
      * core_save) */
     uint8_t save;
+    /* ledLevel: the brightness of lit LEDs: 1 dimmest, 10 full; even steps to the eye (§5.7) */
+    uint8_t led_level;
+    uint8_t led_unlit;   /* ledUnlit: the glow of unlit LEDs: 0 dark, 1–10 as ledLevel (§5.7) */
 };
 
 struct core_config {

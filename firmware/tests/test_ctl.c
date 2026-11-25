@@ -22,6 +22,7 @@ static struct evq Q;
 static struct midiq OUT;
 static struct ctl C;
 static unsigned led[CORE_LEDS], led_calls, ready_calls;
+static unsigned light_level, light_unlit, light_calls;
 static uint32_t T;    /* µs, the host log clock */
 static uint32_t STEP; /* how far it moves at each read (0: it stands still) */
 
@@ -38,7 +39,15 @@ static void ready(void *ctx)
     ready_calls++;
 }
 
-static const struct ctl_ops OPS = {.led = draw, .midi_ready = ready};
+static void light(void *ctx, unsigned level, unsigned unlit)
+{
+    (void)ctx;
+    light_level = level;
+    light_unlit = unlit;
+    light_calls++;
+}
+
+static const struct ctl_ops OPS = {.led = draw, .midi_ready = ready, .light = light};
 
 static uint32_t clock_now(void)
 {
@@ -55,6 +64,8 @@ static void start(void)
     STEP = 0;
     memset(led, 0xFF, sizeof led);
     led_calls = ready_calls = 0;
+    light_level = light_unlit = 0xFF;
+    light_calls = 0;
     core_config_factory(&CFG);
     evq_init(&Q);
     midiq_init(&OUT);
@@ -299,6 +310,57 @@ static void test_config(void)
     CHECK_EQ(C.source, CTL_SOURCE_FACTORY);
     CHECK_EQ(C.meta.revision, 3);
     CHECK(memcmp(&CFG, &factory, sizeof CFG) == 0);
+}
+
+/* The LED light (SPEC §5.7) follows the running configuration: set at the start, after a received
+ * configuration, an edit and a setup, and only when it changes. */
+static void test_light(void)
+{
+    static uint8_t blob[CFGBIN_MAX];
+    start();
+    CHECK_EQ(light_calls, 1);
+    CHECK_EQ(light_level, 10);
+    CHECK_EQ(light_unlit, 0);
+    const uint8_t rec[] = {0x81, 3, 0x03, 4, 2};
+    CHECK(ctl_request_edit(&C, 0, rec, sizeof rec, 1));
+    run(1000);
+    CHECK_EQ(light_calls, 2);
+    CHECK_EQ(light_level, 4);
+    CHECK_EQ(light_unlit, 2);
+    const uint8_t fader[] = {3, 4, 0, 0, 0, 0}; /* another edit: the light stays */
+    CHECK(ctl_request_edit(&C, 0, fader, sizeof fader, 2));
+    run(2000);
+    CHECK_EQ(light_calls, 2);
+    static struct core_config cfg;
+    core_config_factory(&cfg);
+    cfg.global.led_level = 7;
+    size_t n = cfgbin_encode(&cfg, NULL, blob, sizeof blob, NULL);
+    CHECK(ctl_request_config(&C, blob, (uint32_t)n));
+    run(3000);
+    CHECK_EQ(light_calls, 3);
+    CHECK_EQ(light_level, 7);
+    CHECK_EQ(light_unlit, 0);
+    struct core_settings s;
+    core_settings_init(&s, CORE_CONFIG_FACTORY);
+    CHECK(ctl_request_setup(&C, &s));
+    run(4000);
+    CHECK_EQ(light_calls, 4);
+    CHECK_EQ(light_level, 10);
+    CHECK_EQ(light_unlit, 0);
+    /* going back to a stored configuration, then to the factory one */
+    cfg.global.led_level = 3;
+    cfg.global.led_unlit = 6;
+    n = cfgbin_encode(&cfg, NULL, blob, sizeof blob, NULL);
+    CHECK(ctl_request_revert(&C, blob, (uint32_t)n));
+    run(5000);
+    CHECK_EQ(light_calls, 5);
+    CHECK_EQ(light_level, 3);
+    CHECK_EQ(light_unlit, 6);
+    CHECK(ctl_request_revert(&C, NULL, 0));
+    run(6000);
+    CHECK_EQ(light_calls, 6);
+    CHECK_EQ(light_level, 10);
+    CHECK_EQ(light_unlit, 0);
 }
 
 /* The last touch of a control (the autosave waits for a quiet panel): not MIDI in; a stored
@@ -1101,6 +1163,7 @@ int main(void)
     RUN(test_bt_blink);
     RUN(test_setup);
     RUN(test_config);
+    RUN(test_light);
     RUN(test_last_touch);
     RUN(test_revision_wrap);
     RUN(test_state);

@@ -532,9 +532,16 @@ selection; persistent Bluetooth on/off with USB always enabled (FR-IO-04/Q-25); 
 owner, 2026-11-11: per-LED levels are not needed for now) and the unlit LED's look: dark, or a faint
 glow so the controls can be found in the dark (a global choice, the owner, 2026-11-11; done in the
 scan's LED steps, [hwtest.md](hwtest.md), "LEDs"; the bottom row's, BT's and Shift's LEDs glow
-faintly by the board's design, the stock's too, so "dark" darkens the others); pickup indication; BLE
-name and BLE on/off; auto power-off/sleep on battery; power-on behaviour (last preset/page);
+faintly by the board's design, the stock's too, so "dark" darkens the others); pickup indication;
+BLE name and BLE on/off; auto power-off/sleep on battery; power-on behaviour (last preset/page);
 per-module log levels (§8).
+
+The LED light is built for 0.1.2 (the owner, 2026-11-25): `ledLevel` 1–10 (default 10, full) and
+`ledUnlit` 0–10 (default 0, dark), two ten-step sliders in the editor's Settings ▸ Mixer ▸ Lights,
+the mixer following while the slider moves (Linked); the steps meant to look even (a square law;
+⚠️ to be confirmed on the mixer); the unlit glow lights the buttons' LEDs, not the encoders'; a
+glow at or above the lit level is allowed, and the editor warns that lit and unlit then look
+alike; set in the editor only, not on the panel.
 
 ### 5.8 Power-on key combinations
 
@@ -783,7 +790,7 @@ INPUT_INJECT (on/off for the session, events; LOG-33).
     the two fails the test: the core on the computer and on the device must agree.
   - Before a release the automatic set runs on the device over USB and over BLE, without a person.
 - **LOG-36. What stays manual:** only the scan layer and what the eye sees — the matrix and
-  debounce, encoder decoding, fader ADC and filtering, LED brightness. These are covered by short
+  debounce, encoder decoding, fader ADC and filtering, LED brightness (`scan_led_light`). These are covered by short
   human scenarios in raw input mode (LOG-07). Their recordings are replayed in the simulator
   (LOG-41) and join the regression corpus (LOG-42).
 

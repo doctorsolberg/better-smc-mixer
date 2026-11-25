@@ -7,6 +7,15 @@ It saves a full backup of the mixer's memory first; **Go back to M-Vave's firmwa
 mixer to its original firmware at any time. Guide:
 https://github.com/doctorsolberg/better-smc-mixer/blob/main/docs/user/install.md
 
+## What's new in 0.1.2
+
+- **Light settings** (Settings ▸ Mixer ▸ Lights): the brightness of lit buttons and encoders in ten
+  steps, full by default; and a faint glow of the buttons that are off, so you can find them on a
+  dark stage, in ten steps too, off by default (the encoders' lights stay dark). While the editor
+  is Linked, the mixer follows the slider as you move it; saved like any setting. Needs
+  0.1.2 on the mixer: 0.1.1 and earlier keep their lights at full and play the rest of a
+  configuration as before.
+
 ## What's new in 0.1.1
 
 The firmware is 0.1.0's with the new version number; the changes are in the editor:

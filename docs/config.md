@@ -235,17 +235,26 @@ layer as a difference to keep it small; files write it in full).
 | 2 | preset | preset (0-based) 1, mask 1, then `channel` 1 (0–15), `shiftMode` 1, `noteOff` 1, `paramNull` 1 |
 | 3 | Normal layer | page 1, control 1, mask 2, then `type` 1, `channel` 1 (0–15; 16 the preset's), `number` 2, `mode` 1, `n` 1, flags 1, `lo` 2, `hi` 2, `start` 2 |
 | 4 | Shift layer | page 1, control 1, kind 1 (0 inherit, 1 own assignment, 2 block); for an own assignment: mask 2 and the fields that differ from the Normal layer |
+| 0x81 | the LED light (optional) | mask (1 byte), then `ledLevel` 1, `ledUnlit` 1 |
 
 - **Controls**: page 0–3 and control `group × 8 + strip` (groups 0 fader, 1 encoder, 2 M, 3 S,
   4 R, 5 SELECT); the bottom row is page 255, control 0–10 in the order of `row`. Flags: bit 0
   `noRelease`, bits 1–2 `led` (0 value, 2 off, 4 on).
+- **The global settings' records**: the global record's mask is one byte, so the settings after
+  its first eight go into a record of their own. The LED light's (`ledLevel`, `ledUnlit`; SPEC
+  §5.7, 2026-11-25) is tag 0x81, optional: a firmware before it skips it and plays the rest. The
+  schema says which record a global setting belongs to (`"record": "global2"`); `schema.py`'s
+  `global_records` and `cfg_schema.h`'s `cfg_global_tag` / `cfg_global_first` list them in order,
+  and the field numbers in errors count over all global settings.
 - **Order**: a Normal or Shift layer belongs to the preset record before it; each record at most
-  once (one global record, one per preset, one Normal and one Shift layer per control); a Shift
+  once (one global record, one LED light record, one per preset, one Normal and one Shift layer
+  per control); a Shift
   layer comes right after its control's Normal layer, or alone. A control without a Normal layer
   sends nothing; one without a Shift layer gets its kind's default (above).
 - **Later versions**: an unknown record with tag bit 7 set is skipped (optional data); any other
   unknown record, field mask bit or out-of-range value refuses the whole configuration.
-- **Canonical form**: what all three codecs write: the global record if a setting differs; per preset
+- **Canonical form**: what all three codecs write: the global record if a setting differs, then
+  the LED light's if one of its settings differs; per preset
   in order, its record (if it has a setting or a control), then its controls page by page, group
   by group, strip by strip, then the row, each with a Normal layer if its type is not `none` and
   a Shift layer if it is not the default. Other orders and masks that are read correctly are
@@ -259,7 +268,8 @@ field.
 ### Edits
 
 A live edit (CFG_SET, P-1; [link.md](link.md), "Configuration") carries records of this form for
-one preset, with no header: at most one global record, at most that preset's record, and Normal
+one preset, with no header: at most one global record and one LED light record, at most that
+preset's record, and Normal
 and Shift layers of that preset's controls, at most 184 bytes. Their meaning differs from a whole
 configuration's in one way: what a record names is replaced whole, the rest stays.
 
@@ -273,8 +283,9 @@ configuration's in one way: what a record names is replaced whole, the rest stay
 `cfgbin_patch()` (C) checks such records (no destination) and applies them to a configuration;
 `codec.edits(old, new)` (Python) and `Codec.edits(old, new)` (the editor) make the list of
 `(preset, records)` that turns one configuration into another: every setting record or control
-that differs, written whole in the canonical form, the global record first with the first preset
-that changes (or preset 0), packed in order into edits of at most 184 bytes; names do not count
+that differs, written whole in the canonical form, the global settings' records first (each one
+that differs) with the first preset that changes (or preset 0), packed in order into edits of at
+most 184 bytes; names do not count
 (none when only names differ). The three agree byte for byte (below).
 
 ## Versions and migrations
@@ -321,7 +332,12 @@ What the release needs (planned, not built):
    cannot; the release manifest names the oldest editor a firmware needs ([app.md](app.md),
    "Hosting on GitHub Pages").
 4. **Adding a field** after the release is a new binary version or a new optional record, so an
-   older firmware is never sent a mask bit it refuses.
+   older firmware is never sent a mask bit it refuses. The LED light (0.1.2) was the first: an optional
+   record (0x81), so 0.1.0 and 0.1.1 skip it, play the rest and keep their LEDs at full light. A
+   configuration they save and send back has no light record, which reads as the defaults: the
+   editor then shows full and dark, which is what that firmware shows. Their editor and
+   `smcconf` (`schemaVersion` 1 too) refuse a file that sets the light, with "unknown keys": a
+   file of 0.1.2 with the light at its defaults reads in both.
 
 ## The three codecs agree
 
@@ -340,14 +356,17 @@ them the same (`make -C firmware test`):
   cases use a fixed seed (`SMCCONF_SEED` sets another).
 - `tools/editortest/run.mjs` with `vectors/binary.json` (written by `vectors.py` from `codec.py`):
   the editor's codec writes the four built-in and generated configurations, with and without an ID
-  and a revision, byte for byte as `codec.py`, reads them back to the same file (names aside),
-  refuses seven broken forms, skips an unknown optional record, and refuses every file of
+  and a revision, and the factory one with the LED light set, byte for byte as `codec.py`, reads
+  them back to the same file (names aside),
+  refuses the broken forms (six of the whole file, six of the LED light's record), skips an
+  unknown optional record, and refuses every file of
   `faults.json`.
 - Edits: `test_cfgbin` (`test_patch`: every control of the factory configuration patched into the
   test one gives the factory's controls; refusals), `test_smcconf.py` (`EditTest`: on random pairs
   of configurations `codec.edits()` applied by `cfgtool patch` gives the new configuration), and
-  `run.mjs` with `vectors/edits.json` (23 cases: the built-in and generated configurations into
-  each other, small changes and their undoing, names only): the editor makes the same edits as
+  `run.mjs` with `vectors/edits.json` (27 cases: the built-in and generated configurations into
+  each other, small changes and their undoing, the LED light among them, names only): the editor
+  makes the same edits as
   `codec.py`, byte for byte.
 
 ## Sizes (SPEC Q-3)
@@ -356,14 +375,14 @@ them the same (`make -C firmware test`):
 |---|---|
 | the factory configuration (4 presets × 4 pages) | 7 363 bytes: 36 header, 1 831–1 832 per preset |
 | the test configuration | 8 556 bytes |
-| every field of every control set, with a Shift layer each | 26 572 bytes (6.6 KB per preset) |
-| the bound the code uses (`CFGBIN_MAX`) | 30 117 bytes |
+| every field of every control set, with a Shift layer each | 26 584 bytes (6.6 KB per preset) |
+| the bound the code uses (`CFGBIN_MAX`) | 30 128 bytes |
 
 `number` takes 2 bytes since NRPN and RPN (2026-11-11): an NRPN parameter number is 14-bit. That
 added about 0.8 KB to the factory configuration's binary form and 2 bytes to each assignment in
 RAM.
 
-In RAM the decoded configuration is `struct core_config`, 24 384 bytes (6.1 KB per preset, 1.4 KB
+In RAM the decoded configuration is `struct core_config`, 24 388 bytes (6.1 KB per preset, 1.4 KB
 per page; an assignment is 14 bytes), and the decoder needs about 480 bytes of stack (476 in the controller's build, 2026-11-11; it runs on
 the control task's 3 KB); the codec is 5 KB of code (`-Oz`,
 `tools/env/check_device.sh`). So flash is not what limits the number of presets and pages: the
@@ -675,6 +694,8 @@ Global settings (`global`):
 | `encAccel` | 50–200 | `100` | encoder acceleration: the speed scale in percent (more accelerates sooner) |
 | `fine14` | `range`, `lsb` | `range` | the fine step of encoders on 14-bit targets |
 | `save` | `manual`, `auto` | `manual` | how the mixer saves its configuration (Q-26); the core does not read it |
+| `ledLevel` | 1–10 | `10` | the brightness of lit LEDs: 1 dimmest, 10 full; even steps to the eye (§5.7) |
+| `ledUnlit` | 0–10 | `0` | the glow of unlit LEDs: 0 dark, 1–10 as ledLevel (§5.7) |
 
 Kinds: the default mode and Shift layer:
 

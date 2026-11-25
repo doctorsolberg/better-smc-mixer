@@ -489,7 +489,10 @@ static size_t pick_records(unsigned *preset, uint8_t *out, size_t cap)
             break;
         if (tag == CFG_TAG_PRESET)
             cur = b[at + 2];
-        int take = (tag == CFG_TAG_GLOBAL && chance(20)) || (tag == CFG_TAG_PRESET && cur == want && chance(30)) ||
+        int global = 0;
+        for (unsigned g = 0; g < CFG_GLOBAL_RECORDS; g++)
+            global |= tag == cfg_global_tag[g];
+        int take = (global && chance(20)) || (tag == CFG_TAG_PRESET && cur == want && chance(30)) ||
                    ((tag == CFG_TAG_ASSIGN || tag == CFG_TAG_SHIFT) && cur == want && chance(3));
         if (take && o + 2 + len <= cap) {
             memcpy(out + o, b + at, 2 + len);
@@ -708,6 +711,8 @@ int main(int argc, char **argv)
     core_config_factory(&SCRATCH);
     SEED_LEN[0] = cfgbin_encode(&SCRATCH, NULL, SEED[0], CFGBIN_MAX, NULL);
     core_config_test(&SCRATCH);
+    SCRATCH.global.led_level = 4; /* so the LED light's record is among the seeds */
+    SCRATCH.global.led_unlit = 2;
     SEED_LEN[1] = cfgbin_encode(&SCRATCH, NULL, SEED[1], CFGBIN_MAX, NULL);
     if (!SEED_LEN[0] || !SEED_LEN[1]) {
         fprintf(stderr, "fuzz_device: the seed configurations do not encode\n");

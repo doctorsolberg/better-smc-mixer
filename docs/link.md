@@ -341,7 +341,8 @@ and wraps) and keeps the last 63 with their source (`ctl_sent_read()`). An entry
   bytes, revision …", then the core's "core start"). Until then the running configuration is
   untouched, so an interrupted or refused upload changes nothing (FR-CFG-04's promise, in RAM).
 - **Live edit (CFG_SET, P-1).** The records are the binary form's ([config.md](config.md),
-  "Edits"), for the one preset named, with no header: at most one global record, at most that
+  "Edits"), for the one preset named, with no header: at most one global record and one LED
+  light record, at most that
   preset's settings record, and that preset's Normal and Shift records. A setting record replaces
   those settings whole; each control named is replaced whole (no Normal record: none; no Shift
   record: the default Shift layer). The USB task checks them with `cfgbin_patch()` and no

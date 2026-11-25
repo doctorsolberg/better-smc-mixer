@@ -61,6 +61,9 @@ export const PRESET_FORM = [
 ];
 
 export const GLOBAL_FORM = [
+  { h: 'Lights' },
+  ['ledLevel', 'Lit buttons and encoders', 'The brightness of lights that are on, in ten steps from dim to full.', null, [1, 10, 'slider']],
+  ['ledUnlit', 'Buttons that are off', 'A faint glow so you can find them in the dark; Off keeps them dark. Encoder lights never glow. The bottom row, BT and Shift glow a little even at Off: that comes from the board.', null, [0, 10, 'slider']],
   { h: 'Faders' },
   ['pickup', 'Default fader behaviour', 'For faders set to “Default”.', { jump: 'Jump', pickup: 'Pickup', scale: 'Scale' }],
   { h: 'Encoders' },

@@ -65,6 +65,7 @@ class Field:
         self.applies = d.get("applies", {})
         self.exclude = d.get("exclude", [])
         self.members = d.get("members")
+        self.record = d.get("record", "global")  # a global setting's binary record (docs/config.md)
 
 
 class Schema:
@@ -80,12 +81,20 @@ class Schema:
         self.kinds = {k["name"]: Kind(k, self.enums, self.msg) for k in d["kinds"]}
         self.assign_fields = [Field(f) for f in d["assignment"]["fields"]]
         self.preset_fields = [Field(f) for f in d["preset"]["fields"]]
-        self.global_fields = [Field(f) for f in d["global"]["fields"]]
+        self.global_fields = [Field(f) for f in d["global"]["fields"]]  # the file's: every record's
         self.strip_controls = d["strip"]["controls"]
         self.row = d["row"]["buttons"]
         self.fine = d["control"]["shift"]["fine"]
         self.binary = d["binary"]
         self.tags = {r["name"]: r["tag"] for r in d["binary"]["records"]}
+        # The global settings' binary records, in the canonical order: (name, fields). The global
+        # record's mask is one byte, so later settings go into optional records an older firmware
+        # skips ("global2", tag 0x81).
+        self.global_record_fields = []
+        for f in self.global_fields:
+            if not self.global_record_fields or self.global_record_fields[-1][0] != f.record:
+                self.global_record_fields.append((f.record, []))
+            self.global_record_fields[-1][1].append(f)
         self.name_max = d["file"]["nameMax"]
         self.check()
 
@@ -101,6 +110,15 @@ class Schema:
         for f in self.preset_fields + self.global_fields:
             if not f.c:
                 raise SchemaError("%s: every setting is the device's" % f.json)
+        names = [n for n, _ in self.global_record_fields]
+        if len(set(names)) != len(names) or names[0] != "global" or any(n not in self.tags for n in names) \
+                or len(names) > 8:  # the firmware keeps one bit a record (cfgbin.c's seen_global)
+            raise SchemaError("global settings: each record's fields together, the global record's first")
+        for n, fields in self.global_record_fields:
+            if len(fields) > 8:
+                raise SchemaError("global record %s: more than 8 fields for its mask byte" % n)
+            if n != "global" and not self.tags[n] & self.binary["optionalTagBit"]:
+                raise SchemaError("global record %s: a later record must be optional" % n)
         if [c["id"] for c in self.strip_controls] != [0, 8, 16, 24, 32, 40]:
             raise SchemaError("strip control ids: 8 per group")
 

@@ -399,16 +399,21 @@ size_t cfgbin_encode(const struct core_config *cfg, const struct cfgbin_meta *me
     struct writer w = {out, cap, 0, false};
     uint8_t head[CFGBIN_HEADER] = {0};
     w_bytes(&w, head, sizeof head);
-    unsigned vals[CFG_GLOBAL_FIELDS > CFG_PRESET_FIELDS ? CFG_GLOBAL_FIELDS : CFG_PRESET_FIELDS], mask = 0;
+    unsigned vals[CFG_GLOBAL_FIELDS > CFG_PRESET_FIELDS ? CFG_GLOBAL_FIELDS : CFG_PRESET_FIELDS], mask;
     uint8_t rec[16];
-    for (unsigned i = 0; i < CFG_GLOBAL_FIELDS; i++) {
-        vals[i] = get(&cfg->global, &cfg_global_field[i]);
-        if (vals[i] != cfg_global_field[i].def)
-            mask |= 1u << i;
-    }
-    if (mask) {
-        rec[0] = (uint8_t)mask;
-        record(&w, CFG_TAG_GLOBAL, rec, pack(rec, 1, cfg_global_field, CFG_GLOBAL_FIELDS, vals, mask));
+    for (unsigned r = 0; r < CFG_GLOBAL_RECORDS; r++) { /* the global record, then the later ones */
+        const struct cfg_field *fields = cfg_global_field + cfg_global_first[r];
+        unsigned count = cfg_global_first[r + 1] - cfg_global_first[r];
+        mask = 0;
+        for (unsigned i = 0; i < count; i++) {
+            vals[i] = get(&cfg->global, &fields[i]);
+            if (vals[i] != fields[i].def)
+                mask |= 1u << i;
+        }
+        if (mask) {
+            rec[0] = (uint8_t)mask;
+            record(&w, cfg_global_tag[r], rec, pack(rec, 1, fields, count, vals, mask));
+        }
     }
     for (unsigned p = 0; p < CORE_PRESETS; p++) {
         struct preset_ctx c;
@@ -458,7 +463,7 @@ struct decoder {
     cfgbin_changing_fn changing; /* patch: called before a setting or control changes */
     void *ctx;
     int preset; /* the preset record in force, -1 none */
-    uint8_t seen_global, seen_presets;
+    uint8_t seen_global, seen_presets; /* seen_global: a bit per global record */
     uint8_t normal[CORE_PRESETS][(SLOTS + 7) / 8], shift[CORE_PRESETS][(SLOTS + 7) / 8];
     int last;                       /* the slot of the record before, if it was a Normal layer */
     struct core_assign last_normal; /* that layer */
@@ -604,22 +609,35 @@ static int control_record(struct decoder *d, unsigned tag, const uint8_t *p, uns
     return CFGBIN_OK;
 }
 
+/* A global settings record (cfg_global_tag[g]): its fields, the others of the record at their
+ * defaults; a field's number in errors counts over all global fields. */
+static int global_record(struct decoder *d, unsigned g, const uint8_t *p, unsigned n)
+{
+    unsigned vals[CFG_GLOBAL_FIELDS];
+    unsigned first = cfg_global_first[g], count = cfg_global_first[g + 1] - first;
+    d->last = -1;
+    if (d->seen_global >> g & 1u)
+        return fail(d, CFGBIN_E_TWICE, NO_FIELD);
+    d->seen_global |= (uint8_t)(1u << g);
+    if (n < 1)
+        return fail(d, CFGBIN_E_RECORD, NO_FIELD);
+    int r = settings(d, p, n, 1, cfg_global_field + first, count, vals);
+    if (r == CFGBIN_E_VALUE)
+        d->e.field = (uint8_t)(d->e.field + first);
+    if (!r && d->cfg)
+        for (unsigned i = 0; i < count; i++)
+            put(&d->cfg->global, &cfg_global_field[first + i], vals[i]);
+    return r;
+}
+
 static int record_at(struct decoder *d, unsigned tag, const uint8_t *p, unsigned n)
 {
-    unsigned vals[CFG_GLOBAL_FIELDS > CFG_PRESET_FIELDS ? CFG_GLOBAL_FIELDS : CFG_PRESET_FIELDS];
+    unsigned vals[CFG_PRESET_FIELDS];
     int r;
+    for (unsigned g = 0; g < CFG_GLOBAL_RECORDS; g++)
+        if (tag == cfg_global_tag[g])
+            return global_record(d, g, p, n);
     switch (tag) {
-    case CFG_TAG_GLOBAL:
-        d->last = -1;
-        if (d->seen_global++)
-            return fail(d, CFGBIN_E_TWICE, NO_FIELD);
-        if (n < 1)
-            return fail(d, CFGBIN_E_RECORD, NO_FIELD);
-        r = settings(d, p, n, 1, cfg_global_field, CFG_GLOBAL_FIELDS, vals);
-        if (!r && d->cfg)
-            for (unsigned i = 0; i < CFG_GLOBAL_FIELDS; i++)
-                put(&d->cfg->global, &cfg_global_field[i], vals[i]);
-        return r;
     case CFG_TAG_PRESET:
         d->last = -1;
         if (n < 2)

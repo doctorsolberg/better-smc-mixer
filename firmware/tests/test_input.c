@@ -835,6 +835,63 @@ static void test_inject(void)
 static uint32_t clock_us;
 static uint32_t host_now(void) { return clock_us++; }
 
+/* Steps in two LED cycles that the latched word lights LED led while its column is driven. */
+static unsigned lit_steps(unsigned led)
+{
+    uint8_t pos = scan_led_pos[led];
+    unsigned row = pos >> 4, col = pos & 0x0Fu, n = 0;
+    while (!(s.led_col == 0 && s.led_phase == 0)) /* from the start of a cycle */
+        step(&s);
+    for (unsigned i = 0; i < 2u * SCAN_LED_COLS * s.p.led_steps; i++) {
+        step(&s);
+        if (s.led_drive == (int)col && (~latched >> row & 1u))
+            n++;
+    }
+    return n / 2;
+}
+
+/* The LED light (SPEC §5.7, ledLevel and ledUnlit): a lit LED's rows go out for the first steps of
+ * its column's time, more for a higher level; an unlit button's LED glows the same way for its own
+ * level, and the encoders' LEDs never glow. */
+static void test_led_light(void)
+{
+    fresh(NULL);
+    unsigned full_window = s.p.led_steps - s.p.led_blank - 1u; /* what a column shows (test_leds) */
+    scan_led(&s, 0, true); /* M of strip 1 */
+    step(&s);
+    CHECK_EQ(lit_steps(0), full_window); /* the default: full, as before */
+    unsigned last = 0;
+    for (unsigned level = 1; level <= 10; level++) {
+        scan_led_light(&s, level, 0);
+        unsigned n = lit_steps(0);
+        CHECK(n > last); /* each level brighter than the one below */
+        last = n;
+    }
+    CHECK_EQ(last, full_window);
+    scan_led_light(&s, 1, 0);
+    CHECK_EQ(lit_steps(0), 1u); /* the dimmest: one step a column */
+    scan_led_light(&s, 5, 0);
+    unsigned five = lit_steps(0);
+    CHECK(five * 5u < full_window * 2u && five * 5u > full_window); /* about a quarter: squared */
+    scan_led_light(&s, 0, 0); /* out of range: the nearest level */
+    CHECK_EQ(lit_steps(0), 1u);
+    scan_led_light(&s, 11, 0);
+    CHECK_EQ(lit_steps(0), full_window);
+
+    /* unlit LEDs: dark at 0; at a level they glow as a lit LED of that level would */
+    CHECK_EQ(lit_steps(1), 0u); /* S of strip 1, not lit */
+    scan_led_light(&s, 10, 5);
+    CHECK_EQ(lit_steps(1), five);
+    CHECK_EQ(lit_steps(0), full_window); /* the lit one keeps its level */
+    CHECK_EQ(lit_steps(CORE_LED_ENC(0)), 0u); /* an encoder's LED does not glow */
+    CHECK_EQ(lit_steps(CORE_BTN_SHIFT), five);
+    scan_led(&s, CORE_LED_ENC(0), true);
+    CHECK_EQ(lit_steps(CORE_LED_ENC(0)), full_window); /* lit, it follows the level */
+    scan_led_light(&s, 1, 10); /* brighter unlit than lit: allowed, each its own */
+    CHECK_EQ(lit_steps(0), 1u);
+    CHECK_EQ(lit_steps(1), full_window);
+}
+
 /* The defaults are times, not step counts: the same behaviour at a 25 or a 50 µs step. */
 static void test_defaults_in_time(void)
 {
@@ -869,6 +926,7 @@ int main(void)
     RUN(test_fader_hysteresis);
     RUN(test_pass_after_shift);
     RUN(test_leds);
+    RUN(test_led_light);
     RUN(test_defaults_in_time);
     RUN(test_raw_mode_logs);
     RUN(test_queue);

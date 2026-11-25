@@ -355,6 +355,13 @@ def binary():
         import zlib
         return head[:8] + struct.pack("<II", len(rest) - 20, zlib.crc32(rest)) + rest
 
+    with open(CONFIGS[1][1], encoding="utf-8") as f:
+        lit = json.load(f)
+    lit["global"] = dict(lit.get("global", {}), save="auto", ledLevel=4, ledUnlit=2)
+    lit = codec.to_json(codec.from_json(lit))  # in the canonical order
+    row = case("factory with the LED light set", codec.encode(codec.from_json(lit)), without_names(lit))
+    row["file"] = lit  # no file on disk: the case carries it
+    rows.append(row)
     rows.append(case("cut short", base[:20]))
     rows.append(case("a wrong CRC", base[:40] + bytes([base[40] ^ 1]) + base[41:]))
     rows.append(case("a byte too many", base + b"\0"))
@@ -363,6 +370,19 @@ def binary():
     rows.append(case("an unknown optional record (skipped)", rebuild(body[:20] + bytes([0x85, 2, 1, 2]) + body[20:])))
     rows[-1]["same_as"] = rows[0]["name"]
     rows.append(case("a record past the end", rebuild(body + bytes([2, 9, 0]))))
+    # the LED light's record (0x81), broken: after the global settings, before the presets
+    at = 0
+    while body[at] != codec.TAG["preset"]:
+        at += 2 + body[at + 1]
+    for name, rec in (("the LED light twice", [0x81, 2, 1, 5, 0x81, 2, 1, 5]),
+                      ("the LED light with an unknown setting", [0x81, 1, 0x04]),
+                      ("an empty LED light record", [0x81, 0]),
+                      ("the LED light at level 0", [0x81, 2, 1, 0]),
+                      ("an unlit glow of 11", [0x81, 2, 2, 11]),
+                      ("the LED light with a byte left over", [0x81, 3, 1, 5, 0])):
+        rows.append(case(name, rebuild(body[:at] + bytes(rec) + body[at:])))
+        if "refused" not in rows[-1]:
+            raise SystemExit("binary.json: %s is not refused" % name)
     return "[\n" + ",\n".join(json.dumps(r, separators=(",", ":")) for r in rows) + "\n]\n"
 
 
@@ -370,6 +390,8 @@ def binary():
 EDIT_CHANGES = [
     ("one encoder", [(["presets", 0, "pages", 1, "strips", 0, "encoder"], {"type": "cc7", "number": 77})]),
     ("the save mode", [(["global"], {"save": "auto"})]),
+    ("the LED light", [(["global"], {"ledLevel": 3, "ledUnlit": 1})]),
+    ("the save mode and the LED light", [(["global"], {"save": "auto", "ledUnlit": 4})]),
     ("a fader left with nothing", [(["presets", 0, "pages", 0, "strips", 3, "fader"], None)]),
     ("a control of another preset and the global settings",
      [(["presets", 2, "pages", 0, "strips", 7, "m"], {"type": "cc7", "number": 9}), (["global"], {"save": "auto"})]),

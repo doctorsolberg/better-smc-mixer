@@ -571,7 +571,6 @@ are proposed. USB/BLE routing is instead decided by Q-25, not a pending output-s
 | Settings › Mixer | At power-on (`powerOn`) | last preset and page, preset 1 page 1 | §5.7 |
 | Settings › Mixer | Obsolete, removed: Send controls to (`output`) | formerly USB and Bluetooth, USB, Bluetooth; not an approved future setting | Superseded by FR-IO-04/Q-25: USB always, BLE while BT is on |
 | Settings › Mixer | Pass MIDI between USB and Bluetooth (`bridge`) | off, on | FR-IO-05 |
-| Settings › Mixer | LED brightness (`ledLevel`), unlit LEDs (`ledUnlit`) | 5–100 %; dark, faint glow | §5.7 |
 | Settings › Mixer | Bluetooth name (`bleName`), turn off on battery after (`autoOff`) | text; never, 10, 30, 60 min | §5.7, Q-25 |
 | Settings › Preset | On preset change send (`pcOnSelect`) | nothing, Program Change | (new: the instrument follows the preset) |
 | Fader | Response curve (`curve`), reset value (`default`) | linear, logarithmic, exponential; a value | FR-CTL-03, FR-CTL-02 |
@@ -1006,6 +1005,16 @@ affected codecs and generated files must agree; no migrations before the first r
 
 The storage-mode proposal (A-12), global `"save": "manual" | "auto"`, was implemented in I-6 on
 2026-11-13 on both sides; default `manual` is omitted. It is no longer a pending schema change.
+
+The LED light (SPEC §5.7), global `"ledLevel"` 1–10 (default 10) and `"ledUnlit"` 0–10 (default 0),
+was built on 2026-11-25 for 0.1.2, on both sides, in the optional binary record 0x81
+([config.md](config.md), "Binary form"); it is no longer a planned setting. The editor shows it in
+Settings ▸ Mixer ▸ Lights as two sliders (`schemaField`'s `slider` range in `js/labels.js`): while
+Linked, each step passed goes to the mixer at once as a live edit (`pushToDevice`), so the mixer
+shows the brightness while the slider moves, and the whole drag is one undo step (it ends at the
+release, the change, the focus leaving or the sheet closing). A note under them says when the
+glow is as bright as lit buttons or brighter, and when the mixer runs a firmware before 0.1.2,
+which keeps full light and no glow.
 
 ## One product: the editor and the firmware
 

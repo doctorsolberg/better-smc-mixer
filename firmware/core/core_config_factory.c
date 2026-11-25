@@ -63,6 +63,8 @@ void core_config_factory(struct core_config *cfg)
     cfg->global.enc_accel = 100;
     cfg->global.fine14 = CORE_FINE14_RANGE;
     cfg->global.save = CORE_SAVE_MANUAL;
+    cfg->global.led_level = 10; /* full */
+    cfg->global.led_unlit = 0;  /* dark */
 
     for (unsigned k = 0; k < CORE_PRESETS; k++) {
         struct core_preset *p = &cfg->preset[k];

@@ -589,6 +589,37 @@ class FileTest(unittest.TestCase):
             codec.from_json({"schemaVersion": "1"})
         self.assertIn("this tool reads version", str(cm.exception))
 
+    def test_led_light(self):
+        # ledLevel and ledUnlit (SPEC §5.7): ten steps each, full and dark by default, in their own
+        # optional global record (tag 0x81) that a firmware before them skips
+        m = codec.from_json(doc())
+        self.assertEqual((m["global"]["led_level"], m["global"]["led_unlit"]), (10, 0))
+        self.assertEqual(len(codec.encode(m)), codec.HEADER)  # the defaults write nothing
+        m = codec.from_json(doc(**{"global": {"ledLevel": 4, "ledUnlit": 2}}))
+        blob = codec.encode(m)
+        self.assertEqual(blob[codec.HEADER:], bytes([0x81, 3, 0x03, 4, 2]))
+        self.assertEqual(codec.to_json(codec.decode(blob))["global"], {"ledLevel": 4, "ledUnlit": 2})
+        m = codec.from_json(doc(**{"global": {"save": "auto", "ledUnlit": 1}}))
+        self.assertEqual(codec.encode(m)[codec.HEADER:], bytes([1, 2, 0x40, 1, 0x81, 2, 0x02, 1]))
+        self.assertError(doc(**{"global": {"ledLevel": 0}}), "global.ledLevel")
+        self.assertError(doc(**{"global": {"ledLevel": 11}}), "global.ledLevel")
+        self.assertError(doc(**{"global": {"ledUnlit": 11}}), "global.ledUnlit")
+        head = codec.encode(codec.from_json(doc()))
+        def body(recs):
+            rest = head[16:36] + recs
+            return head[:8] + struct.pack("<II", len(recs), zlib.crc32(rest)) + rest
+        for bad in (bytes([0x81, 2, 0x01, 0]), bytes([0x81, 2, 0x02, 11]), bytes([0x81, 1, 0x04]),
+                    bytes([0x81, 0]), bytes([0x81, 2, 0x01, 5, 0x81, 2, 0x01, 5])):
+            with self.assertRaises(codec.ConfigError, msg=bad.hex()):
+                codec.decode(body(bad))
+        # an edit of the LED light alone: its record only, with preset 0
+        f = codec.load(EXAMPLES["factory"])
+        g = copy.deepcopy(f)
+        g["global"]["led_level"] = 3
+        self.assertEqual(codec.edits(f, g), [(0, bytes([0x81, 2, 0x01, 3]))])
+        g["global"]["led_level"] = 10
+        self.assertEqual(codec.edits(f, g), [])
+
     def assertError(self, obj, where):
         with self.assertRaises(codec.ConfigError) as cm:
             codec.from_json(json.loads(json.dumps(obj)))

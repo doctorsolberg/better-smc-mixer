@@ -171,11 +171,11 @@ function edit(label, fn) {
   st.redo = [];
   afterChange(label);
 }
-function afterChange(label) {
+function afterChange(label, sent) {
   saveLocal();
   st.errors = S.checkFile(cfg.canonical());
   renderAll();
-  pushToDevice(label);
+  if (!sent) pushToDevice(label);
 }
 // ?selftest keeps the user's working copy and its history as they were: its edits stay in the page.
 const SELFTEST = new URLSearchParams(location.search).has('selftest');
@@ -2495,11 +2495,63 @@ function schemaField([key, label, help, options, range], obj, tab) {
     input = h('select', { id: `set-${key}`, onchange: (e) => set(Number(e.target.value)) }, ...Array.from({ length: 16 }, (_, i) => h('option', { value: i + 1, selected: v === i + 1 }, `Channel ${i + 1}`)));
   } else if (options) {
     input = h('select', { id: `set-${key}`, onchange: (e) => set(e.target.value) }, ...Object.entries(options).map(([k, n]) => h('option', { value: k, selected: v === k }, n)));
+  } else if (range[2] === 'slider') {
+    // A level slider (the LED light): every step goes to the mixer as it is passed (when Linked),
+    // so the mixer shows it while the slider moves; one undo step for the whole drag. A drag
+    // starts at the first touch or step and ends at the release, the change, the focus leaving or
+    // the sheet closing: a drag back to where it started fires no change, and still ends.
+    const [min, max] = range;
+    const word = (x) => (x === 0 ? 'Off' : x === max ? 'Full' : `${x} of ${max}`);
+    const undoLabel = range[0] === 0 ? 'the glow of buttons that are off' : 'the brightness of lit LEDs';
+    const out = h('output', { for: `set-${key}`, class: 'level', 'aria-hidden': 'true' }, word(v));
+    let before = null;
+    const begin = () => { if (before === null) { before = JSON.stringify(cfg.file); endDrag = done; } };
+    const live = (x) => {
+      begin();
+      if (x === f.default) delete obj[key]; else obj[key] = x;
+      out.textContent = word(x);
+      lightNote(obj);
+      saveLocal();
+      pushToDevice(undoLabel);
+    };
+    const done = () => {
+      if (before === null) return;
+      const was = before;
+      before = null;
+      if (endDrag === done) endDrag = null;
+      if (JSON.stringify(cfg.file) === was) return;
+      st.undo.push({ label: undoLabel, json: was });
+      if (st.undo.length > 200) st.undo.shift();
+      st.redo = [];
+      afterChange(undoLabel, true); // the mixer has had every step
+    };
+    input = h('div', { class: 'row slider' },
+      h('input', { id: `set-${key}`, type: 'range', min, max, step: 1, value: v, 'aria-valuetext': word(v),
+        onpointerdown: begin, onkeydown: begin,
+        oninput: (e) => { const x = Number(e.target.value); e.target.setAttribute('aria-valuetext', word(x)); live(x); },
+        onchange: done, onpointerup: done, onblur: done }),
+      out);
+    if (range[0] !== 0) return field(label, input, help);
+    const note = h('div', { id: 'light-note', role: 'status' }); // under the second slider
+    queueMicrotask(() => lightNote(obj));
+    return h('div', {}, field(label, input, help), note);
   } else {
     const [min, max, unit] = range;
     input = h('div', { class: 'row unit' }, h('input', { id: `set-${key}`, type: 'number', inputmode: 'numeric', min, max, value: v, onchange: (e) => set(Math.max(min, Math.min(max, Number(e.target.value)))) }), h('span', { class: 'eq' }, unit));
   }
   return field(label, input, help);
+}
+
+// Under the LED light's sliders: what the mixer will not show. A glow at or above the lit level
+// makes lit and unlit buttons look alike; firmware before 0.1.2 skips the light (full and dark).
+function lightNote(g) {
+  const box = document.getElementById('light-note');
+  if (!box) return;
+  const lit = g.ledLevel ?? 10, unlit = g.ledUnlit ?? 0;
+  const text = ours() && dev.fw.version && compareVersions(dev.fw.version, '0.1.2') < 0
+    ? `The mixer runs ${dev.fw.version}: it keeps full light and no glow until you update it to 0.1.2 or later.`
+    : unlit && unlit >= lit ? 'The glow is as bright as lit buttons, or brighter: lit and unlit buttons will look alike.' : null;
+  put(box, text ? h('p', { class: 'note' }, icon('info', 16), h('span', {}, text)) : null);
 }
 
 function plannedField(item, scope, after) {
@@ -2833,7 +2885,10 @@ function askConfirm(title, text, action, done) {
 }
 
 function dialog(content) { put($('#dlg-body'), content); const d = $('#dlg'); if (!d.open) d.showModal(); }
-function closeDialog() { $('#dlg').close(); }
+// A slider's drag that is still open ends with the sheet (schemaField): at once, not at the
+// dialog's close event, which a browser runs later (much later in a background tab).
+let endDrag = null;
+function closeDialog() { endDrag?.(); $('#dlg').close(); }
 
 function download(obj, name) {
   const blob = new Blob([dumps(obj)], { type: 'application/json' });
@@ -2886,6 +2941,9 @@ function wire() {
     e.preventDefault();
     playEncoder(el.dataset.id, e.deltaY < 0 ? 1 : -1);
   }, { passive: false });
+  // Esc closes the sheet by itself: cancel comes first, at once; close covers any other way.
+  $('#dlg').addEventListener('cancel', () => endDrag?.());
+  $('#dlg').addEventListener('close', () => endDrag?.());
   document.addEventListener('keydown', (e) => {
     if (e.target.closest('input,select,textarea') || $('#dlg').open) return;
     const mod = e.metaKey || e.ctrlKey;

@@ -119,6 +119,15 @@ static void show_led(void *ctx, unsigned led, bool on)
     scan_led(&scan, led, on); /* the frame the scan interrupt draws */
 }
 
+/* The LED light (SPEC §5.7): two bytes the scan interrupt reads, each in one load, as the frame's
+ * rows are (scan_led()); it takes effect at the next step. */
+static void show_light(void *ctx, unsigned level, unsigned unlit)
+{
+    (void)ctx;
+    scan_led_light(&scan, level, unlit);
+    LOG_DEBUG(engine, "LED light: lit %u of 10, unlit %u of 10", level, unlit);
+}
+
 static void midi_ready(void *ctx)
 {
     (void)ctx;
@@ -138,7 +147,7 @@ static void bluetooth(void *ctx, bool on)
 }
 
 static const struct ctl_ops ctl_ops = {.led = show_led, .midi_ready = midi_ready, .ble_ready = ble_ready,
-                                       .bluetooth = bluetooth};
+                                       .bluetooth = bluetooth, .light = show_light};
 
 /* The USB task: the MIDI queue has room again after the control task stopped for it. */
 static void midi_room(void)
@@ -503,7 +512,7 @@ const struct variant *variant_start(void)
     midiq_init(&midi_out);
     inject_init(&inj, &queue);
     os_sem_create(&ctl_sem, 0);
-    scan_init(&scan, &scan_default_params, sink, &queue);
+    scan_init(&scan, &scan_default_params, sink, &queue); /* before ctl_init(): it sets the light */
     ctl_init(&ctl, &config, &queue, &midi_out, &ctl_ops); /* draws every LED */
     if (stored)
         ctl_set_stored(&ctl, &meta);

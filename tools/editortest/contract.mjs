@@ -286,8 +286,8 @@ export function binaryForm(codec, cases, readFile) {
   const byName = {};
   for (const c of cases) {
     try {
-      if (c.path) {
-        const file = JSON.parse(readFile(c.path));
+      if (c.path || c.file) {
+        const file = c.file ? JSON.parse(JSON.stringify(c.file)) : JSON.parse(readFile(c.path));
         if (c.id) { file.id = c.id; file.revision = c.revision; }
         const blob = codec.fileToBinary(file);
         if (toHex(blob) !== c.hex) {

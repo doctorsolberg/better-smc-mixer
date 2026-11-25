@@ -24,9 +24,10 @@
 #define CFGBIN_HEADER 36
 #define CFGBIN_CONTROLS (CORE_PAGES * CORE_STRIPS * 6 + CORE_ROW_BUTTONS) /* per preset */
 /* The largest binary form: every control with all its fields and a Shift layer with all its
- * fields (records: global 9 + 2, preset 6 + 2, Normal 16 + 2, Shift 17 + 2 bytes; a layer's fields
- * take at most 12 bytes, since n (encoders) and flags (buttons) never apply together). */
-#define CFGBIN_MAX (CFGBIN_HEADER + 11 + CORE_PRESETS * (8 + CFGBIN_CONTROLS * (18 + 19)))
+ * fields (records: global 9 + 2, the LED light's 3 + 2, preset 6 + 2, Normal 16 + 2, Shift 17 + 2
+ * bytes; a layer's fields take at most 12 bytes, since n (encoders) and flags (buttons) never apply
+ * together). */
+#define CFGBIN_MAX (CFGBIN_HEADER + 11 + 5 + CORE_PRESETS * (8 + CFGBIN_CONTROLS * (18 + 19)))
 
 struct cfgbin_meta {
     uint8_t id[16];    /* the configuration's UUID (FR-APP-24); zeros: none */
@@ -42,7 +43,7 @@ enum cfgbin_code {
     CFGBIN_E_CRC,
     CFGBIN_E_RECORD,  /* a record past the end, or its length is not its fields' */
     CFGBIN_E_TAG,     /* an unknown record that may not be skipped */
-    CFGBIN_E_TWICE,   /* a second global or preset record, Normal or Shift layer */
+    CFGBIN_E_TWICE,   /* a second global, LED light or preset record, Normal or Shift layer */
     CFGBIN_E_ORDER,   /* a control before any preset record; a Shift layer apart from its Normal one */
     CFGBIN_E_WHERE,   /* a preset, page or control this device does not have */
     CFGBIN_E_FIELD,   /* an unknown field */
@@ -73,8 +74,9 @@ size_t cfgbin_encode(const struct core_config *cfg, const struct cfgbin_meta *me
                      size_t cap, struct cfgbin_error *err);
 
 /* An edit of the running configuration (CFG_SET, P-1; docs/config.md, "Edits"): records of the
- * binary form, without a header, all of one preset: at most one global record, at most that
- * preset's record, and its controls' Normal and Shift layers, in the form's order rules. Each
+ * binary form, without a header, all of one preset: at most one global record and one LED light
+ * record, at most that preset's record, and its controls' Normal and Shift layers, in the form's
+ * order rules. Each
  * setting record replaces those settings, each control named is replaced whole, as a complete
  * form would have it (no Normal layer: none; no Shift layer: the default). Unknown optional
  * records are skipped. With cfg NULL it only checks; with cfg it also applies, in place, record

@@ -824,8 +824,9 @@ split ("The run of 2026-11-12", below); the factory configuration's sweep too (a
 controller 15's).
 
 Tests on the host: `firmware/tests/test_ctl.c` (the control path with the factory configuration:
-LEDs drawn at start, events to USB-MIDI packets, one wake-up per round, MIDI in to LEDs, the fast
-blink's phases, time that never goes back, backpressure and the newest value winning, setup, the
+LEDs drawn at start, the LED light given to the platform at start and when the configuration
+changes it (`test_light`, `ctl_ops.light`), events to USB-MIDI packets, one wake-up per round,
+MIDI in to LEDs, the fast blink's phases, time that never goes back, backpressure and the newest value winning, setup, the
 metrics' window) and `firmware/tests/test_midi.c` (packets, the queue, units and backpressure).
 
 ## Size on the device

@@ -89,6 +89,12 @@ reaches the mixer.
 The lights of the bottom row, BT and Shift glow faintly when off, as they do with M-Vave's
 firmware: that comes from the board.
 
+**Brightness.** Settings ▸ Mixer ▸ Lights sets how bright the lit buttons and encoders are (ten
+steps, full by default) and whether the buttons that are off glow faintly, so you can find them in
+the dark (ten steps, Off by default; the encoders' lights stay dark). While the editor is Linked, the
+mixer shows each step as you move the slider; like any setting, it stays after a switch-off once it is
+saved.
+
 ## The factory layout
 
 All four presets are laid out alike; preset *n* sends on MIDI channel *n*. The strip buttons send

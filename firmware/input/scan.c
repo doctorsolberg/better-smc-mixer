@@ -80,6 +80,46 @@ void scan_init(struct scan *s, const struct scan_params *p, scan_sink sink, void
         s->fader_sent[i] = -1;
     s->col = SCAN_COLS - 1; /* the first steps read nothing useful */
     s->led_drive = -1;
+    for (unsigned i = 0; i < SCAN_BUTTONS; i++)
+        s->led_glow[scan_led_pos[i] & 0x0Fu] |= (uint16_t)(1u << (scan_led_pos[i] >> 4));
+    scan_led_light(s, SCAN_LIGHT_LEVELS, 0);
+}
+
+/* A level's share of the full light in thousandths: the square of the level, so that the steps
+ * look even (brightness is seen roughly as the square root of the light; a gamma of 2). */
+static const uint16_t light_share[SCAN_LIGHT_LEVELS] = {10, 40, 90, 160, 250, 360, 490, 640, 810, 1000};
+
+/* With the default times a column shows 71 steps (35 at a 50 µs step): the ten levels all differ.
+ * A window under 10 steps would merge the top levels; none of the builds has one. */
+unsigned scan_light_steps(const struct scan *s, unsigned level)
+{
+    /* What a column shows: its time less the blank and the step its rows take to reach the
+     * outputs (scan.h). */
+    unsigned window = (unsigned)s->p.led_steps - s->p.led_blank - 1u, on = 0;
+    if (level < 1)
+        level = 1;
+    if (level > SCAN_LIGHT_LEVELS)
+        level = SCAN_LIGHT_LEVELS;
+    for (unsigned l = 1; l <= level; l++) {
+        unsigned want = (window * light_share[l - 1] + 500u) / 1000u;
+        on = want > on ? want : on + 1u; /* each level brighter than the one below */
+    }
+    return on < window ? on : window;
+}
+
+/* The words of a column's time that carry a LED's rows: word q shows at step q + 1, and the
+ * column's last word shows in the next blank, so n steps shown take the first n words; the full
+ * light puts the rows in every word, as before the light (test_leds). */
+static uint8_t words_on(const struct scan *s, unsigned level)
+{
+    unsigned n = scan_light_steps(s, level), window = (unsigned)s->p.led_steps - s->p.led_blank - 1u;
+    return (uint8_t)(n < window ? n : window + 1u);
+}
+
+void scan_led_light(struct scan *s, unsigned level, unsigned unlit)
+{
+    s->led_on = words_on(s, level);
+    s->unlit_on = unlit ? words_on(s, unlit) : 0u;
 }
 
 SMC_RAM_CODE uint32_t scan_word(unsigned col, uint16_t led_on)
@@ -280,8 +320,17 @@ SMC_RAM_CODE static uint32_t scan_leds_step(struct scan *s, unsigned word_col)
         s->led_phase = 0;
         s->led_col = (uint8_t)((s->led_col + 1) % SCAN_LED_COLS);
     }
-    s->led_drive = s->led_phase < s->p.led_blank ? -1 : (int8_t)s->led_col;
-    return scan_word(word_col, s->led_drive < 0 ? 0 : s->led_rows[s->led_col]);
+    if (s->led_phase < s->p.led_blank) {
+        s->led_drive = -1;
+        return scan_word(word_col, 0);
+    }
+    s->led_drive = (int8_t)s->led_col;
+    /* The light: a LED's rows go out for the first steps of the column's time (scan_led_light). */
+    unsigned q = (unsigned)s->led_phase - s->p.led_blank;
+    uint16_t lit = s->led_rows[s->led_col], rows = q < s->led_on ? lit : 0;
+    if (q < s->unlit_on)
+        rows |= (uint16_t)(~lit & s->led_glow[s->led_col]);
+    return scan_word(word_col, rows);
 }
 
 /* The median of three samples: a single wrong conversion (the ADC's bit errors near mid-scale,

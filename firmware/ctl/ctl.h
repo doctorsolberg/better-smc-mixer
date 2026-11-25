@@ -91,6 +91,9 @@ struct ctl_ops {
     void (*midi_ready)(void *ctx);                 /* packets wait in the queue: wake its consumer */
     void (*ble_ready)(void *ctx);                  /* messages wait in the BLE queue (or NULL) */
     void (*bluetooth)(void *ctx, bool on);         /* the BT button turned Bluetooth on/off (or NULL) */
+    /* the LED light changed (SPEC §5.7): ledLevel 1-10, ledUnlit 0-10; at the start and after every
+     * change of the running configuration that changes it (or NULL) */
+    void (*light)(void *ctx, unsigned level, unsigned unlit);
 };
 
 struct ctl_stats {
@@ -139,6 +142,7 @@ struct ctl {
     unsigned unit_n;
     uint8_t led_state[CORE_LEDS]; /* enum core_led_state, as the core set it */
     uint8_t led_shown[CORE_LEDS]; /* 0 dark, 1 lit, 0xFF not drawn yet */
+    uint8_t light_shown[2];        /* the LED light last given to ops->light: level, unlit (0xFF none) */
     uint32_t led_since[CORE_LEDS]; /* a blink starts lit at this time */
     struct core_settings setup;    /* the setup asked for, valid while setup_pending and !load */
     const uint8_t *load;           /* a received configuration asked for (checked), or NULL */

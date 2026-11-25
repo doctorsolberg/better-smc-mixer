@@ -280,7 +280,7 @@ ifeq ($(CORE_RAM),1)
 DEFINES += -DSMC_CORE_RAM
 endif
 # CFG_BUF=n: the configuration protocol's transfer buffer in bytes (link/cfglink.h): 16384 by
-# default; at most CFGBIN_MAX (30117) is used
+# default; at most CFGBIN_MAX (30128) is used
 ifneq ($(CFG_BUF),)
 DEFINES += -DCFGLINK_BUF=$(CFG_BUF)
 endif

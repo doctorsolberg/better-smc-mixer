@@ -204,7 +204,9 @@
       {"c": "hybrid_ms", "json": "hybridMs", "size": 2, "min": 1, "max": 60000, "default": 300, "doc": "hybrid Shift: a shorter press latches"},
       {"c": "enc_accel", "json": "encAccel", "size": 1, "min": 50, "max": 200, "default": 100, "doc": "encoder acceleration: the speed scale in percent (more accelerates sooner)"},
       {"c": "fine14", "json": "fine14", "size": 1, "enum": "fine14", "default": "range", "doc": "the fine step of encoders on 14-bit targets"},
-      {"c": "save", "json": "save", "size": 1, "enum": "save", "default": "manual", "doc": "how the mixer saves its configuration (Q-26); the core does not read it"}
+      {"c": "save", "json": "save", "size": 1, "enum": "save", "default": "manual", "doc": "how the mixer saves its configuration (Q-26); the core does not read it"},
+      {"c": "led_level", "json": "ledLevel", "size": 1, "min": 1, "max": 10, "default": 10, "record": "global2", "doc": "the brightness of lit LEDs: 1 dimmest, 10 full; even steps to the eye (§5.7)"},
+      {"c": "led_unlit", "json": "ledUnlit", "size": 1, "min": 0, "max": 10, "default": 0, "record": "global2", "doc": "the glow of unlit LEDs: 0 dark, 1–10 as ledLevel (§5.7)"}
     ]
   },
 
@@ -221,7 +223,8 @@
       {"name": "global", "tag": 1, "doc": "mask u8, then the global fields that differ from their defaults"},
       {"name": "preset", "tag": 2, "doc": "preset u8, mask u8, then the preset fields that differ from their defaults"},
       {"name": "assign", "tag": 3, "doc": "page u8 (255: the bottom row), control u8, mask u16, then the Normal layer's fields that differ from their defaults (a required one always)"},
-      {"name": "shift", "tag": 4, "doc": "page u8, control u8, kind u8; override: mask u16, then the fields that differ from the Normal layer"}
+      {"name": "shift", "tag": 4, "doc": "page u8, control u8, kind u8; override: mask u16, then the fields that differ from the Normal layer"},
+      {"name": "global2", "tag": 129, "doc": "optional (an older firmware skips it): mask u8, then the global fields of this record (\"record\": \"global2\") that differ from their defaults"}
     ],
     "rowPage": 255,
     "optionalTagBit": 128

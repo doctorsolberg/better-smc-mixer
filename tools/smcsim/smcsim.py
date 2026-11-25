@@ -69,7 +69,7 @@ def edit_records(edit):
     try:
         if "global" in edit:
             m = codec.from_json({"schemaVersion": codec.S.version, "global": edit["global"]})
-            return 0, codec.global_record(m)[0]
+            return 0, b"".join(r for r, _ in codec.global_records(m))  # every global record, whole
         p = int(edit.get("preset", 1)) - 1
         if not 0 <= p < 4:
             raise ScenarioError("edit: preset is 1-4")

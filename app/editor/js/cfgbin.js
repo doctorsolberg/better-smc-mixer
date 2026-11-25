@@ -41,7 +41,7 @@ function field(d) {
   return {
     c: d.c, json: d.json, size: d.size, enum: d.enum, min: d.min ?? 0, max: d.max, offset: d.offset ?? 0,
     required: !!d.required, default: d.required ? null : (d.default ?? 0), named: d.named ?? [],
-    applies: d.applies ?? {}, exclude: d.exclude ?? [], members: d.members ?? null,
+    applies: d.applies ?? {}, exclude: d.exclude ?? [], members: d.members ?? null, record: d.record ?? 'global',
   };
 }
 
@@ -62,12 +62,23 @@ export class Codec {
     this.assignFields = raw.assignment.fields.map(field);
     this.presetFields = raw.preset.fields.map(field);
     this.globalFields = raw.global.fields.map(field);
+    // The global settings' binary records in order, [name, fields] (schema.py's global_record_fields):
+    // the global record's mask is one byte, later settings go into optional records.
+    this.globalRecordFields = [];
+    for (const f of this.globalFields) {
+      const last = this.globalRecordFields[this.globalRecordFields.length - 1];
+      if (last && last[0] === f.record) last[1].push(f); else this.globalRecordFields.push([f.record, [f]]);
+    }
     if (this.assignFields.map((f) => f.c).join() !== FIELD_ORDER.join()) throw new Error('schema: the assignment fields are not struct core_assign\'s');
     this.FIELD = Object.fromEntries(this.assignFields.map((f) => [f.c, f]));
     this.stripControls = raw.strip.controls;
     this.row = raw.row.buttons;
     this.fine = raw.control.shift.fine;
     this.tags = Object.fromEntries(raw.binary.records.map((r) => [r.name, r.tag]));
+    // schema.py's checks of the global settings' records (a typo would write a tag NaN)
+    const names = this.globalRecordFields.map(([n]) => n);
+    if (names[0] !== 'global' || new Set(names).size !== names.length || names.some((n) => !(n in this.tags)) || names.length > 8
+      || this.globalRecordFields.some(([, fields]) => fields.length > 8)) throw new Error('schema: the global settings\' records');
     this.rowPage = raw.binary.rowPage;
     this.optional = raw.binary.optionalTagBit;
     this.headerSize = raw.binary.headerSize;
@@ -506,14 +517,17 @@ export class Codec {
     });
   }
 
-  // The global record and its mask (0 when every setting is the default).
-  globalRecord(m) {
-    const gv = this.globalFields.map((f) => m.global[f.c]);
-    let gmask = 0;
-    this.globalFields.forEach((f, i) => { if (gv[i] !== this.def(f)) gmask |= 1 << i; });
-    const payload = [gmask];
-    this.packFields(this.globalFields, gv, gmask, payload);
-    return [[this.tags.global, payload.length, ...payload], gmask];
+  // The global settings' records in order, each [record, mask]; a mask is 0 when every setting of
+  // that record is the default.
+  globalRecords(m) {
+    return this.globalRecordFields.map(([name, fields]) => {
+      const gv = fields.map((f) => m.global[f.c]);
+      let gmask = 0;
+      fields.forEach((f, i) => { if (gv[i] !== this.def(f)) gmask |= 1 << i; });
+      const payload = [gmask];
+      this.packFields(fields, gv, gmask, payload);
+      return [[this.tags[name], payload.length, ...payload], gmask];
+    });
   }
 
   // Preset p's record and its mask (0 when every setting is the default).
@@ -558,8 +572,7 @@ export class Codec {
   encode(m) {
     this.checkModel(m);
     const body = [];
-    const [g, gmask] = this.globalRecord(m);
-    if (gmask) body.push(...g);
+    for (const [g, gmask] of this.globalRecords(m)) if (gmask) body.push(...g);
     for (const [p, preset] of m.presets.entries()) {
       const recs = [];
       for (const [pg, cid, kind, , ctl] of this.controls(preset)) recs.push(...this.controlRecords(pg, cid, kind, ctl));
@@ -574,8 +587,8 @@ export class Codec {
   // for byte): a list of [preset, records], each at most `limit` bytes, for CFG_SET in this order.
   // Every setting record or control that differs is written whole, as the canonical form writes it
   // (a control that has none: a Normal layer of no fields, none; settings at their defaults: a
-  // record of mask 0); names do not count. The global record goes first, with the first preset
-  // that changes (else preset 0). [] when they play the same.
+  // record of mask 0); names do not count. The global settings' records go first, with the first
+  // preset that changes (else preset 0). [] when they play the same.
   edits(old, nu, limit = EDIT_MAX) {
     this.checkModel(nu);
     const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
@@ -595,10 +608,11 @@ export class Codec {
       }
       if (recs.length) per.push([p, recs]);
     }
-    const [g] = this.globalRecord(nu);
-    if (!same(g, this.globalRecord(old)[0])) {
-      if (per.length) per[0][1].unshift(g);
-      else per.push([0, [g]]);
+    const was = this.globalRecords(old);
+    const gs = this.globalRecords(nu).map(([g]) => g).filter((g, i) => !same(g, was[i][0]));
+    if (gs.length) {
+      if (per.length) per[0][1].unshift(...gs);
+      else per.push([0, gs]);
     }
     const out = [];
     for (const [p, recs] of per) {
@@ -638,7 +652,9 @@ export class Codec {
     const m = this.emptyConfig();
     m.revision = u32(blob, 16);
     m.id = blob.slice(20, 36);
-    let off = hsize, preset = null, pidx = -1, seenGlobal = false, last = null;
+    let off = hsize, preset = null, pidx = -1, last = null;
+    const seenGlobal = new Set();
+    const globalTags = new Map(this.globalRecordFields.map(([name, fields]) => [this.tags[name], [name, fields]]));
     const seenPresets = new Set(), seen = new Set();
     while (off < blob.length) {
       const here = `offset ${off}`;
@@ -649,15 +665,16 @@ export class Codec {
       off += 2 + ln;
       const prev = last;
       last = null;
-      if (tag === this.tags.global) {
-        need(!seenGlobal, here, 'a second global record');
-        seenGlobal = true;
-        need(ln >= 1, here, 'an empty global record');
+      if (globalTags.has(tag)) {
+        const [name, fields] = globalTags.get(tag);
+        need(!seenGlobal.has(name), here, `a second ${name} record`);
+        seenGlobal.add(name);
+        need(ln >= 1, here, `an empty ${name} record`);
         const mask = data[0];
-        need(!(mask >> this.globalFields.length), here, `unknown global fields 0x${mask.toString(16)}`);
-        const v = this.unpackFields(this.globalFields, mask, data, 1, here);
-        for (const [i, x] of Object.entries(v)) m.global[this.globalFields[i].c] = x;
-        for (const f of this.globalFields) this.checkSetting(f, m.global[f.c], `${here} global.${f.json}`, this.enums[f.enum]);
+        need(!(mask >> fields.length), here, `unknown ${name} fields 0x${mask.toString(16)}`);
+        const v = this.unpackFields(fields, mask, data, 1, here);
+        for (const [i, x] of Object.entries(v)) m.global[fields[i].c] = x;
+        for (const f of fields) this.checkSetting(f, m.global[f.c], `${here} global.${f.json}`, this.enums[f.enum]);
       } else if (tag === this.tags.preset) {
         need(ln >= 2, here, `a preset record of ${ln} bytes`);
         const p = data[0], mask = data[1];

@@ -61,6 +61,8 @@ static void worst(struct core_config *cfg)
     cfg->global.hybrid_ms = 1000;
     cfg->global.enc_accel = 200;
     cfg->global.fine14 = CORE_FINE14_LSB;
+    cfg->global.led_level = 1;
+    cfg->global.led_unlit = 10;
     for (unsigned p = 0; p < CORE_PRESETS; p++) {
         struct core_preset *pr = &cfg->preset[p];
         pr->channel = 2;
@@ -235,6 +237,65 @@ static void test_records(void)
              CFGBIN_OK);
     CHECK_EQ(a.preset[0].page[0][0].fader.shift.number, 7);
     CHECK_EQ(a.preset[0].page[0][0].fader.shift.hi, 64);
+}
+
+/* The LED light (SPEC §5.7): ledLevel and ledUnlit in the optional record 0x81, which a firmware
+ * before them skips; the defaults (full, dark) write nothing. */
+static void test_led_light(void)
+{
+    struct cfgbin_error e;
+    CHECK_EQ(decode_records(NULL, 0, &e), CFGBIN_OK);
+    CHECK_EQ(a.global.led_level, 10);
+    CHECK_EQ(a.global.led_unlit, 0);
+    CHECK_EQ(decode_records(R(0x81, 3, 0x03, 4, 2), &e), CFGBIN_OK);
+    CHECK_EQ(a.global.led_level, 4);
+    CHECK_EQ(a.global.led_unlit, 2);
+    CHECK_EQ(decode_records(R(1, 2, 0x40, 1, 0x81, 2, 0x02, 1), &e), CFGBIN_OK);
+    CHECK_EQ(a.global.save, CORE_SAVE_AUTO);
+    CHECK_EQ(a.global.led_level, 10);
+    CHECK_EQ(a.global.led_unlit, 1);
+    CHECK_EQ(decode_records(R(0x81, 2, 0x01, 0), &e), CFGBIN_E_VALUE); /* level 0 */
+    CHECK_EQ(e.field, 7);
+    CHECK_EQ(decode_records(R(0x81, 2, 0x02, 11), &e), CFGBIN_E_VALUE);
+    CHECK_EQ(e.field, 8);
+    CHECK_EQ(decode_records(R(0x81, 2, 0x01, 11), &e), CFGBIN_E_VALUE); /* level 11 */
+    CHECK_EQ(e.field, 7);
+    CHECK_EQ(decode_records(R(0x81, 3, 0x01, 5, 0), &e), CFGBIN_E_RECORD); /* a byte left over */
+    CHECK_EQ(decode_records(R(0x81, 2, 0x03, 5), &e), CFGBIN_E_RECORD); /* one short */
+    CHECK_EQ(decode_records(R(0x81, 1, 0x04), &e), CFGBIN_E_FIELD);
+    CHECK_EQ(decode_records(R(0x81, 0), &e), CFGBIN_E_RECORD);
+    CHECK_EQ(decode_records(R(0x81, 2, 0x01, 5, 0x81, 2, 0x01, 5), &e), CFGBIN_E_TWICE);
+    /* encoded: after the global record, before the presets */
+    core_config_factory(&a);
+    CHECK_EQ(a.global.led_level, 10);
+    CHECK_EQ(a.global.led_unlit, 0);
+    a.global.save = CORE_SAVE_AUTO;
+    a.global.led_unlit = 3;
+    size_t n = round_trip(&a);
+    const uint8_t want[] = {1, 2, 0x40, 1, 0x81, 2, 0x02, 3, 2};
+    CHECK(n > CFGBIN_HEADER + sizeof want);
+    CHECK(!memcmp(buf + CFGBIN_HEADER, want, sizeof want));
+    core_config_factory(&a); /* the level alone: mask 1 */
+    a.global.led_level = 6;
+    n = round_trip(&a);
+    const uint8_t level_only[] = {0x81, 2, 0x01, 6};
+    CHECK(!memcmp(buf + CFGBIN_HEADER, level_only, sizeof level_only));
+    a.global.led_level = 0;
+    CHECK_EQ(cfgbin_check(&a, &e), CFGBIN_E_VALUE);
+    /* a live edit of it alone */
+    core_config_factory(&a);
+    CHECK_EQ(cfgbin_patch(R(0x81, 3, 0x03, 2, 5), 1, &a, NULL, NULL, &e), CFGBIN_OK);
+    CHECK_EQ(a.global.led_level, 2);
+    CHECK_EQ(a.global.led_unlit, 5);
+    CHECK_EQ(cfgbin_patch(R(0x81, 1, 0), 1, &a, NULL, NULL, &e), CFGBIN_OK); /* mask 0: the defaults */
+    CHECK_EQ(a.global.led_level, 10);
+    CHECK_EQ(a.global.led_unlit, 0);
+    /* both global settings' records in one edit; each replaces its own settings only */
+    CHECK_EQ(cfgbin_patch(R(1, 2, 0x40, 1, 0x81, 2, 0x02, 4), 1, &a, NULL, NULL, &e), CFGBIN_OK);
+    CHECK_EQ(a.global.save, CORE_SAVE_AUTO);
+    CHECK_EQ(a.global.led_level, 10);
+    CHECK_EQ(a.global.led_unlit, 4);
+    CHECK_EQ(cfgbin_patch(R(0x81, 2, 0x01, 3, 0x81, 2, 0x01, 3), 1, NULL, NULL, NULL, &e), CFGBIN_E_TWICE);
 }
 
 static void test_header(void)
@@ -471,6 +532,7 @@ int main(void)
     RUN(test_builtin);
     RUN(test_largest);
     RUN(test_records);
+    RUN(test_led_light);
     RUN(test_header);
     RUN(test_damage);
     RUN(test_patch);

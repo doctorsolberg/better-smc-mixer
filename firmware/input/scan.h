@@ -145,6 +145,9 @@ struct scan {
     uint8_t fader_quiet[SCAN_FADERS];  /* samples since it was last sent (saturates) */
     uint16_t fader_raw[SCAN_FADERS];   /* raw mode: the last ADC value logged */
     uint16_t led_rows[SCAN_LED_COLS];  /* the LED frame: bit r = row r lit, for each column */
+    uint16_t led_glow[SCAN_LED_COLS];  /* the buttons' LEDs: those an unlit glow lights */
+    uint8_t led_on;                    /* steps of a column's time a lit LED shows (scan_led_light) */
+    uint8_t unlit_on;                  /* the same for an unlit button's LED; 0: dark */
     uint8_t led_phase;                 /* the step within the current LED column's time */
     uint8_t led_col;                   /* the current LED column */
     int8_t led_drive;                  /* what the platform drives now: -1 no column, else 0-3 */
@@ -170,6 +173,19 @@ void scan_fader(struct scan *s, uint32_t t_us, unsigned fader, uint16_t adc);
 void scan_led(struct scan *s, unsigned led, bool on);
 void scan_led_at(struct scan *s, unsigned row, unsigned col, bool on);
 void scan_leds_clear(struct scan *s);
+
+/* The LED light (SPEC §5.7): levels 1-10 of lit LEDs and 0-10 of unlit buttons' LEDs (0: dark;
+ * the encoders' LEDs never glow), even steps to the eye. A LED shows for the first steps of its
+ * column's time, as many as its level gives; 10 is all of them. Out-of-range levels take the
+ * nearest. From the start: 10 and 0 (scan_init() sets them, so a scan_init() after the
+ * controller's ctl_init() would lose the light ctl gave). Call it outside the scan interrupt; it
+ * takes effect at the next step. A glow at or above the lit level makes lit and unlit buttons
+ * look alike: allowed, the editor says so. */
+#define SCAN_LIGHT_LEVELS 10
+void scan_led_light(struct scan *s, unsigned level, unsigned unlit);
+
+/* Steps of a column's time a LED of level 1-10 shows (exposed for tests). */
+unsigned scan_light_steps(const struct scan *s, unsigned level);
 
 /* The 595 word that selects column col, with the LEDs of led_on lit (bit r = row r): exposed for
  * tests and the platform's start-up. */
